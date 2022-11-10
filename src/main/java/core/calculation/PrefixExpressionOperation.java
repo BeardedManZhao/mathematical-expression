@@ -6,16 +6,15 @@ import exceptional.ExtractException;
 import utils.NumberUtils;
 import utils.StrUtils;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
-public class PrefixExpressionOperation implements Calculation {
+/**
+ *
+ */
+public class PrefixExpressionOperation extends NumberCalculation {
 
-
-    private final String Name;
-
-    private PrefixExpressionOperation(String name) {
-        Name = name;
+    protected PrefixExpressionOperation(String name) {
+        super(name);
     }
 
     /**
@@ -31,7 +30,8 @@ public class PrefixExpressionOperation implements Calculation {
                 return (PrefixExpressionOperation) calculationByName;
             } else {
                 throw new ExtractException(
-                        "您需要的计算组件[" + CalculationName + "]被找到了，但是它似乎不属于 PrefixExpressionOperation 类型\n请您重新定义一个名称。"
+                        "您需要的计算组件[" + CalculationName + "]被找到了，但是它似乎不属于 PrefixExpressionOperation 类型，请您重新定义一个名称。\n" +
+                                "The calculation component [" + CalculationName + "] you need has been found, but it does not seem to belong to the PrefixExpressionOperation type. Please redefine a name."
                 );
             }
         } else {
@@ -50,9 +50,25 @@ public class PrefixExpressionOperation implements Calculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll(" +", "");
+        return string.replaceAll(" +", "") + "+0";
     }
 
+    /**
+     * 计算一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
+     * <p>
+     * Compute a mathematical expression and store the calculation details and results in the numerical result set.
+     *
+     * @param Formula        被计算的表达式，要求返回值是一个数值。
+     *                       <p>
+     *                       The returned value of the evaluated expression is required to be a numeric value.
+     * @param formatRequired 是否需要被格式化，用于确保公式格式正确。
+     *                       <p>
+     *                       Whether it needs to be formatted to ensure that the formula format is correct.
+     * @return 数值结果集对象，其中保存着每一步的操作数据，以及最终结果数值
+     * <p>
+     * Numerical result set object, which stores the operation data of each step and the final result value
+     */
+    @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
         String newFormula;
         if (formatRequired) {
@@ -60,9 +76,8 @@ public class PrefixExpressionOperation implements Calculation {
         } else {
             newFormula = Formula.replaceAll(" +", "");
         }
-        double res = 0;
-        ArrayList<Double> temps = new ArrayList<>();
-        short back = NumberUtils.ADDITION;
+        double res;
+        short back;
         // 创建操作符栈
         final Stack<Double> doubleStack = new Stack<>();
         // 创建操作数栈
@@ -85,7 +100,7 @@ public class PrefixExpressionOperation implements Calculation {
                         // 如果上一个优先级较大 就将上一个操作符取出
                         short top = shortStack.pop();
                         // 将上一个优先级高的值 与当下优先级较低的值进行运算，然后将当下的新数值和当下的操作符推到栈顶
-                        doubleStack.push(NumberUtils.calculation(top, number, doubleStack.pop()));
+                        doubleStack.push(NumberUtils.calculation(top, doubleStack.pop(), number));
                         shortStack.push(i);
                     } else {
                         // 反之就直接将当前的数值添加到缓冲区
@@ -103,30 +118,20 @@ public class PrefixExpressionOperation implements Calculation {
             }
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
-        System.err.println(shortStack + " " + doubleStack);
-
-        res = doubleStack.pop();
-        // 开始计算
+        res = doubleStack.get(0);
         int size = doubleStack.size();
-        for (int i = 0; i < size; i++) {
+        Double[] temps = new Double[size - 1];
+        // 开始计算
+        for (int i = 1, offset = 0; i < size && offset < size << 1; ++offset, ++i) {
             // 更新操作符
-            back = shortStack.pop();
+            back = shortStack.get(offset);
             // 获取操作数
-            double aDouble1 = doubleStack.pop();
+            double aDouble1 = doubleStack.get(i);
             // 计算结果
-            System.out.println(res + " " + back + " " + aDouble1);
             res = NumberUtils.calculation(back, res, aDouble1);
-            temps.add(res);
+            temps[offset] = res;
         }
         // 返回结果
-        return new CalculationNumberResults(temps.toArray(new Double[0]), res, this.Name);
-    }
-
-    /**
-     * @return 计算组件的名称
-     */
-    @Override
-    public String getName() {
-        return this.Name;
+        return new CalculationNumberResults(temps, res, this.Name);
     }
 }

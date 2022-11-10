@@ -119,6 +119,11 @@ public final class StrUtils {
         return NumberUtils.calculation(CalculationType, an, bn);
     }
 
+    /**
+     * 将一个字符类型的操作符 替换成数值编码
+     * @param c 字符类型的操作符
+     * @return 数值编码
+     */
     public static short OperatorConversion(char c) {
         Short aShort = NumberUtils.OPERATOR_SET.get(c);
         return aShort == null ? NumberUtils.ERROR : aShort;

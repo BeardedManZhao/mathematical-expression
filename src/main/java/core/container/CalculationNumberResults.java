@@ -27,20 +27,15 @@ public class CalculationNumberResults implements CalculationResults {
      * 初始化好结果数据容器，同时将结果运算出来
      *
      * @param doubles         所有的括号结果数值 优先级右边最高
-     * @param OperatorNumbers 每两个括号结果值之间的运算符，符号动态累计计算，其中是一个整数的列表 每一个数值应属于[0,3]区间 代表加减乘除四个运算符
+     * @param OperatorNumbers 每两个括号结果值之间的运算符，符号动态累计计算，其中是一个整数的列表 每一个数值应属于[0,4]区间 代表加减乘除四个运算符 以及取余一个运算符
      * @param source          来源，表明该结果对象的计算来源。
      */
     public CalculationNumberResults(Double[] doubles, ArrayList<Integer> OperatorNumbers, String source) {
         this.doubles = doubles;
         this.source = source;
-//        double res = doubles[doubles.length - 1];
-//        int offset = OperatorNumbers.size() - 1;
-//        for (int i = doubles.length - 2; i >= 0; --i) {
         double res = doubles[0];
         int offset = 0;
         for (int i = 1; i < doubles.length; ++i) {
-//            System.out.print(res + " " + OperatorNumbers.get(offset) + " " + doubles[i] + " = ");
-//            switch (OperatorNumbers.get(offset--)) {
             switch (OperatorNumbers.get(offset++)) {
                 case 0:
                     res += doubles[i];
@@ -55,7 +50,6 @@ public class CalculationNumberResults implements CalculationResults {
                     res /= doubles[i];
                     break;
             }
-//            System.out.println(res);
         }
         this.result = res;
     }
@@ -72,5 +66,12 @@ public class CalculationNumberResults implements CalculationResults {
 
     public double getResult() {
         return this.result;
+    }
+
+    /**
+     * @return 计算时候的聚合过程数值组，会将每一次计算的结果存储在这里，这里的数据具体意义，应在于计算组件对于该数据的存储操作，本类只存储，不计算
+     */
+    public Double[] getDoubles() {
+        return doubles;
     }
 }
