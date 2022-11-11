@@ -1,5 +1,6 @@
-package core.calculation;
+package core.calculation.number;
 
+import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
 import exceptional.ExtractException;
@@ -11,6 +12,7 @@ import java.util.Arrays;
  * 将一个带有嵌套括号的表达式数值结果计算，能够识别嵌套括号的就按优先级，是括号表达式计算的实现类
  * <p>
  * Compute the numerical results of an expression with nested parentheses. Those that can recognize nested parentheses are prioritized. They are the implementation classes of the calculation of parenthesis expressions
+ *
  * @author zhao
  */
 public class BracketsCalculation2 extends BracketsCalculation {
@@ -20,7 +22,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
      * <p>
      * Third party calculation components to be used when parsing and calculating the new bracket expression
      */
-    PrefixExpressionOperation prefixExpressionOperation = PrefixExpressionOperation.getInstance(CalculationManagement.PREFIX_EXPRESSION_OPERATION_NAME);
+    protected final static PrefixExpressionOperation PREFIX_EXPRESSION_OPERATION = PrefixExpressionOperation.getInstance(CalculationManagement.PREFIX_EXPRESSION_OPERATION_NAME);
 
     protected BracketsCalculation2(String name) {
         super(name);
@@ -35,7 +37,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
      * @return 解析括号类计算公式的计算组件
      */
     public static BracketsCalculation2 getInstance(String CalculationName) {
-        if (CalculationManagement.isregister(CalculationName)) {
+        if (CalculationManagement.isRegister(CalculationName)) {
             final Calculation calculationByName = CalculationManagement.getCalculationByName(CalculationName);
             if (calculationByName instanceof BracketsCalculation2) {
                 return (BracketsCalculation2) calculationByName;
@@ -46,7 +48,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
             }
         } else {
             BracketsCalculation2 BracketsCalculation2 = new BracketsCalculation2(CalculationName);
-            CalculationManagement.register(BracketsCalculation2);
+            CalculationManagement.register(BracketsCalculation2, false);
             return BracketsCalculation2;
         }
     }
@@ -100,7 +102,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
             }
         }
         // 将此字符串的结果计算出来
-        double result = prefixExpressionOperation.calculation(stringBuilder.toString(), true).getResult();
+        double result = PREFIX_EXPRESSION_OPERATION.calculation(stringBuilder.toString(), true).getResult();
         arrayList.add(result);
         return new CalculationNumberResults(arrayList.toArray(new Double[0]), result, this.Name);
     }

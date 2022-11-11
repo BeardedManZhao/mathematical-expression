@@ -60,7 +60,7 @@ public class CalculationNumberResults implements CalculationResults {
     }
 
     @Override
-    public String CalculationSource() {
+    public String getCalculationSourceName() {
         return this.source;
     }
 

@@ -1,5 +1,6 @@
-package core.calculation;
+package core.calculation.number;
 
+import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
 import exceptional.ExtractException;
@@ -24,7 +25,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
      * @return 解析括号类计算公式的计算组件
      */
     public static PrefixExpressionOperation getInstance(String CalculationName) {
-        if (CalculationManagement.isregister(CalculationName)) {
+        if (CalculationManagement.isRegister(CalculationName)) {
             final Calculation calculationByName = CalculationManagement.getCalculationByName(CalculationName);
             if (calculationByName instanceof PrefixExpressionOperation) {
                 return (PrefixExpressionOperation) calculationByName;
@@ -36,7 +37,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
             }
         } else {
             PrefixExpressionOperation PrefixExpressionOperation = new PrefixExpressionOperation(CalculationName);
-            CalculationManagement.register(PrefixExpressionOperation);
+            CalculationManagement.register(PrefixExpressionOperation, false);
             return PrefixExpressionOperation;
         }
     }

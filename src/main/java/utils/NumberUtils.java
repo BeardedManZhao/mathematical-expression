@@ -86,4 +86,35 @@ public final class NumberUtils {
     public static boolean PriorityComparison(short s1, short s2) {
         return (s1 == 0 || s1 == 1) && (s2 == 2 || s2 == 3 || s2 == 4);
     }
+
+    /**
+     * 将两个数值进行比较
+     *
+     * @param ComparisonOperator 两个数值的比较运算符
+     * @param left               左值
+     * @param right              右值
+     * @return 左值 与 右值 之间是否符合比较运算符的关系
+     */
+    public static boolean ComparisonOperation(String ComparisonOperator, double left, double right) {
+        switch (ComparisonOperator) {
+            case "<":
+                return left < right;
+            case ">":
+                return left > right;
+            case "<=":
+                return left <= right;
+            case ">=":
+                return left >= right;
+            case "=":
+            case "==":
+                return left == right;
+            case "!=":
+            case "<>":
+                return left != right;
+            default:
+                throw new AbnormalOperation("无法进行比较运算，因为有错误的运算符。\n" +
+                        "The comparison operation cannot be performed because there is an incorrect operator.\n" +
+                        "Bad comparison operator => " + ComparisonOperator);
+        }
+    }
 }

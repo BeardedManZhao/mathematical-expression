@@ -1,7 +1,9 @@
 package utils;
 
-import core.calculation.BracketsCalculation;
-import core.calculation.BracketsCalculation2;
+import core.calculation.bool.BooleanCalculation2;
+import core.calculation.number.BracketsCalculation;
+import core.calculation.number.BracketsCalculation2;
+import core.container.CalculationBooleanResults;
 import core.container.CalculationNumberResults;
 import exceptional.WrongFormat;
 
@@ -17,9 +19,20 @@ public class MAIN {
         CalculationNumberResults calculationNumberResults = z.calculation(s, false);
         // 打印出计算结果的信息
         System.out.println(
-                "计算来源[" + calculationNumberResults.CalculationSource() + "] " +
+                "计算来源[" + calculationNumberResults.getCalculationSourceName() + "] " +
                         "计算层次[" + calculationNumberResults.getResultLayers() + "] " +
                         "计算结果[" + calculationNumberResults.getResult() + "]"
         );
+
+        // 获取到比较运算计算组件
+        BooleanCalculation2 booleanCalculation2 = BooleanCalculation2.getInstance("b");
+        // 构建需要我们计算的公式
+        String s1 = "1 + (10 * 10) <= (10 * 10) + (1 * 1) + 1";
+        // 检查公式是否有错误
+        booleanCalculation2.check(s1);
+        // 开始计算公式
+        CalculationBooleanResults calculation = booleanCalculation2.calculation(s1);
+        // 打印计算结果
+        System.out.println(calculation.getLeft() + " <= " + calculation.getRight() + " " + calculation.getResult());
     }
 }

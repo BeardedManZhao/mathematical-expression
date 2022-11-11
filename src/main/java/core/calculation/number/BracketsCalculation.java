@@ -1,4 +1,4 @@
-package core.calculation;
+package core.calculation.number;
 
 import exceptional.AbnormalOperation;
 import utils.StrUtils;

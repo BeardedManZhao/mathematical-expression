@@ -1,7 +1,10 @@
-package core.calculation;
+package core.calculation.number;
 
+import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
 import exceptional.WrongFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,9 +21,11 @@ public abstract class NumberCalculation implements Calculation {
             Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '+', '-', '*', '/', '%', '(', ')', '.')
     );
     protected final String Name;
+    protected final Logger LOGGER;
 
     protected NumberCalculation(String name) {
         Name = name;
+        LOGGER = LoggerFactory.getLogger(name);
     }
 
     /**
@@ -83,7 +88,7 @@ public abstract class NumberCalculation implements Calculation {
         if (LeftCount != RightCount) {
             int abs = Math.abs(LeftCount - RightCount);
             throw new WrongFormat("您的格式不正确，出现了数学表达式中不正确的括号对数，请您检查是否缺少或者多出了[" + abs + "]个括号。\n" +
-                    "Your format is incorrect. There are incorrect parenthesis logarithms in the mathematical expression. Please check whether ["+ abs +"] parentheses are missing or extra.\n" +
+                    "Your format is incorrect. There are incorrect parenthesis logarithms in the mathematical expression. Please check whether [" + abs + "] parentheses are missing or extra.\n" +
                     "Wrong from [" + string + "]");
         }
     }

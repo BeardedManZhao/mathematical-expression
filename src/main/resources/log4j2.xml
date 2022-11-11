@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    status="warn" 日志框架本身的输出日志级别，可以修改为debug
+    monitorInterval="5" 自动加载配置文件的间隔时间，不低于 5秒；生产环境中修改配置文件，是热更新，无需重启应用
+ -->
+<configuration status="warn" monitorInterval="5">
+    <!--
+    集中配置属性进行管理
+    使用时通过:${name}
+    -->
+    <properties>
+        <property name="LOG_HOME">./logs</property>
+    </properties>
+
+    <!-- 日志处理 -->
+    <Appenders>
+        <!-- 控制台输出 appender，SYSTEM_OUT输出黑色，SYSTEM_ERR输出红色 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%p][%c][%d{yy-MM-dd:hh}]] : %m%n"/>
+        </Console>
+
+        <!--        &lt;!&ndash; 日志文件输出 appender &ndash;&gt;-->
+        <!--        <File name="file" fileName="${LOG_HOME}/MathematicalExpression.log">-->
+        <!--            <PatternLayout pattern="[%p][%c][%d{yy-MM-dd:hh:mm:ss}]]%m%n"/>-->
+        <!--        </File>-->
+
+        <!-- 使用随机读写流的日志文件输出 appender，性能提高 -->
+        <RandomAccessFile name="accessFile" fileName="${LOG_HOME}/ME.log">
+            <PatternLayout pattern="[%p][%c][%d{yy-MM-dd:hh:mm:ss}]] : %m%n"/>
+        </RandomAccessFile>
+    </Appenders>
+
+    <!-- logger 定义 -->
+    <Loggers>
+        <!-- 使用 rootLogger 配置 日志级别 level="warn" -->
+        <Root level="warn">
+            <!-- 指定日志使用的处理器 -->
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="accessFile"/>
+        </Root>
+    </Loggers>
+</configuration>

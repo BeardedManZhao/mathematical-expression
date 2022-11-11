@@ -17,6 +17,11 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
+        <repository>
+            <id>mvn</id>
+            <name>mvn</name>
+            <url>https://mvnrepository.com/artifact</url>
+        </repository>
     </repositories>
 
     <groupId>io.github.BeardedManZhao</groupId>
@@ -28,4 +33,31 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <!-- 使用slf4j 作为日志门面 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
+        </dependency>
+        <!-- 使用 log4j2 的适配器进行绑定 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.9.1</version>
+        </dependency>
+
+        <!-- log4j2 日志门面 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.1</version>
+        </dependency>
+        <!-- log4j2 日志实面 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.1</version>
+        </dependency>
+    </dependencies>
 </project>

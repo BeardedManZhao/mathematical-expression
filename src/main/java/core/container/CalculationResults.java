@@ -16,5 +16,5 @@ public interface CalculationResults {
      *
      * @return 计算结果的来源
      */
-    String CalculationSource();
+    String getCalculationSourceName();
 }
