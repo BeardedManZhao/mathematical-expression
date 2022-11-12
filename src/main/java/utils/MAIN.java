@@ -3,6 +3,7 @@ package utils;
 import core.calculation.bool.BooleanCalculation2;
 import core.calculation.number.BracketsCalculation;
 import core.calculation.number.BracketsCalculation2;
+import core.calculation.number.CumulativeCalculation;
 import core.container.CalculationBooleanResults;
 import core.container.CalculationNumberResults;
 import exceptional.WrongFormat;
@@ -34,5 +35,16 @@ public class MAIN {
         CalculationBooleanResults calculation = booleanCalculation2.calculation(s1);
         // 打印计算结果
         System.out.println(calculation.getLeft() + " <= " + calculation.getRight() + " " + calculation.getResult());
+
+        // 获取到累加运算计算组件
+        CumulativeCalculation c = CumulativeCalculation.getInstance("C");
+        // 构建需要我们计算的公式
+        String s2 = "n[0, 10, 1] (n + n)";
+        // 检查公式是否有错误
+        c.check(s2);
+        // 开始计算公式
+        CalculationNumberResults calculation1 = c.calculation(s2);
+        // 打印计算结果
+        System.out.println(calculation1.getResult());
     }
 }

@@ -4,9 +4,9 @@ import exceptional.AbnormalOperation;
 import utils.StrUtils;
 
 /**
- * 括号解析算法计算一个公式，支持嵌套括号计算
- * 能够解析带有括号/嵌套括号的四则运算公式。
- * 例如
+ * 括号解析算法计算一个公式的计算组件的父类，其中的计算具体实现是一个抽象，等待实现
+ *
+ * The bracket parsing algorithm calculates the parent class of the calculation component of a formula, in which the specific implementation of the calculation is an abstract, waiting to be implemented
  */
 public abstract class BracketsCalculation extends NumberCalculation {
     protected BracketsCalculation(String name) {
@@ -16,6 +16,7 @@ public abstract class BracketsCalculation extends NumberCalculation {
     /**
      * 格式化一个公式 使得其可以被该计算组件进行运算，这里是将字符串格式化成为能够被括号解析组件计算的公式
      *
+     * Format a formula so that it can be calculated by the calculation component. Here is to format the string into a formula that can be calculated by the bracket resolution component
      * @param string 数学运算公式
      * @return 格式化之后的数学运算公式
      */

@@ -4,13 +4,16 @@ import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
 import exceptional.ExtractException;
+import exceptional.WrongFormat;
 import utils.NumberUtils;
 import utils.StrUtils;
 
 import java.util.Stack;
 
 /**
+ * 解析一个无括号的数学计算公式的组件，针对不含括号的计算公式，该组件可以提供计算支持
  *
+ * Parse a component of mathematical calculation formula without brackets. This component can provide calculation support for calculation formula without brackets
  */
 public class PrefixExpressionOperation extends NumberCalculation {
 
@@ -42,6 +45,22 @@ public class PrefixExpressionOperation extends NumberCalculation {
         }
     }
 
+    /**
+     * 检查公式格式是否正确，如果不正确就会抛出一个异常
+     * <p>
+     * Check whether the formula format is correct. If not, an exception will be thrown
+     *
+     * @param string 需要被判断格式的数学运算公式
+     *               <p>
+     *               Mathematical operation formula of the format to be judged
+     */
+    @Override
+    public void check(String string) throws WrongFormat {
+        if (string.matches(".*[()].*")){
+            throw new WrongFormat("本组件只能解析不包含括号的表达式！！！\nThis component can only parse expressions without parentheses!!!\nWrong format => " + string);
+        }
+        super.check(string);
+    }
 
     /**
      * 格式化一个公式 使得其可以被该计算组件进行运算
@@ -77,8 +96,6 @@ public class PrefixExpressionOperation extends NumberCalculation {
         } else {
             newFormula = Formula.replaceAll(" +", "");
         }
-        double res;
-        short back;
         // 创建操作符栈
         final Stack<Double> doubleStack = new Stack<>();
         // 创建操作数栈
@@ -104,9 +121,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
                         doubleStack.push(NumberUtils.calculation(top, doubleStack.pop(), number));
                         shortStack.push(i);
                     } else {
-                        // 反之就直接将当前的数值添加到缓冲区
-                        stringBuilder.append(c);
-                        // 将当前运算符提供到栈顶
+                        // 反之就将当前运算符提供到栈顶
                         shortStack.push(i);
                         doubleStack.push(number);
                     }
@@ -119,11 +134,13 @@ public class PrefixExpressionOperation extends NumberCalculation {
             }
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
-        res = doubleStack.get(0);
+        double res = doubleStack.get(0);
+        short back;
         int size = doubleStack.size();
         Double[] temps = new Double[size - 1];
         // 开始计算
-        for (int i = 1, offset = 0; i < size && offset < size << 1; ++offset, ++i) {
+        int sizeD2 = size << 1;
+        for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
             // 更新操作符
             back = shortStack.get(offset);
             // 获取操作数

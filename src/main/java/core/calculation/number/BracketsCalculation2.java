@@ -93,7 +93,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
             } else if (aChar == ')' && --count == 0) {
                 setok = false;
                 // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
-                CalculationNumberResults calculation = calculation(Formula.substring(start, i), true);
+                CalculationNumberResults calculation = calculation(Formula.substring(start, i), formatRequired);
                 stringBuilder.append(calculation.getResult());
                 arrayList.addAll(Arrays.asList(calculation.getDoubles()));
             } else if (!setok && aChar != ' ') {
@@ -102,7 +102,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
             }
         }
         // 将此字符串的结果计算出来
-        double result = PREFIX_EXPRESSION_OPERATION.calculation(stringBuilder.toString(), true).getResult();
+        double result = PREFIX_EXPRESSION_OPERATION.calculation(stringBuilder.toString(), formatRequired).getResult();
         arrayList.add(result);
         return new CalculationNumberResults(arrayList.toArray(new Double[0]), result, this.Name);
     }

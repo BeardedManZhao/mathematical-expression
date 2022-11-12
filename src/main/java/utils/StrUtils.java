@@ -63,7 +63,7 @@ public final class StrUtils {
             }
         }
         // 计算出来小数点的位数
-        int count = floatRes == 0 ? 0 : floatRes - NumberUtils.tenfold(NumberUtils.DividebyTen(floatRes));
+        int count = floatRes == 0 ? 0 : floatRes - NumberUtils.tenfold(NumberUtils.divideByTen(floatRes));
         // 计算出来数值本身
         double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, count - 1);
         // 判断是否为负数，如果不是负数直接返回值
@@ -113,7 +113,7 @@ public final class StrUtils {
      * @return 计算结果
      */
     public static double calculation(String a, String b, int CalculationType) {
-        // 将a 与 b 转换成为数值
+        // 将a 与 b 转换成为数值，进行运算
         double an = StrUtils.stringToDouble(a);
         double bn = StrUtils.stringToDouble(b);
         return NumberUtils.calculation(CalculationType, an, bn);

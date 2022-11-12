@@ -1,5 +1,8 @@
 package exceptional;
 
+/**
+ * 在发生运算异常的时候会排除该异常信息
+ */
 public class AbnormalOperation extends RuntimeException {
     /**
      * Constructs a new runtime exception with {@code null} as its

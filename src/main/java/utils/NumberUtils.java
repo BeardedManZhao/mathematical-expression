@@ -38,10 +38,16 @@ public final class NumberUtils {
      * @param number 需要被计算的数值
      * @return 数值的 1/10倍
      */
-    public static int DividebyTen(int number) {
+    public static int divideByTen(int number) {
         return (number >> 1) / 5;
     }
 
+    /**
+     * 将一个数值乘以10的n次方
+     * @param number 需要被做乘法的数值
+     * @param n 次方数量
+     * @return number * 10的n次方
+     */
     public static int PowerOfTen(int number, int n) {
         int res = number;
         for (int i = 1; i < n; i++) {
