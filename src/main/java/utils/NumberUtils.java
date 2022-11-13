@@ -44,8 +44,9 @@ public final class NumberUtils {
 
     /**
      * 将一个数值乘以10的n次方
+     *
      * @param number 需要被做乘法的数值
-     * @param n 次方数量
+     * @param n      次方数量
      * @return number * 10的n次方
      */
     public static int PowerOfTen(int number, int n) {

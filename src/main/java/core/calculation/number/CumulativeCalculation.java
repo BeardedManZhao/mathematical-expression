@@ -58,11 +58,11 @@ public class CumulativeCalculation extends BracketsCalculation2 {
             if (split[1].split(",").length == 3) {
                 // 满足上述条件代表区间也没有问题，下面就是将需要计算的公式交给父类去检查
                 super.check(split[2].replaceAll(split[0], "0"));
-            }else {
+            } else {
                 throw new WrongFormat("检查到公式的错误，区间的配置不正确哦！正确的区间配置：自变量名称[起始值，终止值，等差值]\nThe formula error is detected, and the interval configuration is incorrect! Correct interval configuration: argument name [start, end, equalDifference]" +
                         "Wrong interval configuration => " + split[1]);
             }
-        }else {
+        } else {
             throw new WrongFormat("检查到公式的错误，公式的格式似乎不正确，正确示例：n[0,10,1](1+(n)*n)\nAn error is detected in the formula. The format of the formula seems incorrect. A correct example: n[0,10,1](1+(n)*n)\n" +
                     "Wrong interval configuration => " + string);
         }

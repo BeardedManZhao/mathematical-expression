@@ -73,7 +73,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
         // 公式存储区
         final StringBuilder stringBuilder = new StringBuilder();
         // 迭代每一个字符
-        char[] chars = Formula.toCharArray();
+        final char[] chars = Formula.toCharArray();
         // 括号内数据的起始索引
         int start = 0;
         boolean setok = false;
