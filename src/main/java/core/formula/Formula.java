@@ -8,7 +8,6 @@ package core.formula;
  * @param <result>             表达式计算结果的数据类型
  *                             <p>
  *                             Data type of expression calculation result
- *                             // * @param <PriorityParameter>  表达式中的运算优先级比较，当有多个表达式的时候，通过该接口可以实现排序功能。
  *                             <p>
  *                             For comparison of operation priority in expressions, when there are multiple expressions, the sorting function can be realized through this interface.
  * @param <ImplementationType> 该表达式的具体类型，用于进行子类与基类之间的转换

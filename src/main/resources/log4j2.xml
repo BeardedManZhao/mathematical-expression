@@ -32,8 +32,8 @@
 
     <!-- logger 定义 -->
     <Loggers>
-        <!-- 使用 rootLogger 配置 日志级别 level="warn" -->
-        <Root level="warn">
+        <!-- 使用 rootLogger 配置 日志级别 level="info" -->
+        <Root level="info">
             <!-- 指定日志使用的处理器 -->
             <AppenderRef ref="Console"/>
             <AppenderRef ref="accessFile"/>

@@ -7,6 +7,8 @@ import utils.StrUtils;
  * 括号解析算法计算一个公式的计算组件的父类，其中的计算具体实现是一个抽象，等待实现
  * <p>
  * The bracket parsing algorithm calculates the parent class of the calculation component of a formula, in which the specific implementation of the calculation is an abstract, waiting to be implemented
+ *
+ * @author zhao
  */
 public abstract class BracketsCalculation extends NumberCalculation {
     protected BracketsCalculation(String name) {

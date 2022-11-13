@@ -1,21 +1,39 @@
 package utils;
 
-import core.calculation.number.BracketsCalculation2;
-import core.container.CalculationNumberResults;
+import core.calculation.bool.BooleanCalculation2;
+import core.container.CalculationBooleanResults;
 import exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
-        // 获取一个名称为 zhao1 的嵌套括号表达式计算组件
-        BracketsCalculation2 zhao1 = BracketsCalculation2.getInstance("zhao1");
-        // 构建一个表达式
-        String s1 = "1 * 2 - (1 + (3 * 2)) + 2 * 3 + 1";
-        //检查该表达式
-        zhao1.check(s1);
-        // 计算该表达式
-        CalculationNumberResults calculation = zhao1.calculation(s1);
-        //打印结果
-        System.out.println(calculation.getResult());
+        // 获取一个计算数学比较表达式的组件
+        BooleanCalculation2 booleanCalculation2 = BooleanCalculation2.getInstance("Bool");
+        // 创建3个表达式
+        String s1 = "1 + 2 + 4 * (10 - 3)";
+        String s2 = "2 + 30 + (2 * 3) - 1";
+        String s3 = "1 + 3 * 10";
+        extracted(booleanCalculation2, s1 + " > " + s2);// false
+        extracted(booleanCalculation2, s1 + " < " + s2);// true
+        extracted(booleanCalculation2, s1 + " = " + s3);// true
+        extracted(booleanCalculation2, s1 + " == " + s3);// true
+        extracted(booleanCalculation2, s1 + " != " + s3);// false
+        extracted(booleanCalculation2, s1 + " <> " + s3);// false
+        extracted(booleanCalculation2, s1 + " <= " + s3);// true
+        extracted(booleanCalculation2, s1 + " >= " + s3);// true
+        extracted(booleanCalculation2, s1 + " != " + s2);// true
+        extracted(booleanCalculation2, s1 + " <> " + s2);// true
+    }
+
+    private static void extracted(BooleanCalculation2 booleanCalculation2, String s) throws WrongFormat {
+        // 检查表达式是否有错误
+        booleanCalculation2.check(s);
+        // 开始计算结果
+        CalculationBooleanResults calculation = booleanCalculation2.calculation(s);
+        // 打印结果数值
+        System.out.println(
+                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                        "\t计算来源：" + calculation.getCalculationSourceName()
+        );
     }
 }
 
@@ -56,3 +74,21 @@ public class MAIN {
 //                CalculationNumberResults calculation1 = c.calculation(s2);
 //                // 打印计算结果
 //                System.out.println(calculation1.getResult());
+
+
+// 实现一个名为n的函数 函数作用就是将数值 × 2
+//        ManyToOneNumberFunction manyToOneNumberFunction = new ManyToOneNumberFunction("n") {
+//            @Override
+//            public double run(double... numbers) {
+//                return numbers[0] * 2.0;
+//            }
+//        };
+//        // 将函数注册
+//        CalculationManagement.register(manyToOneNumberFunction);
+//        // 获取到函数表达式解析组件
+//        FunctionFormulaCalculation zhao11 = FunctionFormulaCalculation.getInstance("zhao12");
+//        // 运算一个公式，在其中运算的表达式使用了函数 n
+//        String s = "1 + (n(1 + 4) * n(2))";
+//        zhao11.check(s);
+//        CalculationNumberResults calculation1 = zhao11.calculation(s);
+//        System.out.println(calculation1.getResult());

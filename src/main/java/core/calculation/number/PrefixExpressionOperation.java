@@ -14,6 +14,8 @@ import java.util.Stack;
  * 解析一个无括号的数学计算公式的组件，针对不含括号的计算公式，该组件可以提供计算支持
  * <p>
  * Parse a component of mathematical calculation formula without brackets. This component can provide calculation support for calculation formula without brackets
+ *
+ * @author zhao
  */
 public class PrefixExpressionOperation extends NumberCalculation {
 

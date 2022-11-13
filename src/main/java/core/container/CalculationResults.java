@@ -4,6 +4,8 @@ package core.container;
  * 计算结果接口，其中一般用来存储有关计算结果的数据，结果数据不一定是一个数值，具体的操作请查阅子类实现
  * <p>
  * Calculation result interface, which is generally used to store data related to calculation results. The result data may not be a numerical value. Please refer to the subclass implementation for specific operations
+ *
+ * @author zhao
  */
 public interface CalculationResults {
     /**

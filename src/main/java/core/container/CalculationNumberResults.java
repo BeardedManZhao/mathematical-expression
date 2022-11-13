@@ -1,7 +1,5 @@
 package core.container;
 
-import java.util.ArrayList;
-
 /**
  * 数值计算结果存储对象，在该类中存储的都是来自计算组件的计算结果，以及运算级别层数等信息
  * <p>
@@ -23,37 +21,6 @@ public class CalculationNumberResults implements CalculationResults {
         this.doubles = doubles;
         this.result = result;
         this.source = source;
-    }
-
-    /**
-     * 初始化好结果数据容器，同时将结果运算出来
-     *
-     * @param doubles         所有的括号结果数值 优先级右边最高
-     * @param OperatorNumbers 每两个括号结果值之间的运算符，符号动态累计计算，其中是一个整数的列表 每一个数值应属于[0,4]区间 代表加减乘除四个运算符 以及取余一个运算符
-     * @param source          来源，表明该结果对象的计算来源。
-     */
-    public CalculationNumberResults(Double[] doubles, ArrayList<Integer> OperatorNumbers, String source) {
-        this.doubles = doubles;
-        this.source = source;
-        double res = doubles[0];
-        int offset = 0;
-        for (int i = 1; i < doubles.length; ++i) {
-            switch (OperatorNumbers.get(offset++)) {
-                case 0:
-                    res += doubles[i];
-                    break;
-                case 1:
-                    res -= doubles[i];
-                    break;
-                case 2:
-                    res *= doubles[i];
-                    break;
-                case 3:
-                    res /= doubles[i];
-                    break;
-            }
-        }
-        this.result = res;
     }
 
     @Override

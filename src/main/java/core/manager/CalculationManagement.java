@@ -1,6 +1,8 @@
 package core.manager;
 
 import core.calculation.Calculation;
+import core.calculation.function.Function;
+import exceptional.ExtractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +29,15 @@ public final class CalculationManagement {
     public static final String PREFIX_EXPRESSION_OPERATION_NAME = "PrefixExpressionOperation";
     public static final String BRACKETS_CALCULATION_2_NAME = "BracketsCalculation2";
     private static final HashMap<String, Calculation> STRING_CALCULATION_HASH_MAP = new HashMap<>();
+    private static final HashMap<String, Function> STRING_FUNCTION_HASH_MAP = new HashMap<>();
 
     static {
         LOGGER = LoggerFactory.getLogger("Calculation Management");
-        LOGGER.info("+=============== Welcome to [mathematical expression] ===============+");
+        LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
         LOGGER.info("+ \tStart time " + new Date());
         LOGGER.info("+ \tCalculation component manager initialized successfully");
-        LOGGER.info("+--------------------------------------------------------------------+");
+        LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/mathematical-expression.git");
+        LOGGER.info("+--------------------------------------------------------------------------------------------------+");
     }
 
     /**
@@ -68,8 +72,79 @@ public final class CalculationManagement {
             return false;
         } else {
             LOGGER.info("A computing component is registered " + calculationName);
-            return STRING_CALCULATION_HASH_MAP.put(calculationName, calculation) == null;
+            STRING_CALCULATION_HASH_MAP.put(calculationName, calculation);
+            return true;
         }
+    }
+
+    /**
+     * 将一个函数组件注册到管理者中，如果注册成功会返回true
+     * <p>
+     * Register a function component to the administrator, and return true if the registration is successful
+     *
+     * @param function 需要被注册的函数，这里的对象要求是function的子类实现
+     *                 <p>
+     *                 Functions that need to be registered. The object here is required to be a subclass implementation of function
+     * @return 注册函数是否成功，如果返回false，那么代表函数名称已经被其它函数使用，需要更换函数名称
+     * <p>
+     * Whether the function is registered successfully. If false is returned, it means that the function name has been used by other functions, and the function name needs to be changed
+     */
+    public static boolean register(Function function) {
+        String name = function.getName();
+        if (STRING_FUNCTION_HASH_MAP.containsKey(name)) {
+            LOGGER.warn("An error occurred when registering a function named [" + name + "], because the function name conflicts");
+            return false;
+        } else {
+            LOGGER.info("A function named [" + name + "] is registered in the manager");
+            STRING_FUNCTION_HASH_MAP.put(name, function);
+            return true;
+        }
+    }
+
+    /**
+     * 通过函数的名字获取到一个函数的对象
+     * <p>
+     * Get the object of a function through the name of the function
+     *
+     * @param FunctionName   需要获取的函数的名字
+     *                       <p>
+     *                       Name of the function to be obtained
+     * @param <functionType> 函数的实现类型，需要注意在这里的实现类型如果与找到的函数不一致，那么这里会抛出"ExtractException"
+     *                       <p>
+     *                       The implementation type of the function. Note that if the implementation type here is inconsistent with the found function, an "ExtractException" will be thrown here
+     * @return 通过函数名字获取到的函数对象
+     * <p>
+     * Function object obtained by function name
+     */
+    @SuppressWarnings("unchecked")
+    public static <functionType extends Function> functionType getFunctionByName(String FunctionName) {
+        Function function = STRING_FUNCTION_HASH_MAP.get(FunctionName);
+        if (function == null) {
+            throw new ExtractException("您想要提取的函数似乎没有被注册到管理者中，请您先使用“register”进行函数的注册！\nIt seems that the function you want to extract has not been registered with the manager. Please use \"register\" to register the function first!\nERROR FUNCTION => " + FunctionName);
+        } else {
+            try {
+                return (functionType) function;
+            } catch (ClassCastException c) {
+                throw new ExtractException("您要提取的函数被找到了，但是它不适用您指定的类型，请在泛型中对该函数的类型进行调整。\nThe function you want to extract has been found, but it does not apply to the type you specified. Please adjust the type of the function in the generic type.\nERROR FUNCTION => " + function.getName());
+            }
+        }
+    }
+
+    /**
+     * 取消一个函数的注册，将一个函数注销掉，与之相关的所有信息将会被清除
+     * <p>
+     * Cancel the registration of a function and log off a function. All information related to it will be cleared
+     *
+     * @param FunctionName 需要注销的函数名字
+     *                     <p>
+     *                     Function name to be unregistered
+     * @return 注销是否成功，如果返回false 代表需要注销的函数不存在
+     * <p>
+     * Whether the logout is successful. If false is returned, the function to logout does not exist
+     */
+    public static boolean unregisterF(String FunctionName) {
+        LOGGER.info("Prepare the logoff of a function. Function name:" + FunctionName);
+        return STRING_FUNCTION_HASH_MAP.remove(FunctionName) != null;
     }
 
     /**

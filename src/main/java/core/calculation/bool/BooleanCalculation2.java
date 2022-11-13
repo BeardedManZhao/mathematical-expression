@@ -8,7 +8,11 @@ import exceptional.ExtractException;
 import utils.NumberUtils;
 
 /**
- * 计算一个布尔返回值的表达式，这里的数值一般都是
+ * 计算一个布尔返回值的表达式，该组件针对两个表达式或数值之间的比较来计算结果数值，用于比较表达式是否成立
+ * <p>
+ * An expression that calculates a Boolean return value. This component calculates the result value for the comparison between two expressions or values, and is used to compare whether the expression is valid
+ *
+ * @author zhao
  */
 public class BooleanCalculation2 extends BooleanCalculation {
 

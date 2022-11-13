@@ -8,7 +8,11 @@ import exceptional.WrongFormat;
 import utils.StrUtils;
 
 /**
- * 累加计算公式解析组件，支持使用某些形参作为公式的计算
+ * 累加计算公式解析组件，支持使用未知形参，以及其区间作为公式进行累加加过的计算，例如传入公式 “n [0, 10, 2] (1 + n * n)” 就是 (1 + 0 * 0) + (1 + 2 * 2) + ... + (1 + 10 * 10)
+ * <p>
+ * The cumulative calculation formula analysis component supports the use of unknown formal parameters and their intervals as formulas for cumulative calculation. For example, the formula "n [0, 10, 2] (1+n * n)" passed in is (1+0 * 0)+(1+2 * 2)+...+(1+10 * 10)
+ *
+ * @author zhao
  */
 public class CumulativeCalculation extends BracketsCalculation2 {
     protected CumulativeCalculation(String name) {

@@ -2,6 +2,8 @@ package core.container;
 
 /**
  * 数值计算结果存储对象，在该类中存储的都是来自计算组件的计算结果，以及运算级别层数等信息
+ * <p>
+ * Numerical calculation result storage object. In this class, the calculation results from calculation components, as well as the number of operation levels and other information are stored
  *
  * @author zhao
  */

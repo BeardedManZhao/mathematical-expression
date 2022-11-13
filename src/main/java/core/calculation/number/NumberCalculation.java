@@ -13,6 +13,8 @@ import java.util.HashSet;
  * 计算结果为数值的数学表达式结果，其中提供了数学表达式的计算函数
  * <p>
  * The calculation result is the numerical mathematical expression result, in which the calculation function of the mathematical expression is provided
+ *
+ * @author zhao
  */
 public abstract class NumberCalculation implements Calculation {
 

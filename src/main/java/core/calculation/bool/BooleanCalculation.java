@@ -8,6 +8,13 @@ import exceptional.WrongFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 计算一个比较表达式的计算组件的父类，计算结果一般都是包含布尔值结果的对象
+ * <p>
+ * Compute the parent class of the calculation component of a comparison expression. The calculation result is generally an object containing Boolean results
+ *
+ * @author zhao
+ */
 public abstract class BooleanCalculation implements Calculation {
 
     /**

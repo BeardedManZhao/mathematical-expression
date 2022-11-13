@@ -4,7 +4,11 @@ import exceptional.AbnormalOperation;
 import utils.NumberUtils;
 
 /**
- * 双参数的数学表达式
+ * 双参数的数学表达式对象，针对两个参数的表达式可以使用该类进行快速的运算，相较于嵌套括号解析等组件，该组件的计算量更小，因为该组件是为了双参数数学表达式准备的，但是需要注意，该组件的功能也仅仅适用于双参数表达式
+ * <p>
+ * Double parameter mathematical expression object. This class can be used to perform fast operations on expressions with two parameters. Compared with components such as nested bracket resolution, this component requires less calculation, because it is prepared for double parameter mathematical expressions. However, it should be noted that the functions of this component are only applicable to double parameter expressions
+ *
+ * @author zhao
  */
 public abstract class BinaryFormula<result> implements Formula<result, BinaryFormula<result>> {
 
