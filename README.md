@@ -1,6 +1,6 @@
 # mathematical-expression
 
--切换至 [中文文档]()
+- 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
 
 ## introduce
 
@@ -266,7 +266,8 @@ public class MAIN {
   In mathematical expressions, there is often such a formula. The content of the formula is shown in the following
   figure. You can see the number sequence operations that need to be accumulated. Then, you can use the Full class name
   above to achieve the purpose you need.
-  ![img_1.png](img_1.png)
+  ![img_1](https://user-images.githubusercontent.com/113756063/201575828-5b76af88-6040-430d-a54c-61faf5905594.png)
+
 - API Usage Example
 
   The syntax level is almost the same as that of other components. The calculation example of the mathematical
@@ -366,3 +367,4 @@ public class MAIN {
 <hr>
 
 - date: 2022-11-14
+- 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
