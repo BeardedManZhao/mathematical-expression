@@ -1,5 +1,7 @@
 package core.calculation.function;
 
+import exceptional.ExtractException;
+
 /**
  * 多对一的数值型函数，在该函数中，可以传入很多参数，最终计算出来结果数值，是针对数值计算的有效函数，需要实现其中的run方法。
  * <p>
@@ -12,7 +14,12 @@ public abstract class ManyToOneNumberFunction implements Function {
     protected final String Name;
 
     protected ManyToOneNumberFunction(String name) {
-        Name = name;
+        if (name.matches("[a-zA-Z]+")) {
+            Name = name;
+        } else {
+            throw new ExtractException("您的函数名称中只能包含字母，同时函数名称的长度不能为0，请您更改函数名称\nYour function name can only contain letters, and the length of the function name cannot be 0. Please change the function name\n" +
+                    "ERROR NAME => " + name);
+        }
     }
 
     /**

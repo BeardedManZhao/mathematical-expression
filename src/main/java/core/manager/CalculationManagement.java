@@ -77,6 +77,10 @@ public final class CalculationManagement {
         }
     }
 
+    public static boolean register(Calculation calculation) {
+        return register(calculation, false);
+    }
+
     /**
      * 将一个函数组件注册到管理者中，如果注册成功会返回true
      * <p>

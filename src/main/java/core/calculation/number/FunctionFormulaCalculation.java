@@ -84,9 +84,13 @@ public class FunctionFormulaCalculation extends NumberCalculation {
         for (int i = 0; i < chars.length; i++) {
             char aChar = chars[i];
             if (((aChar >= 0b1000001 && aChar <= 0b1011010) || (aChar >= 0b1100001 && aChar <= 0b1111010))) {
-                // 如果是刚刚进入函数，就将当前索引添加到栈
-                b = true;
-                start.push(i + 2);
+                if (!b) {
+                    // 如果是刚刚进入函数，就将当前索引添加到栈
+                    b = true;
+                    start.push(i);
+                }
+                // 如果当前是函数的名字，就将函数起始索引继续移动，将函数名字部分的索引去除
+                start.push(start.pop() + 1);
             } else if (b && aChar == '(') {
                 count += 1;
             } else if (b && aChar == ')' && --count == 0) {
@@ -102,7 +106,7 @@ public class FunctionFormulaCalculation extends NumberCalculation {
         int size1 = end.size();
         if (size == size1) {
             for (int i = 0; i < size; i++) {
-                super.check(string.substring(start.pop(), end.pop()));
+                super.check(string.substring(start.pop() + 2, end.pop()));
                 stringBuilder.append('0');
             }
             // 检查最终公式
@@ -143,10 +147,12 @@ public class FunctionFormulaCalculation extends NumberCalculation {
         // 开始迭代公式，找到函数的索引值
         for (int i = 0; i < chars.length; ++i) {
             char aChar = chars[i];
-            if (!setOk && (aChar >= 65 && aChar <= 90) || (aChar >= 97 && aChar <= 122)) {
+            if ((aChar >= 65 && aChar <= 90) || (aChar >= 97 && aChar <= 122)) {
                 // 如果是字母，代表当前就是函数的起始点，将这个函数的名字存储到临时缓冲区
-                start = i;
-                setOk = true;
+                if (!setOk) {
+                    start = i;
+                    setOk = true;
+                }
                 name.append(aChar);
             } else if (setOk && aChar == '(') {
                 // 如果是一个左括号 同时当前属于函数范围内，就为计数器加1
@@ -158,7 +164,7 @@ public class FunctionFormulaCalculation extends NumberCalculation {
                 ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(name.toString());
                 LOGGER.info("Find and prepare the startup function: " + functionByName);
                 // 使用括号计算组件，计算出函数实参，然后通过函数将函数内的公式计算出来
-                double run = functionByName.run(BRACKETS_CALCULATION_2.calculation(Formula.substring(start + 2, i), formatRequired).getResult());
+                double run = functionByName.run(BRACKETS_CALCULATION_2.calculation(Formula.substring(start + name.length() + 1, i), formatRequired).getResult());
                 name.delete(0, name.length());
                 // 将当前的函数结果添加到公式缓冲区，这里判断了下run的精度，如果run是一个整数，就直接转换成整数添加
                 int run1 = (int) run;

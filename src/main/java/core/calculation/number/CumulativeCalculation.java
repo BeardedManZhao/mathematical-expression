@@ -80,7 +80,7 @@ public class CumulativeCalculation extends BracketsCalculation2 {
      */
     @Override
     public String formatStr(String string) {
-        final String[] split = string.replaceAll("\\s+", "").split("[\\[\\]]");
+        final String[] split = string.trim().split("[\\[\\]]");
         // 获取到累加所属符号
         final String f = split[0];
         // 获取到区间的起始，终止，等差值
@@ -120,6 +120,6 @@ public class CumulativeCalculation extends BracketsCalculation2 {
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        return super.calculation(formatRequired ? formatStr(Formula) : Formula, formatRequired);
+        return super.calculation(formatRequired ? formatStr(Formula) : Formula, false);
     }
 }

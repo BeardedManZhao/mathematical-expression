@@ -86,14 +86,14 @@ public class BracketsCalculation2 extends BracketsCalculation {
             if (aChar == '(') {
                 // 如果当前字符是一个左括号，那么说明括号开始了，这个时候需要将起始点记录
                 if (!setok) {
+                    setok = true;
                     start = i + 1;
                 }
                 ++count;
-                setok = true;
             } else if (aChar == ')' && --count == 0) {
                 setok = false;
                 // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
-                CalculationNumberResults calculation = calculation(Formula.substring(start, i), formatRequired);
+                CalculationNumberResults calculation = this.calculation(Formula.substring(start, i), formatRequired);
                 stringBuilder.append(calculation.getResult());
                 arrayList.addAll(Arrays.asList(calculation.getDoubles()));
             } else if (!setok && aChar != ' ') {
@@ -105,5 +105,18 @@ public class BracketsCalculation2 extends BracketsCalculation {
         double result = PREFIX_EXPRESSION_OPERATION.calculation(stringBuilder.toString(), formatRequired).getResult();
         arrayList.add(result);
         return new CalculationNumberResults(arrayList.toArray(new Double[0]), result, this.Name);
+    }
+
+    /**
+     * 格式化一个公式 使得其可以被该计算组件进行运算，这里是将字符串格式化成为能够被括号解析组件计算的公式
+     * <p>
+     * Format a formula so that it can be calculated by the calculation component. Here is to format the string into a formula that can be calculated by the bracket resolution component
+     *
+     * @param string 数学运算公式
+     * @return 格式化之后的数学运算公式
+     */
+    @Override
+    public String formatStr(String string) {
+        return super.formatStr(string);
     }
 }
