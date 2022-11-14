@@ -1,6 +1,6 @@
 # 数学表达式
 
-- Switch to [English Document]()
+- Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
 
 ## 介绍
 
@@ -245,7 +245,7 @@ public class MAIN {
 - 介绍
 
   在数学表达式中，往往有这样的一种公式，公式内容如下图所示，可以看到需要进行累加的数列操作，那么在这种公式的需求下，您可以通过上面的类组件去达到您所需要的目的。
-  ![img_1.png](img_1.png)
+  ![img_1](https://user-images.githubusercontent.com/113756063/201575828-5b76af88-6040-430d-a54c-61faf5905594.png)
 - API使用示例
 
   语法层面于其他组件几乎一致，数学表达式的撰写于组件的计算示例就如下面所示，在这里展示的就是一个累加数学公式的计算。
@@ -343,3 +343,4 @@ public class MAIN {
 <hr>
 
 - date: 2022-11-14
+- Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
