@@ -264,8 +264,10 @@ public class MAIN {
 - introduce
 
   In mathematical expressions, there is often such a formula. The content of the formula is shown in the following
-  figure. You can see the number sequence operations that need to be accumulated. Then, you can use the Full class name
-  above to achieve the purpose you need.
+  figure. You can see the number sequence operations that need to be accumulated. 
+  
+  Then, you can use the Full class name above to achieve the purpose you need.
+  
   ![img_1](https://user-images.githubusercontent.com/113756063/201575828-5b76af88-6040-430d-a54c-61faf5905594.png)
 
 - API Usage Example
