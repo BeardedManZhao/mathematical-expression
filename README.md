@@ -24,7 +24,7 @@ result object.
 - Full class name：core.manager.CalculationManagement
 - introduce：
 
-  管理者是一个为了同时使用单例与动态对象而设计的一个组件，管理者的存在可以使得每一个组件能够被名字所获取到，相同名字的组件，在内存中的存储地址也是一样的，避免了冗余组件的调用，同时针对需要使用到动态成员的组件，也可以通过一个新名字获取到一个新组件。
+  The manager is a component designed to use both singletons and dynamic objects. The existence of the manager enables each component to be obtained by name. Components with the same name have the same storage address in memory, avoiding the use of redundant components. At the same time, for components that need to use dynamic members, a new component can also be obtained by a new name.
 - API Usage Example
 
 ```java
