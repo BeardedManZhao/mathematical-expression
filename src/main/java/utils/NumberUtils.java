@@ -101,6 +101,8 @@ public final class NumberUtils {
      * @param left               左值
      * @param right              右值
      * @return 左值 与 右值 之间是否符合比较运算符的关系
+     * <p>
+     * Whether the left value and right value conform to the comparison operator
      */
     public static boolean ComparisonOperation(String ComparisonOperator, double left, double right) {
         switch (ComparisonOperator) {

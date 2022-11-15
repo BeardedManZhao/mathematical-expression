@@ -284,7 +284,7 @@ public class MAIN {
 
 ### 函数运算表达式
 
-- 类组件
+- 类组件：core.calculation.number.FunctionFormulaCalculation
 - 介绍
 
   针对一些函数的操作，在该框架中也有支持，可以使用上面的类进行这中需要函数的数学表达式的书写，需要注意的是，一切在表达式中使用到的函数都需要在“CalculationManagement”中进行逻辑注册，使得计算的时候可以访问到函数

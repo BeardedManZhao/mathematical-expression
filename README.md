@@ -258,7 +258,7 @@ public class MAIN {
 计算层数：4	计算结果：true	计算来源：Bool
 ```
 
-### 区间累加表达式
+### Interval accumulation expression
 
 - Full class name：core.calculation.number.CumulativeCalculation
 - introduce
@@ -285,8 +285,8 @@ public class MAIN {
     public static void main(String[] args) throws WrongFormat {
         // Get a component that calculates the cumulative mathematical expression
         CumulativeCalculation cumulativeCalculation = CumulativeCalculation.getInstance("zhao");
-        // 构建一个数学表达式，这里的"n[1,10,1]"就类似数学中的累加符号，n会在这个区间内不断增加，每增加一次都会被带入公式中计算一次
-        // 其中[1,10,1]中的最后一个1 代表增加步长，能够实现区间内不同等差值的累加
+        // Construct a mathematical expression. Here, "n [1,10,1]" is similar to the accumulation symbol in mathematics. N will increase continuously in this interval. Every increase will be brought into the formula for calculation
+        // Wherein, the last 1 in [1,10,1] represents the increase step, which can realize the accumulation of different equal difference values in the interval
         String s = "n[1,10,1] 2 * (n + 1)";
         // Check mathematical expressions
         cumulativeCalculation.check(s);
@@ -303,12 +303,12 @@ public class MAIN {
 - Running results
 
 ```
-计算层数：11   计算结果：120.0    计算来源：zhao
+计算层数：21	计算结果：130.0	计算来源：zhao
 ```
 
-### 函数运算表达式
+### Function operation expression
 
-- Full class name
+- Full class name：core.calculation.number.FunctionFormulaCalculation
 - introduce
 
   针对一些函数的操作，在该框架中也有支持，可以使用上面的类进行这中需要函数的数学表达式的书写，需要注意的是，一切在表达式中使用到的函数都需要在“CalculationManagement”中进行逻辑注册，使得计算的时候可以访问到函数

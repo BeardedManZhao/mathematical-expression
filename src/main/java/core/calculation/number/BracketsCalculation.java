@@ -25,29 +25,30 @@ public abstract class BracketsCalculation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        final StringBuilder stringBuilder = new StringBuilder();
-        int endBCount = 0;
-        for (String s1 : string.replaceAll("\\s+", "").split("[()]+")) {
-            if (s1.matches("\\d+[+\\-*/]\\d+")) {
-                stringBuilder.append("(").append(s1).append(")");
-            } else if (s1.matches("[+\\-*/]\\d+[+\\-*/]\\d+")) {
-                stringBuilder.append(s1.charAt(0)).append("(").append(s1.substring(1)).append(")");
-            } else if (s1.matches("\\d+[+\\-*/]\\d+[+\\-*/]")) {
-                int ctf = s1.length() - 1;
-                stringBuilder.append("(").append(s1, 0, ctf).append(")").append(s1.charAt(ctf));
-            } else if (s1.matches("\\d+[+\\-*/]")) {
-                stringBuilder.append("(").append(s1);
-                ++endBCount;
-            } else if (s1.matches("[+\\-*/]\\d+")) {
-                stringBuilder.append(s1).append(")");
-            } else {
-                stringBuilder.append(s1);
-            }
-        }
-        for (int i = 0; i < endBCount; i++) {
-            stringBuilder.append(")");
-        }
-        return stringBuilder.toString();
+//        final StringBuilder stringBuilder = new StringBuilder();
+//        int endBCount = 0;
+//        for (String s1 : string.replaceAll("\\s+", "").split("[()]+")) {
+//            if (s1.matches("\\d+[+\\-*/]\\d+")) {
+//                stringBuilder.append("(").append(s1).append(")");
+//            } else if (s1.matches("[+\\-*/]\\d+[+\\-*/]\\d+")) {
+//                stringBuilder.append(s1.charAt(0)).append("(").append(s1.substring(1)).append(")");
+//            } else if (s1.matches("\\d+[+\\-*/]\\d+[+\\-*/]")) {
+//                int ctf = s1.length() - 1;
+//                stringBuilder.append("(").append(s1, 0, ctf).append(")").append(s1.charAt(ctf));
+//            } else if (s1.matches("\\d+[+\\-*/]")) {
+//                stringBuilder.append("(").append(s1);
+//                ++endBCount;
+//            } else if (s1.matches("[+\\-*/]\\d+")) {
+//                stringBuilder.append(s1).append(")");
+//            } else {
+//                stringBuilder.append(s1);
+//            }
+//        }
+//        for (int i = 0; i < endBCount; i++) {
+//            stringBuilder.append(")");
+//        }
+//        return stringBuilder.toString();
+        return string.replaceAll("\\s+", "");
     }
 
     /**

@@ -59,7 +59,7 @@ public class FunctionFormulaCalculation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        return null;
+        return string.replaceAll("\\s+", "");
     }
 
     /**
