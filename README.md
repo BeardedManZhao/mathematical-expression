@@ -382,3 +382,4 @@ public class MAIN {
 
 - date: 2022-11-14
 - 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
+- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-Python)
