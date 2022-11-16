@@ -34,6 +34,9 @@ public interface Calculation {
      * @param string 需要被判断格式的数学运算公式
      *               <p>
      *               Mathematical operation formula of the format to be judged
+     * @throws WrongFormat 在检查出来错误的时候进行该异常抛出，该异常中会记录格式检查时，查出来的格式错误。
+     *                     <p>
+     *                     The exception is thrown when an error is detected, and the format error found during the format check will be recorded in the exception.
      */
     void check(String string) throws WrongFormat;
 }

@@ -13,9 +13,15 @@ public class CalculationNumberResults implements CalculationResults {
     private final String source;
 
     /**
-     * @param doubles 所有的括号结果数值 优先级右边最高
+     * @param doubles 所有的结果数值 大部分情况下是计算过程中的临时结果数值
+     *                <p>
+     *                All the result values are in most cases temporary result values in the calculation process
      * @param result  已经计算出结果数值的情况下，使用该形参进行赋值
+     *                <p>
+     *                If the result value has been calculated, use this parameter for assignment
      * @param source  来源，表明该结果对象的计算来源。
+     *                <p>
+     *                Source indicates the calculation source of the result object.
      */
     public CalculationNumberResults(Double[] doubles, double result, String source) {
         this.doubles = doubles;

@@ -11,7 +11,13 @@
   您可以直接使用maven将本框架导入到项目中使用，能够高效的使用该功能
 
 ```xml
-
+    <dependencies>
+        <dependency>
+            <groupId>io.github.BeardedManZhao</groupId>
+            <artifactId>mathematical-expression</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 ```
 
 ## 框架架构
@@ -279,7 +285,7 @@ public class MAIN {
 - 运行结果
 
 ```
-计算层数：11   计算结果：120.0    计算来源：zhao
+计算层数：21	计算结果：130.0	计算来源：zhao
 ```
 
 ### 函数运算表达式

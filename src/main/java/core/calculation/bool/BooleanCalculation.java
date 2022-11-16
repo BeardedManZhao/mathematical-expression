@@ -103,6 +103,10 @@ public abstract class BooleanCalculation implements Calculation {
      * @param Formula 被计算的表达式，要求返回值是一个数值。
      *                <p>
      *                The returned value of the evaluated expression is required to be a numeric value.
+     * @return 布尔结果对象，其中存储着有关结果以及其计算过程的一些信息
+     * <p>
+     * Boolean result object, which stores some information about the result and its calculation process
+     * @see core.container.CalculationBooleanResults
      */
     public CalculationBooleanResults calculation(String Formula) {
         return calculation(Formula, true);

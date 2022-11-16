@@ -15,6 +15,13 @@ result object.
 
 ```xml
 
+<dependencies>
+    <dependency>
+        <groupId>io.github.BeardedManZhao</groupId>
+        <artifactId>mathematical-expression</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Framework
@@ -24,7 +31,10 @@ result object.
 - Full class name：core.manager.CalculationManagement
 - introduce：
 
-  The manager is a component designed to use both singletons and dynamic objects. The existence of the manager enables each component to be obtained by name. Components with the same name have the same storage address in memory, avoiding the use of redundant components. At the same time, for components that need to use dynamic members, a new component can also be obtained by a new name.
+  The manager is a component designed to use both singletons and dynamic objects. The existence of the manager enables
+  each component to be obtained by name. Components with the same name have the same storage address in memory, avoiding
+  the use of redundant components. At the same time, for components that need to use dynamic members, a new component
+  can also be obtained by a new name.
 - API Usage Example
 
 ```java
@@ -264,10 +274,10 @@ public class MAIN {
 - introduce
 
   In mathematical expressions, there is often such a formula. The content of the formula is shown in the following
-  figure. You can see the number sequence operations that need to be accumulated. 
-  
+  figure. You can see the number sequence operations that need to be accumulated.
+
   Then, you can use the Full class name above to achieve the purpose you need.
-  
+
   ![img_1](https://user-images.githubusercontent.com/113756063/201575828-5b76af88-6040-430d-a54c-61faf5905594.png)
 
 - API Usage Example
@@ -313,7 +323,9 @@ public class MAIN {
 - Full class name：core.calculation.number.FunctionFormulaCalculation
 - introduce
 
-  针对一些函数的操作，在该框架中也有支持，可以使用上面的类进行这中需要函数的数学表达式的书写，需要注意的是，一切在表达式中使用到的函数都需要在“CalculationManagement”中进行逻辑注册，使得计算的时候可以访问到函数
+  The framework also supports the operation of some functions. You can use the above classes to write mathematical
+  expressions that require functions. It should be noted that all functions used in expressions need to be logically
+  registered in "Calculation Management" so that functions can be accessed during calculation
 - API Usage Example
 
 ```java
