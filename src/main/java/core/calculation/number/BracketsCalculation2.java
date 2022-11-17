@@ -3,6 +3,7 @@ package core.calculation.number;
 import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
+import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 
 import java.util.ArrayList;
@@ -83,20 +84,20 @@ public class BracketsCalculation2 extends BracketsCalculation {
         ArrayList<Double> arrayList = new ArrayList<>();
         for (int i = 0; i < chars.length; i++) {
             char aChar = chars[i];
-            if (aChar == '(') {
+            if (aChar == ConstantRegion.LEFT_BRACKET) {
                 // 如果当前字符是一个左括号，那么说明括号开始了，这个时候需要将起始点记录
                 if (!setok) {
                     setok = true;
                     start = i + 1;
                 }
                 ++count;
-            } else if (aChar == ')' && --count == 0) {
+            } else if (aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
                 setok = false;
                 // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
                 CalculationNumberResults calculation = this.calculation(Formula.substring(start, i), formatRequired);
                 stringBuilder.append(calculation.getResult());
                 arrayList.addAll(Arrays.asList(calculation.getDoubles()));
-            } else if (!setok && aChar != ' ') {
+            } else if (!setok && aChar != ConstantRegion.EMPTY) {
                 // 如果不是一个括号就将字符提供给字符串缓冲区
                 stringBuilder.append(aChar);
             }

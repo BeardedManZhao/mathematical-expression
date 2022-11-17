@@ -2,6 +2,7 @@ package core.calculation.number;
 
 import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
+import core.manager.ConstantRegion;
 import exceptional.WrongFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,10 @@ public abstract class NumberCalculation implements Calculation {
      * 合法字符，一个数学表达式的格式中可以包含的所有字符，包含这些字符外的字符，在格式化的时候，将直接判定为格式不正确
      */
     public static final HashSet<Character> LEGAL_CHARACTERS = new HashSet<>(
-            Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '+', '-', '*', '/', '%', '(', ')', '.')
+            Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    ConstantRegion.EMPTY, ConstantRegion.PLUS_SIGN, ConstantRegion.MINUS_SIGN,
+                    ConstantRegion.MULTIPLICATION_SIGN, ConstantRegion.DIVISION_SIGN, ConstantRegion.REMAINDER_SIGN,
+                    ConstantRegion.LEFT_BRACKET, ConstantRegion.REMAINDER_SIGN, ConstantRegion.DECIMAL_POINT)
     );
     protected final String Name;
     protected final Logger LOGGER;
@@ -83,9 +87,9 @@ public abstract class NumberCalculation implements Calculation {
         // 右括号出现数量
         int RightCount = 0;
         for (char c : string.toCharArray()) {
-            if (c == '(') {
+            if (c == ConstantRegion.LEFT_BRACKET) {
                 ++LeftCount;
-            } else if (c == ')') {
+            } else if (c == ConstantRegion.RIGHT_BRACKET) {
                 ++RightCount;
             } else if (!NumberCalculation.LEGAL_CHARACTERS.contains(c)) {
                 throw new WrongFormat("您的格式不正确，出现了数学表达式中不应该存在的字符。\n" +

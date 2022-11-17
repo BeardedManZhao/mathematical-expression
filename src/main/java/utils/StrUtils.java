@@ -1,5 +1,7 @@
 package utils;
 
+import core.manager.ConstantRegion;
+
 public final class StrUtils {
     /**
      * 将一个字符串的子字符串提取出来
@@ -109,25 +111,51 @@ public final class StrUtils {
      *
      * @param a               第一个操作数
      * @param b               第二个操作数
-     * @param CalculationType 计算模式 0=加 1=减 2=乘 3=除
+     * @param CalculationType 计算模式
      * @return 计算结果
      */
-    public static double calculation(String a, String b, int CalculationType) {
+    public static double calculation(String a, String b, char CalculationType) {
         // 将a 与 b 转换成为数值，进行运算
-        double an = StrUtils.stringToDouble(a);
-        double bn = StrUtils.stringToDouble(b);
-        return NumberUtils.calculation(CalculationType, an, bn);
+        return NumberUtils.calculation(CalculationType, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
     }
 
     /**
-     * 将一个字符类型的操作符 替换成数值编码
+     * 计算一个带有两个操作数 一个操作符的计算公式的结果
      *
-     * @param c 字符类型的操作符
-     * @return 数值编码
+     * @param a               第一个操作数
+     * @param b               第二个操作数
+     * @param CalculationType 计算模式 0=加法 1=减法 2=乘法 3=除法 4=取余
+     * @return 计算结果 如果出现异常，将会直接提示操作符是 ?
+     * @deprecated 该方法中使用到了数值，但是新版本中支持直接使用符号进行计算，这里的数值有一些冗余，将会在下一次版本中移除该方法
      */
-    public static short OperatorConversion(char c) {
-        Short aShort = NumberUtils.OPERATOR_SET.get(c);
-        return aShort == null ? NumberUtils.ERROR : aShort;
+    @Deprecated
+    public static double calculation(String a, String b, int CalculationType) {
+        switch (CalculationType) {
+            case 0:
+                return NumberUtils.calculation(ConstantRegion.PLUS_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
+            case 1:
+                return NumberUtils.calculation(ConstantRegion.MINUS_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
+            case 2:
+                return NumberUtils.calculation(ConstantRegion.MULTIPLICATION_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
+            case 3:
+                return NumberUtils.calculation(ConstantRegion.DIVISION_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
+            case 4:
+                return NumberUtils.calculation(ConstantRegion.REMAINDER_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
+            default:
+                return NumberUtils.calculation('?', StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
+        }
+    }
+
+    /**
+     * 判断一个字符是不是一个操作符
+     *
+     * @param c 需要被判断的字符
+     * @return 如果是一个操作符就返回True
+     */
+    public static boolean IsAnOperator(char c) {
+        return c == ConstantRegion.PLUS_SIGN || c == ConstantRegion.MINUS_SIGN ||
+                c == ConstantRegion.MULTIPLICATION_SIGN || c == ConstantRegion.DIVISION_SIGN ||
+                c == ConstantRegion.REMAINDER_SIGN;
     }
 }
 

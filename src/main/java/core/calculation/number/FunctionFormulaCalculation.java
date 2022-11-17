@@ -4,6 +4,7 @@ import core.calculation.Calculation;
 import core.calculation.function.ManyToOneNumberFunction;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
+import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import exceptional.WrongFormat;
 
@@ -83,7 +84,7 @@ public class FunctionFormulaCalculation extends NumberCalculation {
         final char[] chars = string.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             char aChar = chars[i];
-            if (((aChar >= 0b1000001 && aChar <= 0b1011010) || (aChar >= 0b1100001 && aChar <= 0b1111010))) {
+            if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
                 if (!b) {
                     // 如果是刚刚进入函数，就将当前索引添加到栈
                     b = true;
@@ -91,13 +92,13 @@ public class FunctionFormulaCalculation extends NumberCalculation {
                 }
                 // 如果当前是函数的名字，就将函数起始索引继续移动，将函数名字部分的索引去除
                 start.push(start.pop() + 1);
-            } else if (b && aChar == '(') {
+            } else if (b && aChar == ConstantRegion.LEFT_BRACKET) {
                 count += 1;
-            } else if (b && aChar == ')' && --count == 0) {
+            } else if (b && aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
                 // 如果是函数结束，就将函数的终止点索引添加到栈
                 b = false;
                 end.push(i);
-            } else if (!b && aChar != ' ') {
+            } else if (!b && aChar != ConstantRegion.EMPTY) {
                 stringBuilder.append(aChar);
             }
         }
@@ -147,22 +148,22 @@ public class FunctionFormulaCalculation extends NumberCalculation {
         // 开始迭代公式，找到函数的索引值
         for (int i = 0; i < chars.length; ++i) {
             char aChar = chars[i];
-            if ((aChar >= 65 && aChar <= 90) || (aChar >= 97 && aChar <= 122)) {
+            if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
                 // 如果是字母，代表当前就是函数的起始点，将这个函数的名字存储到临时缓冲区
                 if (!setOk) {
                     start = i;
                     setOk = true;
                 }
                 name.append(aChar);
-            } else if (setOk && aChar == '(') {
+            } else if (setOk && aChar == ConstantRegion.LEFT_BRACKET) {
                 // 如果是一个左括号 同时当前属于函数范围内，就为计数器加1
                 count += 1;
-            } else if (setOk && aChar == ')' && --count == 0) {
+            } else if (setOk && aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
                 // 如果当前区域是函数内，同时当前是一个右括号，而且该括号是与起始括号相对应的，代表函数结束
                 setOk = false;
                 // 通过函数名字获取到函数组件
                 ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(name.toString());
-                LOGGER.info("Find and prepare the startup function: " + functionByName);
+                LOGGER.info(ConstantRegion.LOG_INFO_FIND_FUNCTION + functionByName);
                 // 使用括号计算组件，计算出函数实参，然后通过函数将函数内的公式计算出来
                 double run = functionByName.run(BRACKETS_CALCULATION_2.calculation(Formula.substring(start + name.length() + 1, i), formatRequired).getResult());
                 name.delete(0, name.length());
@@ -173,7 +174,7 @@ public class FunctionFormulaCalculation extends NumberCalculation {
                 } else {
                     stringBuilder.append(run);
                 }
-            } else if (!setOk && aChar != ' ') {
+            } else if (!setOk && aChar != ConstantRegion.EMPTY) {
                 // 如果是其他情况就直接将字符添加到公式中
                 stringBuilder.append(aChar);
             }

@@ -4,6 +4,7 @@ import core.calculation.Calculation;
 import core.container.CalculationBooleanResults;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
+import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import utils.NumberUtils;
 
@@ -69,7 +70,7 @@ public class BooleanCalculation2 extends BooleanCalculation {
             NewFormula = Formula;
         }
         // 先按照表达式的比较运算符进行一个切分
-        String[] split = NewFormula.split("<=|>=|!=|<>|==|[<=>]");
+        String[] split = NewFormula.split(ConstantRegion.REGULAR_COMPARISON_OPERATOR);
         String s1 = split[0];
         String s2 = split[1];
         // 进行比较运算符的提取
@@ -79,7 +80,7 @@ public class BooleanCalculation2 extends BooleanCalculation {
             ++end;
         }
         String s = NewFormula.substring(start, end);
-        String Null = "null";
+        String Null = ConstantRegion.STRING_NULL;
         // 判断左右是否有一个为null
         if (s1.equalsIgnoreCase(Null)) {
             // 如果左边为null ，同时右边为null就代表两个值相同，在这里直接将两个值赋值0

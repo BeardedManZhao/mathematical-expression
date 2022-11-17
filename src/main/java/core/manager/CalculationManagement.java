@@ -35,6 +35,7 @@ public final class CalculationManagement {
         LOGGER = LoggerFactory.getLogger("Calculation Management");
         LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
         LOGGER.info("+ \tStart time " + new Date());
+        LOGGER.info("+ \tversion: " + ConstantRegion.VERSION);
         LOGGER.info("+ \tCalculation component manager initialized successfully");
         LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/mathematical-expression.git");
         LOGGER.info("+--------------------------------------------------------------------------------------------------+");
@@ -47,7 +48,7 @@ public final class CalculationManagement {
      * @return 计算组件对象
      */
     public static Calculation getCalculationByName(String CalculationName) {
-        LOGGER.info("Get the [" + CalculationName + "] component from the manager");
+        LOGGER.info(ConstantRegion.LOG_INFO_GET_COMPONENT + CalculationName);
         return STRING_CALCULATION_HASH_MAP.get(CalculationName);
     }
 
@@ -71,7 +72,7 @@ public final class CalculationManagement {
             LOGGER.warn("An error occurred while registering the component, because the [" + calculationName + "] component has already been registered");
             return false;
         } else {
-            LOGGER.info("A computing component is registered " + calculationName);
+            LOGGER.info(ConstantRegion.LOG_INFO_REGISTER_COMPONENT + calculationName);
             STRING_CALCULATION_HASH_MAP.put(calculationName, calculation);
             return true;
         }
@@ -99,7 +100,7 @@ public final class CalculationManagement {
             LOGGER.warn("An error occurred when registering a function named [" + name + "], because the function name conflicts");
             return false;
         } else {
-            LOGGER.info("A function named [" + name + "] is registered in the manager");
+            LOGGER.info(ConstantRegion.LOG_INFO_register_FUNCTION + name);
             STRING_FUNCTION_HASH_MAP.put(name, function);
             return true;
         }
@@ -127,6 +128,7 @@ public final class CalculationManagement {
             throw new ExtractException("您想要提取的函数似乎没有被注册到管理者中，请您先使用“register”进行函数的注册！\nIt seems that the function you want to extract has not been registered with the manager. Please use \"register\" to register the function first!\nERROR FUNCTION => " + FunctionName);
         } else {
             try {
+                LOGGER.info(ConstantRegion.LOG_INFO_GET_FUNCTION + FunctionName);
                 return (functionType) function;
             } catch (ClassCastException c) {
                 throw new ExtractException("您要提取的函数被找到了，但是它不适用您指定的类型，请在泛型中对该函数的类型进行调整。\nThe function you want to extract has been found, but it does not apply to the type you specified. Please adjust the type of the function in the generic type.\nERROR FUNCTION => " + function.getName());
@@ -147,7 +149,7 @@ public final class CalculationManagement {
      * Whether the logout is successful. If false is returned, the function to logout does not exist
      */
     public static boolean unregisterF(String FunctionName) {
-        LOGGER.info("Prepare the logoff of a function. Function name:" + FunctionName);
+        LOGGER.info(ConstantRegion.LOG_INFO_UNREGISTER_FUNCTION + FunctionName);
         return STRING_FUNCTION_HASH_MAP.remove(FunctionName) != null;
     }
 
@@ -163,7 +165,7 @@ public final class CalculationManagement {
      * Returns true if the logout is successful
      */
     public static boolean unregister(String CalculationName) {
-        LOGGER.info("Log off the [" + CalculationName + "] component from the manager");
+        LOGGER.info(ConstantRegion.LOG_INFO_UNREGISTER_COMPONENT + CalculationName);
         return STRING_CALCULATION_HASH_MAP.remove(CalculationName) != null;
     }
 

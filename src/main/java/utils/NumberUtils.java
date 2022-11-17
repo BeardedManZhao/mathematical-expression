@@ -1,26 +1,9 @@
 package utils;
 
+import core.manager.ConstantRegion;
 import exceptional.AbnormalOperation;
 
-import java.util.HashMap;
-
 public final class NumberUtils {
-
-    public static final short ADDITION = 0;
-    public static final short SUBTRACTION = 1;
-    public static final short MULTIPLICATION = 2;
-    public static final short DIVISION = 3;
-    public static final short REMAINDER = 4;
-    public static final short ERROR = -1;
-    public static final HashMap<Character, Short> OPERATOR_SET = new HashMap<>(10);
-
-    static {
-        OPERATOR_SET.put('+', ADDITION);
-        OPERATOR_SET.put('-', SUBTRACTION);
-        OPERATOR_SET.put('*', MULTIPLICATION);
-        OPERATOR_SET.put('/', DIVISION);
-        OPERATOR_SET.put('%', REMAINDER);
-    }
 
     /**
      * 将一个数值的十倍计算出来
@@ -65,17 +48,17 @@ public final class NumberUtils {
      * @param bn              运算数值2
      * @return 运算结果
      */
-    public static double calculation(int CalculationType, double an, double bn) {
+    public static double calculation(char CalculationType, double an, double bn) {
         switch (CalculationType) {
-            case ADDITION:
+            case ConstantRegion.PLUS_SIGN:
                 return an + bn;
-            case SUBTRACTION:
+            case ConstantRegion.MINUS_SIGN:
                 return an - bn;
-            case MULTIPLICATION:
+            case ConstantRegion.MULTIPLICATION_SIGN:
                 return an * bn;
-            case DIVISION:
+            case ConstantRegion.DIVISION_SIGN:
                 return an / bn;
-            case REMAINDER:
+            case ConstantRegion.REMAINDER_SIGN:
                 return an % bn;
             default:
                 throw new AbnormalOperation("操作数计算异常，您的计算模式不存在，错误的计算模式 = [" + CalculationType + "]\n" +
@@ -90,8 +73,9 @@ public final class NumberUtils {
      * @param s2 操作符2
      * @return s1 是否小于 s2
      */
-    public static boolean PriorityComparison(short s1, short s2) {
-        return (s1 == 0 || s1 == 1) && (s2 == 2 || s2 == 3 || s2 == 4);
+    public static boolean PriorityComparison(char s1, char s2) {
+        return (s1 == ConstantRegion.PLUS_SIGN || s1 == ConstantRegion.MINUS_SIGN) &&
+                (s2 == ConstantRegion.MULTIPLICATION_SIGN || s2 == ConstantRegion.DIVISION_SIGN);
     }
 
     /**
@@ -106,19 +90,19 @@ public final class NumberUtils {
      */
     public static boolean ComparisonOperation(String ComparisonOperator, double left, double right) {
         switch (ComparisonOperator) {
-            case "<":
+            case ConstantRegion.LESS_THAN_SIGN:
                 return left < right;
-            case ">":
+            case ConstantRegion.GREATER_THAN_SIGN:
                 return left > right;
-            case "<=":
+            case ConstantRegion.LESS_THAN_OR_EQUAL_TO_SIGN:
                 return left <= right;
-            case ">=":
+            case ConstantRegion.GREATER_THAN_OR_EQUAL_TO_SIGN:
                 return left >= right;
-            case "=":
-            case "==":
+            case ConstantRegion.EQUAL_SIGN1:
+            case ConstantRegion.EQUAL_SIGN2:
                 return left == right;
-            case "!=":
-            case "<>":
+            case ConstantRegion.NOT_EQUAL_SIGN1:
+            case ConstantRegion.NOT_EQUAL_SIGN2:
                 return left != right;
             default:
                 throw new AbnormalOperation("无法进行比较运算，因为有错误的运算符。\n" +

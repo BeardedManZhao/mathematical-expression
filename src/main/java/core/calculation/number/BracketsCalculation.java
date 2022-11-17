@@ -1,6 +1,7 @@
 package core.calculation.number;
 
 import exceptional.AbnormalOperation;
+import utils.NumberUtils;
 import utils.StrUtils;
 
 /**
@@ -25,29 +26,6 @@ public abstract class BracketsCalculation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-//        final StringBuilder stringBuilder = new StringBuilder();
-//        int endBCount = 0;
-//        for (String s1 : string.replaceAll("\\s+", "").split("[()]+")) {
-//            if (s1.matches("\\d+[+\\-*/]\\d+")) {
-//                stringBuilder.append("(").append(s1).append(")");
-//            } else if (s1.matches("[+\\-*/]\\d+[+\\-*/]\\d+")) {
-//                stringBuilder.append(s1.charAt(0)).append("(").append(s1.substring(1)).append(")");
-//            } else if (s1.matches("\\d+[+\\-*/]\\d+[+\\-*/]")) {
-//                int ctf = s1.length() - 1;
-//                stringBuilder.append("(").append(s1, 0, ctf).append(")").append(s1.charAt(ctf));
-//            } else if (s1.matches("\\d+[+\\-*/]")) {
-//                stringBuilder.append("(").append(s1);
-//                ++endBCount;
-//            } else if (s1.matches("[+\\-*/]\\d+")) {
-//                stringBuilder.append(s1).append(")");
-//            } else {
-//                stringBuilder.append(s1);
-//            }
-//        }
-//        for (int i = 0; i < endBCount; i++) {
-//            stringBuilder.append(")");
-//        }
-//        return stringBuilder.toString();
         return string.replaceAll("\\s+", "");
     }
 
@@ -58,38 +36,24 @@ public abstract class BracketsCalculation extends NumberCalculation {
      * @return 计算结果数值
      */
     public double calculation2(String BinaryFormula) {
-        int CalculationType = -1; // 0=加 1=减 2=乘 3=除
-        int Operatorposition = -1;
-        char[] chars = BinaryFormula.toCharArray();
-        // 判断计算模式 同时获取操作符索引
-        for (int i = 0; i < chars.length; i++) {
-            // 迭代每一个字符，直到遇到操作符
-            switch (chars[i]) {
-                case '+':
-                    CalculationType = 0;
-                    Operatorposition = i;
-                    break;
-                case '-':
-                    CalculationType = 1;
-                    Operatorposition = i;
-                    break;
-                case '*':
-                    CalculationType = 2;
-                    Operatorposition = i;
-                    break;
-                case '/':
-                    CalculationType = 3;
-                    Operatorposition = i;
-                    break;
+        final StringBuilder a = new StringBuilder();
+        final StringBuilder b = new StringBuilder();
+        boolean isOk = false;
+        char Operator = 0;
+        for (char c : BinaryFormula.toCharArray()) {
+            if (!isOk) {
+                if (StrUtils.IsAnOperator(c)) {
+                    Operator = c;
+                    isOk = true;
+                } else {
+                    b.append(c);
+                }
+            } else {
+                a.append(c);
             }
         }
-        // 判断是否有获取到操作符
-        if (CalculationType > -1) {
-            // 获取到操作符号就直接将a与b先提取出来
-            String a = BinaryFormula.substring(0, Operatorposition);
-            String b = BinaryFormula.substring(Operatorposition + 1, chars.length);
-            // 返回计算结果
-            return StrUtils.calculation(a, b, CalculationType);
+        if (Operator != 0) {
+            return NumberUtils.calculation(Operator, StrUtils.stringToDouble(a.toString()), StrUtils.stringToDouble(b.toString()));
         } else {
             throw new AbnormalOperation("您的公式格式错误，未解析成功，请您检查您的格式哦！\n" +
                     "The format of your formula is wrong, and it was not parsed successfully. Please check your format!\n" +

@@ -3,6 +3,7 @@ package core.calculation.number;
 import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
+import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import exceptional.WrongFormat;
 import utils.StrUtils;
@@ -91,14 +92,14 @@ public class CumulativeCalculation extends BracketsCalculation2 {
         // 获取公式位
         final String format = split[2];
         // 开始构造累加公式
-        final StringBuilder stringBuilder = new StringBuilder((int) Math.sqrt(format.length() * Math.abs(end - start)));
+        final StringBuilder stringBuilder = new StringBuilder((int) (format.length() * Math.abs(end - start)) + 1);
         for (double v = start; v <= end; v += equalDifference) {
             // 将指定位置的累加符号，变更为当前数值
             stringBuilder
-                    .append('(')
+                    .append(ConstantRegion.LEFT_BRACKET)
                     .append(format.replaceAll(f, String.valueOf(v)))
-                    .append(')')
-                    .append('+');
+                    .append(ConstantRegion.RIGHT_BRACKET)
+                    .append(ConstantRegion.PLUS_SIGN);
         }
         return super.formatStr(stringBuilder.toString());
     }

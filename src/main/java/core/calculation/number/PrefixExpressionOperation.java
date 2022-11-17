@@ -3,6 +3,7 @@ package core.calculation.number;
 import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
+import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import exceptional.WrongFormat;
 import utils.NumberUtils;
@@ -58,7 +59,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public void check(String string) throws WrongFormat {
-        if (string.matches(".*[()].*")) {
+        if (string.matches(ConstantRegion.REGULAR_CONTAINS_BRACKET)) {
             throw new WrongFormat("本组件只能解析不包含括号的表达式！！！\nThis component can only parse expressions without parentheses!!!\nWrong format => " + string);
         }
         super.check(string);
@@ -72,7 +73,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll(" +", "") + "+0";
+        return string.replaceAll(" +", "") + ConstantRegion.PLUS_SIGN + '0';
     }
 
     /**
@@ -92,63 +93,60 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        String newFormula;
+        final char[] newFormula;
         if (formatRequired) {
-            newFormula = formatStr(Formula);
+            newFormula = formatStr(Formula).toCharArray();
         } else {
-            newFormula = Formula.replaceAll(" +", "");
+            newFormula = Formula.replaceAll(" +", "").toCharArray();
         }
         // 创建操作符栈
         final Stack<Double> doubleStack = new Stack<>();
         // 创建操作数栈
-        final Stack<Short> shortStack = new Stack<>();
+        final Stack<Character> characterStack = new Stack<>();
         // 开始格式化，将符号与操作数进行分类
-        StringBuilder stringBuilder = new StringBuilder();
-        for (char c : newFormula.toCharArray()) {
-            if (c == '+' || c == '-' || c == '*' || c == '/' || c == '%') {
+        final StringBuilder stringBuilder = new StringBuilder(newFormula.length);
+        for (char c : newFormula) {
+            if (StrUtils.IsAnOperator(c)) {
                 // 如果是操作符，就先将上一个数值计算出来
                 double number = StrUtils.stringToDouble(stringBuilder.toString());
-                short i = StrUtils.OperatorConversion(c);
-                if (shortStack.isEmpty()) {
+                if (characterStack.isEmpty()) {
                     // 如果栈为空 直接将运算符添加到栈顶
-                    shortStack.push(i);
+                    characterStack.push(c);
                     // 将数值添加到数值栈顶
                     doubleStack.push(number);
                 } else {
                     // 如果不为空就检查栈顶的与当前运算符的优先级
-                    if (!NumberUtils.PriorityComparison(shortStack.peek(), i)) {
+                    if (!NumberUtils.PriorityComparison(characterStack.peek(), c)) {
                         // 如果上一个优先级较大 就将上一个操作符取出
-                        short top = shortStack.pop();
+                        char top = characterStack.pop();
                         // 将上一个优先级高的值 与当下优先级较低的值进行运算，然后将当下的新数值和当下的操作符推到栈顶
                         doubleStack.push(NumberUtils.calculation(top, doubleStack.pop(), number));
-                        shortStack.push(i);
+                        characterStack.push(c);
                     } else {
                         // 反之就将当前运算符提供到栈顶
-                        shortStack.push(i);
+                        characterStack.push(c);
                         doubleStack.push(number);
                     }
                 }
                 // 清理所有的字符缓冲
                 stringBuilder.delete(0, stringBuilder.length());
-            } else if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c == '.') {
+            } else if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c == ConstantRegion.DECIMAL_POINT) {
                 // 如果是数值的某一位，就将数值存储到变量中
                 stringBuilder.append(c);
             }
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
         double res = doubleStack.get(0);
-        short back;
-        int size = doubleStack.size();
+        char back;
+        final int size = doubleStack.size();
         Double[] temps = new Double[size - 1];
         // 开始计算
-        int sizeD2 = size << 1;
+        final int sizeD2 = size << 1;
         for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
             // 更新操作符
-            back = shortStack.get(offset);
-            // 获取操作数
-            double aDouble1 = doubleStack.get(i);
-            // 计算结果
-            res = NumberUtils.calculation(back, res, aDouble1);
+            back = characterStack.get(offset);
+            // 获取操作数并计算结果
+            res = NumberUtils.calculation(back, res, doubleStack.get(i));
             temps[offset] = res;
         }
         // 返回结果

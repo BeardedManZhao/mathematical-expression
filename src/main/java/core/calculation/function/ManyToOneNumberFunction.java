@@ -1,5 +1,6 @@
 package core.calculation.function;
 
+import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 
 /**
@@ -14,7 +15,7 @@ public abstract class ManyToOneNumberFunction implements Function {
     protected final String Name;
 
     protected ManyToOneNumberFunction(String name) {
-        if (name.matches("[a-zA-Z]+")) {
+        if (name.matches(ConstantRegion.REGULAR_PURE_LETTER)) {
             Name = name;
         } else {
             throw new ExtractException("您的函数名称中只能包含字母，同时函数名称的长度不能为0，请您更改函数名称\nYour function name can only contain letters, and the length of the function name cannot be 0. Please change the function name\n" +

@@ -4,6 +4,7 @@ import core.calculation.Calculation;
 import core.calculation.number.BracketsCalculation2;
 import core.container.CalculationBooleanResults;
 import core.manager.CalculationManagement;
+import core.manager.ConstantRegion;
 import exceptional.WrongFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,14 +63,14 @@ public abstract class BooleanCalculation implements Calculation {
     @Override
     public void check(String string) throws WrongFormat {
         // 先按照表达式的比较运算符进行一个切分
-        String[] split = string.split("<=|>=|!=|<>|==|[<=>]");
+        String[] split = string.split(ConstantRegion.REGULAR_COMPARISON_OPERATOR);
         // 判断是否属于布尔表达式，使用切分之后是否有两个表达式判断
         if (split.length == 2) {
             // 检查表达式两边是否符合条件
             String left = split[0];
             String right = split[1];
-            if (!"null".equals(left)) BRACKETS_CALCULATION_2.check(left);
-            if (!"null".equals(right)) BRACKETS_CALCULATION_2.check(right);
+            if (!ConstantRegion.STRING_NULL.equals(left)) BRACKETS_CALCULATION_2.check(left);
+            if (!ConstantRegion.STRING_NULL.equals(right)) BRACKETS_CALCULATION_2.check(right);
         } else {
             // 如果比较运算符两边的表达式不是2个，说明不是一个布尔表达式
             throw new WrongFormat("发生了错误，您的布尔表达式中，存在着数量不正确的比较运算符\n" +
