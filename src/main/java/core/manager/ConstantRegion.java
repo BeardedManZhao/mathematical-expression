@@ -14,6 +14,7 @@ public final class ConstantRegion {
     public final static char RIGHT_BRACKET = ')';
     public final static char DECIMAL_POINT = '.';
     public final static char EMPTY = ' ';
+    public final static String NO_CHAR = "";
     public final static byte BA_ASCII = 0b1000001;
     public final static byte BZ_ASCII = 0b1011010;
     public final static byte SA_ASCII = 0b1100001;

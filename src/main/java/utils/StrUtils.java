@@ -49,8 +49,8 @@ public final class StrUtils {
         int floatRes = 0;
         int intRes = 0;
         boolean isInt = true;
-        for (char c : s.trim().toCharArray()) {
-            if (c != '.' && c != ' ') {
+        for (char c : s.toCharArray()) {
+            if (c != ConstantRegion.DECIMAL_POINT && c != ConstantRegion.EMPTY) {
                 // 如果当前不是小数点符号 就直接对数值进行位分配
                 if (isInt) {
                     // 如果当前不是小数点符号 就直接将数值归为整数
@@ -59,7 +59,7 @@ public final class StrUtils {
                     // 如果是小数点 就直接将数值归为小数
                     floatRes = NumberUtils.tenfold(floatRes) + charToInteger(c);
                 }
-            } else if (c == '.') {
+            } else if (c == ConstantRegion.DECIMAL_POINT) {
                 // 如果是小数点 就切换添加状态
                 isInt = false;
             }
@@ -69,7 +69,7 @@ public final class StrUtils {
         // 计算出来数值本身
         double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, count - 1);
         // 判断是否为负数，如果不是负数直接返回值
-        return (intRes == 0 && floatRes == 0) ? 0 : s.charAt(0) == '-' ? -res : res;
+        return (intRes == 0 && floatRes == 0) ? 0 : s.charAt(0) == ConstantRegion.MINUS_SIGN ? -res : res;
     }
 
     /**

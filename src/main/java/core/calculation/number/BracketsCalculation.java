@@ -1,5 +1,6 @@
 package core.calculation.number;
 
+import core.manager.ConstantRegion;
 import exceptional.AbnormalOperation;
 import utils.NumberUtils;
 import utils.StrUtils;
@@ -26,7 +27,7 @@ public abstract class BracketsCalculation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll("\\s+", "");
+        return string.replaceAll("\\s+", ConstantRegion.NO_CHAR);
     }
 
     /**

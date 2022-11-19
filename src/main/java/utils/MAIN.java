@@ -9,7 +9,7 @@ public class MAIN {
         // Get a calculation component that evaluates nested parenthesis expressions
         BracketsCalculation2 bracketsCalculation = BracketsCalculation2.getInstance("BracketsCalculation");
         // Create an expression
-        String s = "1 + 2 + 4 * [10 - 3)";
+        String s = "1 + 2 + 4 * (10 - 3)";
         // Check the expression for errors
         bracketsCalculation.check(s);
         // Start calculating results

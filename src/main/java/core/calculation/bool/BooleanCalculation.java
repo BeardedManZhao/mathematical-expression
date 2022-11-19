@@ -40,7 +40,7 @@ public abstract class BooleanCalculation implements Calculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll("\\s+", "");
+        return string.replaceAll("\\s+", ConstantRegion.NO_CHAR);
     }
 
     /**

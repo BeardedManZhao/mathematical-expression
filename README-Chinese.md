@@ -11,13 +11,14 @@
   您可以直接使用maven将本框架导入到项目中使用，能够高效的使用该功能
 
 ```xml
-    <dependencies>
-        <dependency>
-            <groupId>io.github.BeardedManZhao</groupId>
-            <artifactId>mathematical-expression</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
+
+<dependencies>
+    <dependency>
+        <groupId>io.github.BeardedManZhao</groupId>
+        <artifactId>mathematical-expression</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
 ```
 
 ## 框架架构
@@ -39,7 +40,7 @@ import core.manager.CalculationManagement;
 import exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
+    public static void main(String[] args) {
         // 实例化三个计算组件
         // TODO getInstance会自动从管理者中获取，如果没有获取到，就会创建并注册然后再返回数据 这个方法即可以创建也可以访问管理者
         PrefixExpressionOperation a = PrefixExpressionOperation.getInstance("a");
@@ -348,5 +349,8 @@ public class MAIN {
 
 <hr>
 
+更多信息
+
 - date: 2022-11-14
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
+- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-Python)

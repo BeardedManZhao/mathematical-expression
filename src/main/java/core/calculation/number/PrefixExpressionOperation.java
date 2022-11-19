@@ -97,7 +97,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
         if (formatRequired) {
             newFormula = formatStr(Formula).toCharArray();
         } else {
-            newFormula = Formula.replaceAll(" +", "").toCharArray();
+            newFormula = Formula.replaceAll(" +", ConstantRegion.NO_CHAR).toCharArray();
         }
         // 创建操作符栈
         final Stack<Double> doubleStack = new Stack<>();
