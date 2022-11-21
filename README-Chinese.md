@@ -11,7 +11,6 @@
   您可以直接使用maven将本框架导入到项目中使用，能够高效的使用该功能
 
 ```xml
-
 <dependencies>
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
@@ -345,6 +344,70 @@ public class MAIN {
 ```
 [INFO][zhao][22-11-14:11]] : Find and prepare the startup function: DoubleValue
 计算层数：1	计算结果：21.0	计算来源：BracketsCalculation2
+```
+
+### 多参函数运算表达式
+
+- 类组件：core.calculation.number.FunctionFormulaCalculation2
+- 介绍
+
+  针对一些在表达式中使用了函数的表达式计算，可以使用上面的类进行操作，它是“core.calculation.number.FunctionFormulaCalculation”类的升级版，从1.1版本开始出现，同时也是它的一个子类拓展实现。
+
+  相较于父类，本组件弥补了父类只能解析带有一个参数函数表达式的不足，在该组件中，可以使用很多的实参进行函数的运算，例如sum(1,2,3)
+  这类函数，就是一个多参函数，接下来请看API的使用示例，在此示例中，展示了多惨函数表达式的计算与结果。
+
+```java
+package utils;
+
+import core.calculation.function.ManyToOneNumberFunction;
+import core.calculation.number.FunctionFormulaCalculation2;
+import core.container.CalculationNumberResults;
+import core.manager.CalculationManagement;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 实现一个sum函数
+        ManyToOneNumberFunction manyToOneNumberFunction = new ManyToOneNumberFunction("sum") {
+            /**
+             * 函数的运行逻辑实现
+             *
+             * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
+             * @return 这里是数据经过函数转换之后的数据
+             */
+            @Override
+            public double run(double... numbers) {
+                double res = 0;
+                for (double number : numbers) {
+                    res += number;
+                }
+                return res;
+            }
+        };
+        // 将该函数注册到管理者
+        CalculationManagement.register(manyToOneNumberFunction);
+        // 获取到新版本的函数计算组件
+        FunctionFormulaCalculation2 functionFormulaCalculation2 = FunctionFormulaCalculation2.getInstance("zhao");
+        // 构建我们需要计算的公式 TODO 在这个表达式中的函数sum形参，不只有1个，是多参的函数
+        String s = "2 * (200 - sum(1 + 10.1, 2, 3)) + sum(10, 20)";
+        // 启用共享池，能够加快计算的速度，计算的公式越复杂，该共享池的效果越显著
+        functionFormulaCalculation2.setStartSharedPool(true);
+        // 开始检查公式是否有错误
+        functionFormulaCalculation2.check(s);
+        // 获取到计算结果
+        CalculationNumberResults calculation = functionFormulaCalculation2.calculation(s);
+        System.out.println(
+                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                        "\t计算来源：" + calculation.getCalculationSourceName()
+        );
+    }
+}
+```
+
+- 运行结果
+
+```
+计算层数：2	计算结果：397.8	计算来源：BracketsCalculation2
 ```
 
 <hr>

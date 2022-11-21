@@ -2,6 +2,8 @@ package utils;
 
 import core.manager.ConstantRegion;
 
+import java.util.ArrayList;
+
 public final class StrUtils {
     /**
      * 将一个字符串的子字符串提取出来
@@ -64,12 +66,20 @@ public final class StrUtils {
                 isInt = false;
             }
         }
-        // 计算出来小数点的位数
-        int count = floatRes == 0 ? 0 : floatRes - NumberUtils.tenfold(NumberUtils.divideByTen(floatRes));
+        int count;
+        if (floatRes == 0) {
+            if (intRes == 0) {
+                return 0;
+            }
+            count = 0;
+        } else {
+            // 计算出来小数点的位数
+            count = floatRes > 9 ? floatRes - NumberUtils.tenfold(NumberUtils.divideByTen(floatRes)) : 1;
+        }
         // 计算出来数值本身
         double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, count - 1);
         // 判断是否为负数，如果不是负数直接返回值
-        return (intRes == 0 && floatRes == 0) ? 0 : s.charAt(0) == ConstantRegion.MINUS_SIGN ? -res : res;
+        return s.charAt(0) == ConstantRegion.MINUS_SIGN ? -res : res;
     }
 
     /**
@@ -156,6 +166,28 @@ public final class StrUtils {
         return c == ConstantRegion.PLUS_SIGN || c == ConstantRegion.MINUS_SIGN ||
                 c == ConstantRegion.MULTIPLICATION_SIGN || c == ConstantRegion.DIVISION_SIGN ||
                 c == ConstantRegion.REMAINDER_SIGN;
+    }
+
+    /**
+     * 将一个字符串按照某个字符进行拆分
+     *
+     * @param s 需要被拆分的字符串
+     * @param c 需要被作为分割符的字符
+     * @return 字符串被拆分之后的列表
+     */
+    public static ArrayList<String> splitByChar(String s, char c) {
+        final ArrayList<String> arrayList = new ArrayList<>();
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (char c1 : s.toCharArray()) {
+            if (c1 == c) {
+                arrayList.add(stringBuilder.toString().trim());
+                stringBuilder.delete(0, stringBuilder.length());
+            } else {
+                stringBuilder.append(c1);
+            }
+        }
+        arrayList.add(stringBuilder.toString().trim());
+        return arrayList;
     }
 }
 

@@ -73,7 +73,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll(" +", "") + ConstantRegion.PLUS_SIGN + '0';
+        return string.replaceAll(" +", ConstantRegion.NO_CHAR) + ConstantRegion.PLUS_SIGN + '0';
     }
 
     /**

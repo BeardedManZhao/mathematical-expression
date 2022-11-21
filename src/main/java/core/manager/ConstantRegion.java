@@ -8,7 +8,7 @@ package core.manager;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.0F;
+    public final static float VERSION = 1.15F;
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -24,6 +24,7 @@ public final class ConstantRegion {
     public final static char MULTIPLICATION_SIGN = '*';
     public final static char DIVISION_SIGN = '/';
     public final static char REMAINDER_SIGN = '%';
+    public final static char COMMA = ',';
     public final static String GREATER_THAN_SIGN = ">";
     public final static String LESS_THAN_SIGN = "<";
     public final static String EQUAL_SIGN1 = "=";
@@ -45,4 +46,5 @@ public final class ConstantRegion {
     public final static String LOG_INFO_register_FUNCTION = "A function is registered ";
     public final static String LOG_INFO_UNREGISTER_COMPONENT = "Preparing to unregister the compute component. Component name:";
     public final static String LOG_INFO_UNREGISTER_FUNCTION = "Prepare the logoff of a function. Function name:";
+    public final static String LOG_INFO_SHARED_POOL = "Use shared pool data. The identity of the data is: ";
 }

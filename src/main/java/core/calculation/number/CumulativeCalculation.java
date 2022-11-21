@@ -8,6 +8,8 @@ import exceptional.ExtractException;
 import exceptional.WrongFormat;
 import utils.StrUtils;
 
+import java.util.ArrayList;
+
 /**
  * 累加计算公式解析组件，支持使用未知形参，以及其区间作为公式进行累加加过的计算，例如传入公式 “n [0, 10, 2] (1 + n * n)” 就是 (1 + 0 * 0) + (1 + 2 * 2) + ... + (1 + 10 * 10)
  * <p>
@@ -60,7 +62,7 @@ public class CumulativeCalculation extends BracketsCalculation2 {
         final String[] split = string.trim().split("[\\[\\]]");
         if (split.length == 3) {
             // 如果满足上述条件代表有累加符号 有区间 有公式 所以现在判断区间内是否缺少东西
-            if (split[1].split(",").length == 3) {
+            if (StrUtils.splitByChar(split[1], ConstantRegion.COMMA).size() == 3) {
                 // 满足上述条件代表区间也没有问题，下面就是将需要计算的公式交给父类去检查
                 super.check(split[2].replaceAll(split[0], "0"));
             } else {
@@ -85,10 +87,10 @@ public class CumulativeCalculation extends BracketsCalculation2 {
         // 获取到累加所属符号
         final String f = split[0];
         // 获取到区间的起始，终止，等差值
-        final String[] s = split[1].split(",");
-        final double start = StrUtils.stringToDouble(s[0]);
-        final double end = StrUtils.stringToDouble(s[1]);
-        final double equalDifference = StrUtils.stringToDouble(s[2]);
+        final ArrayList<String> arrayList = StrUtils.splitByChar(split[1], ConstantRegion.COMMA);
+        final double start = StrUtils.stringToDouble(arrayList.get(0));
+        final double end = StrUtils.stringToDouble(arrayList.get(1));
+        final double equalDifference = StrUtils.stringToDouble(arrayList.get(2));
         // 获取公式位
         final String format = split[2];
         // 开始构造累加公式
