@@ -416,4 +416,4 @@ public class MAIN {
 
 - date: 2022-11-14
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
-- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-Python)
+- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-Py)
