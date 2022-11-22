@@ -15,9 +15,17 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.0</version>
+        <version>1.1.5</version>
     </dependency>
 </dependencies>
+```
+
+您也可以直接通过gradle将“mathematical-expression”载入到您的框架中，使用下面的依赖即可。
+
+```
+dependencies {
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.1.5'
+}
 ```
 
 ## 框架架构

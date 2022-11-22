@@ -127,10 +127,11 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
     /**
      * 提取出来一个公式中所有函数的名称，以及其函数形参的起始与终止索引值
      *
-     * @param string 需要被解析的数学运算公式
-     * @param start  公式中所有包含函数实参公式的起始索引值
-     * @param end    公式中所有包含函数实参公式的的终止索引值
-     * @param names  公式中所有包含函数的名字
+     * @param string         需要被解析的数学运算公式
+     * @param start          公式中所有包含函数实参公式的起始索引值
+     * @param end            公式中所有包含函数实参公式的的终止索引值
+     * @param names          公式中所有包含函数的名字
+     * @param formulaBuilder 公式缓冲区，这个用于存储转换之后的公式，当需要进行公式检查的时候才会使用到该参数
      */
     public void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names, StringBuilder formulaBuilder) {
         // 创建一个标记，标记是否进入函数

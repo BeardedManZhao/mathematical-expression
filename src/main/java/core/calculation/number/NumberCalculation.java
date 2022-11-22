@@ -86,6 +86,8 @@ public abstract class NumberCalculation implements Calculation {
         int LeftCount = 0;
         // 右括号出现数量
         int RightCount = 0;
+        // 数值缓冲区
+        StringBuilder numberBuffer = new StringBuilder();
         for (char c : string.toCharArray()) {
             if (c == ConstantRegion.LEFT_BRACKET) {
                 ++LeftCount;

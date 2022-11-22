@@ -1,6 +1,7 @@
 package utils;
 
 import core.manager.ConstantRegion;
+import exceptional.AbnormalOperation;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,8 @@ public final class StrUtils {
     public static double stringToDouble(String s) {
         int floatRes = 0;
         int intRes = 0;
+        int intSize = 0;
+        int floatSize = 0;
         boolean isInt = true;
         for (char c : s.toCharArray()) {
             if (c != ConstantRegion.DECIMAL_POINT && c != ConstantRegion.EMPTY) {
@@ -57,27 +60,27 @@ public final class StrUtils {
                 if (isInt) {
                     // 如果当前不是小数点符号 就直接将数值归为整数
                     intRes = NumberUtils.tenfold(intRes) + charToInteger(c);
+                    intSize += 1;
                 } else {
                     // 如果是小数点 就直接将数值归为小数
                     floatRes = NumberUtils.tenfold(floatRes) + charToInteger(c);
+                    floatSize += 1;
                 }
             } else if (c == ConstantRegion.DECIMAL_POINT) {
-                // 如果是小数点 就切换添加状态
+                // 如果是小数点 就判断是否发生精度问题，如果没有发生就切换添加状态
+                if (!isInt) {
+                    throw new AbnormalOperation("数值的浮点符号出现次数过多，无法计算" + s);
+                } else if (intSize > 9) {
+                    throw new AbnormalOperation("数值的整数部分数值位数过长，无法计算" + s);
+                }
                 isInt = false;
             }
         }
-        int count;
-        if (floatRes == 0) {
-            if (intRes == 0) {
-                return 0;
-            }
-            count = 0;
-        } else {
-            // 计算出来小数点的位数
-            count = floatRes > 9 ? floatRes - NumberUtils.tenfold(NumberUtils.divideByTen(floatRes)) : 1;
+        if (floatSize > 9) {
+            throw new AbnormalOperation("数值的小数部分数值位数过长，无法计算" + s);
         }
         // 计算出来数值本身
-        double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, count - 1);
+        double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, floatSize);
         // 判断是否为负数，如果不是负数直接返回值
         return s.charAt(0) == ConstantRegion.MINUS_SIGN ? -res : res;
     }

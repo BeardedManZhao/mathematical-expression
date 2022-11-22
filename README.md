@@ -18,9 +18,18 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.0</version>
+        <version>1.1.5</version>
     </dependency>
 </dependencies>
+```
+
+You can also directly load "mathematical expression" into your framework through gradle, and use the following
+dependencies.
+
+```
+dependencies {
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.1.5'
+}
 ```
 
 ## Framework

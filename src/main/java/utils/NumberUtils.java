@@ -12,7 +12,7 @@ public final class NumberUtils {
      * @return 数值的十倍数值
      */
     public static int tenfold(int number) {
-        return ((number << 2) << 1) + (number << 1);
+        return (number << 3) + (number << 1);
     }
 
     /**
@@ -22,7 +22,7 @@ public final class NumberUtils {
      * @return 数值的 1/10倍
      */
     public static int divideByTen(int number) {
-        return (number >> 1) / 5;
+        return (number >> 2) / 2;
     }
 
     /**
