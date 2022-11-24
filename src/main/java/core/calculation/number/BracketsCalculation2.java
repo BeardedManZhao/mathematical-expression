@@ -71,17 +71,17 @@ public class BracketsCalculation2 extends BracketsCalculation {
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        // 公式存储区
-        final StringBuilder stringBuilder = new StringBuilder();
         // 迭代每一个字符
         final char[] chars = Formula.toCharArray();
+        // 公式存储区
+        final StringBuilder stringBuilder = new StringBuilder(chars.length);
         // 括号内数据的起始索引
         int start = 0;
         boolean setok = false;
         // 括号内的括号均衡数量，为了确定是一对括号
         int count = 0;
         // 计算结果临时存储
-        ArrayList<Double> arrayList = new ArrayList<>();
+        final ArrayList<Double> arrayList = new ArrayList<>(chars.length);
         for (int i = 0; i < chars.length; i++) {
             char aChar = chars[i];
             if (aChar == ConstantRegion.LEFT_BRACKET) {

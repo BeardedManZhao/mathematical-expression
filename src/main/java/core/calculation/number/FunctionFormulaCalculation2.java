@@ -56,6 +56,9 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
         }
     }
 
+    /**
+     * @return 该组件是否有启动共享池，一个布尔值，如果返回true代表共享池已经启动
+     */
     public boolean isStartSharedPool() {
         return StartSharedPool;
     }
@@ -141,7 +144,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
         // 创建函数名称缓冲区
         final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < chars.length; i++) {
-            char aChar = chars[i];
+            final char aChar = chars[i];
             if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
                 if (!b) {
                     // 如果是刚刚进入函数，就将当前索引添加到栈

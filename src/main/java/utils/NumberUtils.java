@@ -75,7 +75,7 @@ public final class NumberUtils {
      */
     public static boolean PriorityComparison(char s1, char s2) {
         return (s1 == ConstantRegion.PLUS_SIGN || s1 == ConstantRegion.MINUS_SIGN) &&
-                (s2 == ConstantRegion.MULTIPLICATION_SIGN || s2 == ConstantRegion.DIVISION_SIGN);
+                (s2 == ConstantRegion.MULTIPLICATION_SIGN || s2 == ConstantRegion.DIVISION_SIGN || s2 == ConstantRegion.REMAINDER_SIGN);
     }
 
     /**

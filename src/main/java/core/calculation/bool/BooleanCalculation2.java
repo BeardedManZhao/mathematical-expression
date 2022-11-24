@@ -63,43 +63,45 @@ public class BooleanCalculation2 extends BooleanCalculation {
      */
     @Override
     public CalculationBooleanResults calculation(String Formula, boolean formatRequired) {
-        String NewFormula;
+        final String NewFormula;
         if (formatRequired) {
             NewFormula = super.formatStr(Formula);
         } else {
             NewFormula = Formula;
         }
         // 先按照表达式的比较运算符进行一个切分
-        String[] split = NewFormula.split(ConstantRegion.REGULAR_COMPARISON_OPERATOR);
-        String s1 = split[0];
-        String s2 = split[1];
+        final String[] split = NewFormula.split(ConstantRegion.REGULAR_COMPARISON_OPERATOR);
+        final String s1 = split[0];
+        final String s2 = split[1];
         // 进行比较运算符的提取
-        int start = s1.length();
+        final int start = s1.length();
         int end = start + 1;
         while (!NewFormula.substring(end).equals(s2)) {
             ++end;
         }
         String s = NewFormula.substring(start, end);
-        String Null = ConstantRegion.STRING_NULL;
-        // 判断左右是否有一个为null
-        if (s1.equalsIgnoreCase(Null)) {
-            // 如果左边为null ，同时右边为null就代表两个值相同，在这里直接将两个值赋值0
-            int aNull = s2.equalsIgnoreCase(Null) ? 0 : 1;
-            return new CalculationBooleanResults(
-                    NumberUtils.ComparisonOperation(s, 0, aNull),
-                    this.Name, 1, 0, aNull
-            );
-        } else if (s2.equalsIgnoreCase(Null)) {
-            // 如果左边不是null 但是 右边为null，就直接将 1 比较 0 的值算出来
-            return new CalculationBooleanResults(
-                    NumberUtils.ComparisonOperation(s, 1, 0),
-                    this.Name, 1, 1, 0
-            );
+        {
+            final String Null = ConstantRegion.STRING_NULL;
+            // 判断左右是否有一个为null
+            if (s1.equalsIgnoreCase(Null)) {
+                // 如果左边为null ，同时右边为null就代表两个值相同，在这里直接将两个值赋值0
+                int aNull = s2.equalsIgnoreCase(Null) ? 0 : 1;
+                return new CalculationBooleanResults(
+                        NumberUtils.ComparisonOperation(s, 0, aNull),
+                        this.Name, 1, 0, aNull
+                );
+            } else if (s2.equalsIgnoreCase(Null)) {
+                // 如果左边不是null 但是 右边为null，就直接将 1 比较 0 的值算出来
+                return new CalculationBooleanResults(
+                        NumberUtils.ComparisonOperation(s, 1, 0),
+                        this.Name, 1, 1, 0
+                );
+            }
         }
         // 进行左值的结果计算
-        CalculationNumberResults calculation1 = BRACKETS_CALCULATION_2.calculation(s1);
+        final CalculationNumberResults calculation1 = BRACKETS_CALCULATION_2.calculation(s1);
         // 进行右值的结果计算
-        CalculationNumberResults calculation2 = BRACKETS_CALCULATION_2.calculation(s2);
+        final CalculationNumberResults calculation2 = BRACKETS_CALCULATION_2.calculation(s2);
         // 进行表达式结果的计算
         double left = calculation1.getResult();
         double right = calculation2.getResult();

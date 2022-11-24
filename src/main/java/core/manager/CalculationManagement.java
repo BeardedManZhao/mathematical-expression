@@ -67,7 +67,7 @@ public final class CalculationManagement {
      * If the registration succeeds, it returns true. If the registration fails, it means that there is already a numerical value of the name in the manager, so it is not allowed to register again.
      */
     public static boolean register(Calculation calculation, boolean judge) {
-        String calculationName = calculation.getName();
+        final String calculationName = calculation.getName();
         if (judge && STRING_CALCULATION_HASH_MAP.containsValue(calculation)) {
             LOGGER.warn("An error occurred while registering the component, because the [" + calculationName + "] component has already been registered");
             return false;
@@ -95,7 +95,7 @@ public final class CalculationManagement {
      * Whether the function is registered successfully. If false is returned, it means that the function name has been used by other functions, and the function name needs to be changed
      */
     public static boolean register(Function function) {
-        String name = function.getName();
+        final String name = function.getName();
         if (STRING_FUNCTION_HASH_MAP.containsKey(name)) {
             LOGGER.warn("An error occurred when registering a function named [" + name + "], because the function name conflicts");
             return false;
@@ -123,7 +123,7 @@ public final class CalculationManagement {
      */
     @SuppressWarnings("unchecked")
     public static <functionType extends Function> functionType getFunctionByName(String FunctionName) {
-        Function function = STRING_FUNCTION_HASH_MAP.get(FunctionName);
+        final Function function = STRING_FUNCTION_HASH_MAP.get(FunctionName);
         if (function == null) {
             throw new ExtractException("您想要提取的函数似乎没有被注册到管理者中，请您先使用“register”进行函数的注册！\nIt seems that the function you want to extract has not been registered with the manager. Please use \"register\" to register the function first!\nERROR FUNCTION => " + FunctionName);
         } else {

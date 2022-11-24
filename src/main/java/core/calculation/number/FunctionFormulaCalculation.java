@@ -138,49 +138,51 @@ public class FunctionFormulaCalculation extends NumberCalculation {
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        final char[] chars = Formula.toCharArray();
         // 创建一个公式缓冲区
         final StringBuilder stringBuilder = new StringBuilder();
-        // 创建变量，负责记录函数的起始索引
-        int start = 0;
-        // 创建一个计数器，统计括号对数
-        int count = 0;
-        // 创建一个状态，统计是否进入函数
-        boolean setOk = false;
-        // 创建一个字符缓冲区，用于存储函数的名字
-        final StringBuilder name = new StringBuilder();
-        // 开始迭代公式，找到函数的索引值
-        for (int i = 0; i < chars.length; ++i) {
-            char aChar = chars[i];
-            if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
-                // 如果是字母，代表当前就是函数的起始点，将这个函数的名字存储到临时缓冲区
-                if (!setOk) {
-                    start = i;
-                    setOk = true;
+        {
+            final char[] chars = Formula.toCharArray();
+            // 创建变量，负责记录函数的起始索引
+            int start = 0;
+            // 创建一个计数器，统计括号对数
+            int count = 0;
+            // 创建一个状态，统计是否进入函数
+            boolean setOk = false;
+            // 创建一个字符缓冲区，用于存储函数的名字
+            final StringBuilder name = new StringBuilder();
+            // 开始迭代公式，找到函数的索引值
+            for (int i = 0; i < chars.length; ++i) {
+                final char aChar = chars[i];
+                if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
+                    // 如果是字母，代表当前就是函数的起始点，将这个函数的名字存储到临时缓冲区
+                    if (!setOk) {
+                        start = i;
+                        setOk = true;
+                    }
+                    name.append(aChar);
+                } else if (setOk && aChar == ConstantRegion.LEFT_BRACKET) {
+                    // 如果是一个左括号 同时当前属于函数范围内，就为计数器加1
+                    count += 1;
+                } else if (setOk && aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
+                    // 如果当前区域是函数内，同时当前是一个右括号，而且该括号是与起始括号相对应的，代表函数结束
+                    setOk = false;
+                    // 通过函数名字获取到函数组件
+                    ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(name.toString());
+                    LOGGER.info(ConstantRegion.LOG_INFO_FIND_FUNCTION + functionByName);
+                    // 使用括号计算组件，计算出函数实参，然后通过函数将函数内的公式计算出来
+                    double run = functionByName.run(BRACKETS_CALCULATION_2.calculation(Formula.substring(start + name.length() + 1, i), formatRequired).getResult());
+                    name.delete(0, name.length());
+                    // 将当前的函数结果添加到公式缓冲区，这里判断了下run的精度，如果run是一个整数，就直接转换成整数添加
+                    int run1 = (int) run;
+                    if (run == run1) {
+                        stringBuilder.append(run1);
+                    } else {
+                        stringBuilder.append(run);
+                    }
+                } else if (!setOk && aChar != ConstantRegion.EMPTY) {
+                    // 如果是其他情况就直接将字符添加到公式中
+                    stringBuilder.append(aChar);
                 }
-                name.append(aChar);
-            } else if (setOk && aChar == ConstantRegion.LEFT_BRACKET) {
-                // 如果是一个左括号 同时当前属于函数范围内，就为计数器加1
-                count += 1;
-            } else if (setOk && aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
-                // 如果当前区域是函数内，同时当前是一个右括号，而且该括号是与起始括号相对应的，代表函数结束
-                setOk = false;
-                // 通过函数名字获取到函数组件
-                ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(name.toString());
-                LOGGER.info(ConstantRegion.LOG_INFO_FIND_FUNCTION + functionByName);
-                // 使用括号计算组件，计算出函数实参，然后通过函数将函数内的公式计算出来
-                double run = functionByName.run(BRACKETS_CALCULATION_2.calculation(Formula.substring(start + name.length() + 1, i), formatRequired).getResult());
-                name.delete(0, name.length());
-                // 将当前的函数结果添加到公式缓冲区，这里判断了下run的精度，如果run是一个整数，就直接转换成整数添加
-                int run1 = (int) run;
-                if (run == run1) {
-                    stringBuilder.append(run1);
-                } else {
-                    stringBuilder.append(run);
-                }
-            } else if (!setOk && aChar != ConstantRegion.EMPTY) {
-                // 如果是其他情况就直接将字符添加到公式中
-                stringBuilder.append(aChar);
             }
         }
         // 将当前不包含函数的公式使用括号表达式解析计算出来

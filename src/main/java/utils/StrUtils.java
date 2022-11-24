@@ -80,7 +80,7 @@ public final class StrUtils {
             throw new AbnormalOperation("数值的小数部分数值位数过长，无法计算" + s);
         }
         // 计算出来数值本身
-        double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, floatSize);
+        final double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, floatSize);
         // 判断是否为负数，如果不是负数直接返回值
         return s.charAt(0) == ConstantRegion.MINUS_SIGN ? -res : res;
     }
