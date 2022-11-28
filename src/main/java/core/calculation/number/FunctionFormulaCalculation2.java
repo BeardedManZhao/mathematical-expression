@@ -19,7 +19,7 @@ import java.util.Stack;
  *
  * @author zhao
  */
-public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
+public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation implements SharedCalculation {
 
     private final Stack<Integer> ShareStart = new Stack<>();
     private final Stack<Integer> ShareEnd = new Stack<>();
@@ -59,6 +59,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
     /**
      * @return 该组件是否有启动共享池，一个布尔值，如果返回true代表共享池已经启动
      */
+    @Override
     public boolean isStartSharedPool() {
         return StartSharedPool;
     }
@@ -70,6 +71,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
      *
      * @param startSharedPool 共享池如果设置为true，代表被打开，将会共享检查与
      */
+    @Override
     public void setStartSharedPool(boolean startSharedPool) {
         StartSharedPool = startSharedPool;
     }
@@ -140,11 +142,10 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
         // 创建一个标记，标记是否进入函数
         boolean b = false;
         int count = 0;
-        final char[] chars = string.toCharArray();
         // 创建函数名称缓冲区
         final StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < chars.length; i++) {
-            final char aChar = chars[i];
+        for (int i = 0; i < string.length(); i++) {
+            final char aChar = string.charAt(i);
             if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
                 if (!b) {
                     // 如果是刚刚进入函数，就将当前索引添加到栈
@@ -186,11 +187,10 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation {
         // 创建一个标记，标记是否进入函数
         boolean b = false;
         int count = 0;
-        final char[] chars = string.toCharArray();
         // 创建函数名称缓冲区
         final StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < chars.length; i++) {
-            char aChar = chars[i];
+        for (int i = 0; i < string.length(); i++) {
+            char aChar = string.charAt(i);
             if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
                 if (!b) {
                     // 如果是刚刚进入函数，就将当前索引添加到栈

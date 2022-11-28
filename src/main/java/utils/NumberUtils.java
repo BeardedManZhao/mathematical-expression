@@ -22,7 +22,7 @@ public final class NumberUtils {
      * @return 数值的 1/10倍
      */
     public static int divideByTen(int number) {
-        return (number >> 2) / 2;
+        return (number >> 1) / 5;
     }
 
     /**
@@ -109,5 +109,19 @@ public final class NumberUtils {
                         "The comparison operation cannot be performed because there is an incorrect operator.\n" +
                         "Bad comparison operator => " + ComparisonOperator);
         }
+    }
+
+    /**
+     * 将区间内的所有数值进行累加
+     *
+     * @param start 区间起始数值
+     * @param end   区间终止数值
+     * @return 区间内所有数值的累加结果
+     */
+    public int sumOfRange(int start, int end) {
+        if (start == end) {
+            return start;
+        }
+        return ((start + end) * ((end - start) + 1)) >> 1;
     }
 }
