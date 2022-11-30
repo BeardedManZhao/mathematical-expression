@@ -24,8 +24,9 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
     private final Stack<Integer> ShareStart = new Stack<>();
     private final Stack<Integer> ShareEnd = new Stack<>();
     private final Stack<String> ShareNames = new Stack<>();
-    private boolean StartSharedPool = false;
+    private boolean StartSharedPool = true;
     private String CurrentOwner;
+    private CalculationNumberResults shareNumberCalculation;
 
     protected FunctionFormulaCalculation2(String name) {
         super(name);
@@ -87,6 +88,10 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      */
     @Override
     public void check(String string) throws WrongFormat {
+        boolean equals = string.equals(this.CurrentOwner);
+        if (this.StartSharedPool && equals) {
+            return;
+        }
         // 准备函数元数据缓冲区
         Stack<Integer> start = new Stack<>();
         Stack<Integer> end = new Stack<>();
@@ -232,16 +237,20 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
+        boolean equals = this.StartSharedPool && Formula.equals(this.CurrentOwner);
+        if (equals && this.shareNumberCalculation != null) {
+            return this.shareNumberCalculation;
+        }
         Stack<Integer> start;
         Stack<Integer> end;
         Stack<String> names;
         StringBuilder stringBuilder = new StringBuilder(Formula);
         // 开始进行函数计算，首先判断是否启用了共享池 以及身份是否正确，确保两个公式是同一个
-        if (StartSharedPool && Formula.equals(CurrentOwner)) {
+        if (equals) {
             start = this.ShareStart;
             end = this.ShareEnd;
             names = this.ShareNames;
-            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + CurrentOwner);
+            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.DECIMAL_POINT + CurrentOwner);
         } else {
             start = new Stack<>();
             end = new Stack<>();
@@ -268,6 +277,10 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             }
             stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(doubles)));
         }
-        return FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
+        CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
+        if (equals) {
+            this.shareNumberCalculation = calculation;
+        }
+        return calculation;
     }
 }

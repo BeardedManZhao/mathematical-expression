@@ -118,10 +118,69 @@ public final class NumberUtils {
      * @param end   区间终止数值
      * @return 区间内所有数值的累加结果
      */
-    public int sumOfRange(int start, int end) {
+    public static int sumOfRange(int start, int end) {
         if (start == end) {
             return start;
         }
         return ((start + end) * ((end - start) + 1)) >> 1;
+    }
+
+    /**
+     * 将区间内的所有数值进行累加
+     *
+     * @param start 区间起始数值
+     * @param end   区间终止数值
+     * @return 区间内所有数值的累加结果
+     */
+    public static double sumOfRange(double start, double end) {
+        if (start == end) {
+            return start;
+        }
+        return ((start + end) * ((end - start) + 1)) / 2;
+    }
+
+    /**
+     * 将两个double数组进行合并
+     *
+     * @param ts1 数组1
+     * @param ts2 数组2
+     * @return 合并两个数组后的新数组
+     */
+    public static Double[] merge(Double[] ts1, Double[] ts2) {
+        Double[] doubles = new Double[ts1.length + ts2.length];
+        if (ts1.length == 0) {
+            System.arraycopy(ts2, 0, doubles, 0, ts2.length);
+            return doubles;
+        } else if (ts2.length == 0) {
+            System.arraycopy(ts1, 0, doubles, 0, ts1.length);
+            return doubles;
+        }
+        // 构建双指针进行数据插入
+        int P1 = 0;
+        int P2 = 0;
+        int NP2 = P2 + ts1.length;
+        boolean P1BP2 = ts1.length > ts2.length;
+        if (P1BP2) {
+            // 如果第一个数组较长，这里就以第二个数组为迭代基准
+            while (P2 < ts2.length) {
+                // 将P2的数据插入到新数组中的指定位置
+                doubles[NP2++] = ts2[P2++];
+                // 将P1的数据插入到新数组中的指定位置
+                doubles[P1] = ts1[P1++];
+            }
+            // 然后将剩余的一数组数据添加到ts1
+            while (P1 < ts1.length) doubles[P1] = ts1[P1++];
+        } else {
+            // 如果第二个数组较长，这里就以第一个数组为迭代基准
+            while (P1 < ts1.length) {
+                // 将P2的数据插入到新数组中的指定位置
+                doubles[NP2++] = ts2[P2++];
+                // 将P1的数据插入到新数组中的指定位置
+                doubles[P1] = ts1[P1++];
+            }
+            // 然后将剩余的二数组数据添加到ts1
+            while (P2 < ts2.length) doubles[NP2++] = ts2[P2++];
+        }
+        return doubles;
     }
 }

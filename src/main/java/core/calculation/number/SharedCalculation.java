@@ -12,7 +12,7 @@ public interface SharedCalculation extends Calculation {
     /**
      * @return 该组件是否有启动共享池，一个布尔值，如果返回true代表共享池已经启动
      */
-    public boolean isStartSharedPool();
+    boolean isStartSharedPool();
 
     /**
      * 设置共享池开关，共享池是在JavaApi中，1.1版本衍生出来的一种新特性，由于计算量的需求，引入该功能
@@ -21,5 +21,5 @@ public interface SharedCalculation extends Calculation {
      *
      * @param startSharedPool 共享池如果设置为true，代表被打开，将会共享检查与
      */
-    public void setStartSharedPool(boolean startSharedPool);
+    void setStartSharedPool(boolean startSharedPool);
 }

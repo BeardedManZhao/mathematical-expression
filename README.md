@@ -14,6 +14,7 @@ result object.
   You can directly use Maven to import this framework into the project and use it effectively
 
 ```xml
+
 <dependencies>
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>

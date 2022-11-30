@@ -8,7 +8,7 @@ package core.manager;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.15F;
+    public final static float VERSION = 1.2F;
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -38,6 +38,7 @@ public final class ConstantRegion {
             GREATER_THAN_OR_EQUAL_TO_SIGN + "|" + NOT_EQUAL_SIGN1 + "|" + NOT_EQUAL_SIGN2 + "|" + EQUAL_SIGN2 +
             "|[" + LESS_THAN_SIGN + EQUAL_SIGN1 + GREATER_THAN_SIGN + "]";
     public final static String REGULAR_PURE_LETTER = "[a-zA-Z]+";
+    public final static String REGULAR_ADDITION_SUBTRACTION_AMBIGUITY = "\\" + PLUS_SIGN + MINUS_SIGN;
     public final static String REGULAR_CONTAINS_BRACKET = ".*[" + LEFT_BRACKET + RIGHT_BRACKET + "].*";
     public final static String LOG_INFO_GET_FUNCTION = "Get a function component from the manager. => ";
     public final static String LOG_INFO_GET_COMPONENT = "Get a computing component from the manager. => ";

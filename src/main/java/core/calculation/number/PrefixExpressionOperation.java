@@ -73,7 +73,10 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll(" +", ConstantRegion.NO_CHAR) + ConstantRegion.PLUS_SIGN + '0';
+        return string.replaceAll(
+                ConstantRegion.REGULAR_ADDITION_SUBTRACTION_AMBIGUITY,
+                String.valueOf(ConstantRegion.MINUS_SIGN)
+        ) + ConstantRegion.PLUS_SIGN + '0';
     }
 
     /**
@@ -97,7 +100,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
         if (formatRequired) {
             newFormula = formatStr(Formula).toCharArray();
         } else {
-            newFormula = Formula.replaceAll(" +", ConstantRegion.NO_CHAR).toCharArray();
+            newFormula = Formula.toCharArray();
         }
         // 创建操作符栈
         final Stack<Double> doubleStack = new Stack<>();
