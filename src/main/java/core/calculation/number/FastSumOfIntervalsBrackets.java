@@ -1,6 +1,7 @@
 package core.calculation.number;
 
 import core.calculation.Calculation;
+import core.calculation.SharedCalculation;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
 import core.manager.ConstantRegion;
@@ -143,9 +144,9 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        String start;
-        String end;
-        boolean equals = this.StartSharedPool && Formula.equals(this.CurrentOwner);
+        final String start;
+        final String end;
+        final boolean equals = this.StartSharedPool && Formula.equals(this.CurrentOwner);
         if (equals) {
             LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.DECIMAL_POINT + CurrentOwner);
             // 如果共享池开启，同时共享池中数据所属没有错误，就使用共享池数据进行计算
@@ -161,20 +162,51 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
             end = arrayList.get(1);
         }
         // 计算出结果数值
-        CalculationNumberResults calculation1 = FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(start, formatRequired);
-        if (start.equals(end)) {
-            return calculation1;
-        }
-        CalculationNumberResults calculation2 = FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(end, formatRequired);
-        CalculationNumberResults calculationNumberResults = new CalculationNumberResults(
-                NumberUtils.merge(calculation1.getDoubles(), calculation2.getDoubles()),
-                NumberUtils.sumOfRange(calculation1.getResult(), calculation2.getResult()),
-                this.Name
-        );
+        CalculationNumberResults calculationNumberResults = calculation(start, end);
         if (equals) {
             this.shareNumberCalculation = calculationNumberResults;
         }
         return calculationNumberResults;
+    }
+
+    /**
+     * 将两个公式作为求和区间的起始与种植点，以此进行区间的求和，不进行共享池的相关判断
+     * <p>
+     * The two formulas are used as the starting point and planting point of the summation interval, so as to sum the interval without making relevant judgments on the shared pool
+     *
+     * @param f1 起始点计算公式
+     * @param f2 终止点计算公式
+     * @return 区间求和的结果对象
+     * <p>
+     * Result object of interval summation
+     */
+    public CalculationNumberResults calculation(String f1, String f2) {
+        if (f1.equals(f2)) {
+            return FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(f1);
+        }
+        return calculation(
+                FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(f1),
+                FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(f2)
+        );
+    }
+
+    /**
+     * 将两个结果对象，作为需要求和区间的起始与终止数值，以此进行区间的求和，不进行公式的计算
+     * <p>
+     * Take the two result objects as the starting and ending values of the interval to be summed, so as to sum the interval, without calculating the formula
+     *
+     * @param start 起始点结果数值
+     * @param end   终止点结果数值
+     * @return 区间求和的结果对象
+     * <p>
+     * Result object of interval summation
+     */
+    public CalculationNumberResults calculation(CalculationNumberResults start, CalculationNumberResults end) {
+        return new CalculationNumberResults(
+                NumberUtils.merge(start.getDoubles(), end.getDoubles()),
+                NumberUtils.sumOfRange(start.getResult(), end.getResult()),
+                this.Name
+        );
     }
 
     /**

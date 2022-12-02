@@ -1,6 +1,4 @@
-package core.calculation.number;
-
-import core.calculation.Calculation;
+package core.calculation;
 
 /**
  * 共享池计算组件，带有共享池的计算组件需要继承该抽象类

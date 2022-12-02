@@ -1,4 +1,4 @@
-# 数学表达式
+# ![image](https://user-images.githubusercontent.com/113756063/203919312-dcec4a61-2136-4af2-a361-66b2ed4e6a54.png) 数学表达式
 
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
 
@@ -11,6 +11,7 @@
   您可以直接使用maven将本框架导入到项目中使用，能够高效的使用该功能
 
 ```xml
+
 <dependencies>
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
@@ -416,6 +417,46 @@ public class MAIN {
 
 ```
 计算层数：2	计算结果：397.8	计算来源：BracketsCalculation2
+```
+
+### 快速区间求和计算组件（基于括号表达式）
+
+- 类组件：mathematical_expression/core/calculation/number/fastSumOfIntervalsBrackets.py
+- 介绍 1.15版本的新产物，区间快速求和组件，是针对一个等差为1的区间进行所有元素求和的快速组件，它将一个区间在逻辑上模拟成为一个数学数列，并通过求和公式进行快速的求和。
+
+  该组件实现了共享池计算功能，将检查，计算，以及上一次结果记录实现，能够加快计算速度，具体API调用如下所示。
+
+```java
+package utils;
+
+import core.calculation.number.FastSumOfIntervalsBrackets;
+import core.container.CalculationNumberResults;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 获取到区间求和快计算组件
+        FastSumOfIntervalsBrackets fast = FastSumOfIntervalsBrackets.getInstance("fast");
+        // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 加到 13 = (20-(5+2)) 结果应为 36
+        String s = "1 + 10, 20 - (5 + 2)";
+        // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
+        // fast.setStartSharedPool(true);
+        fast.check(s);
+        // 开始计算
+        CalculationNumberResults calculation = fast.calculation(s);
+        // 打印计算结果
+        System.out.println(
+                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                        "\t计算来源：" + calculation.getCalculationSourceName()
+        );
+    }
+}
+```
+
+- 运行结果 从上面代码中我们可以看到，快速区间求和计算的公式由被逗号分割的两个括号表达式组成
+
+```
+计算层数：3	计算结果：36.0	计算来源：fast
 ```
 
 <hr>

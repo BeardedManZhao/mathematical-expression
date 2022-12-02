@@ -54,7 +54,9 @@ public final class StrUtils {
         int intSize = 0;
         int floatSize = 0;
         boolean isInt = true;
-        for (char c : s.toCharArray()) {
+        final int length = s.length();
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
             if (c != ConstantRegion.DECIMAL_POINT && c != ConstantRegion.EMPTY) {
                 // 如果当前不是小数点符号 就直接对数值进行位分配
                 if (isInt) {
@@ -133,33 +135,6 @@ public final class StrUtils {
     }
 
     /**
-     * 计算一个带有两个操作数 一个操作符的计算公式的结果
-     *
-     * @param a               第一个操作数
-     * @param b               第二个操作数
-     * @param CalculationType 计算模式 0=加法 1=减法 2=乘法 3=除法 4=取余
-     * @return 计算结果 如果出现异常，将会直接提示操作符是 ?
-     * @deprecated 该方法中使用到了数值，但是新版本中支持直接使用符号进行计算，这里的数值有一些冗余，将会在下一次版本中移除该方法
-     */
-    @Deprecated
-    public static double calculation(String a, String b, int CalculationType) {
-        switch (CalculationType) {
-            case 0:
-                return NumberUtils.calculation(ConstantRegion.PLUS_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
-            case 1:
-                return NumberUtils.calculation(ConstantRegion.MINUS_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
-            case 2:
-                return NumberUtils.calculation(ConstantRegion.MULTIPLICATION_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
-            case 3:
-                return NumberUtils.calculation(ConstantRegion.DIVISION_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
-            case 4:
-                return NumberUtils.calculation(ConstantRegion.REMAINDER_SIGN, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
-            default:
-                return NumberUtils.calculation('?', StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
-        }
-    }
-
-    /**
      * 判断一个字符是不是一个操作符
      *
      * @param c 需要被判断的字符
@@ -179,9 +154,11 @@ public final class StrUtils {
      * @return 字符串被拆分之后的列表
      */
     public static ArrayList<String> splitByChar(String s, char c) {
+        final int length = s.length();
         final ArrayList<String> arrayList = new ArrayList<>();
-        final StringBuilder stringBuilder = new StringBuilder();
-        for (char c1 : s.toCharArray()) {
+        final StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            char c1 = s.charAt(i);
             if (c1 == c) {
                 arrayList.add(stringBuilder.toString().trim());
                 stringBuilder.delete(0, stringBuilder.length());

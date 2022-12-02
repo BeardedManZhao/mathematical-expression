@@ -452,6 +452,56 @@ public class MAIN {
 计算层数：2	计算结果：397.8	计算来源：BracketsCalculation2
 ```
 
+### Fast interval sum calculation component (based on parenthesis expression)
+
+- Full class name：mathematical_expression/core/calculation/number/fastSumOfIntervalsBrackets.py
+- introduce
+
+  The new product of version 1.15, the interval fast sum component, is a fast component that sums all elements of an
+  interval with an equal difference of 1. It logically simulates an interval into a mathematical sequence and quickly
+  sums it through the sum formula.
+
+  This component implements the shared pool computing function. It will check, calculate, and record the results of the
+  last time, which can speed up computing. The specific API calls are shown below.
+
+```java
+package utils;
+
+import core.calculation.number.FastSumOfIntervalsBrackets;
+import core.container.CalculationNumberResults;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // Get the quick sum calculation component of the interval
+        FastSumOfIntervalsBrackets fast = FastSumOfIntervalsBrackets.getInstance("fast");
+        // Build an expression to be calculated. 
+        // The following expression represents that the result of adding 11=(1+10) to 13=(20 - (5+2)) should be 36
+        String s = "1 + 10, 20 - (5 + 2)";
+        // Check the expression. The shared pool has been enabled by default since version 1.2! No need to set manually
+        // fast.setStartSharedPool(true);
+        fast.check(s);
+        // Start calculation
+        CalculationNumberResults calculation = fast.calculation(s);
+        // Print calculation results
+        System.out.println(
+                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                        "\t计算来源：" + calculation.getCalculationSourceName()
+        );
+    }
+}
+```
+
+- Running results
+
+  从上面代码中我们可以看到，快速区间求和计算的公式由被逗号分割的两个括号表达式组成
+
+```
+计算层数：3
+计算结果：36.0
+计算来源：fastSumOfIntervalsBrackets
+```
+
 <hr>
 
 More information

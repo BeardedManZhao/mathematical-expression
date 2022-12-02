@@ -1,6 +1,7 @@
 package core.calculation.number;
 
 import core.calculation.Calculation;
+import core.calculation.SharedCalculation;
 import core.calculation.function.ManyToOneNumberFunction;
 import core.container.CalculationNumberResults;
 import core.manager.CalculationManagement;
