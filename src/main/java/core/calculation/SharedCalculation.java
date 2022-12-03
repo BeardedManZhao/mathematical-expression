@@ -2,6 +2,8 @@ package core.calculation;
 
 /**
  * 共享池计算组件，带有共享池的计算组件需要继承该抽象类
+ * <p>
+ * A shared pool computing component. A computing component with a shared pool needs to inherit this abstract class
  *
  * @author zhao
  */

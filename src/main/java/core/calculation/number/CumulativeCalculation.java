@@ -99,7 +99,7 @@ public class CumulativeCalculation extends BracketsCalculation2 {
             // 将指定位置的累加符号，变更为当前数值
             stringBuilder
                     .append(ConstantRegion.LEFT_BRACKET)
-                    .append(format.replaceAll(f, String.valueOf(v)))
+                    .append(format.replaceAll(f, Double.toString(v)))
                     .append(ConstantRegion.RIGHT_BRACKET)
                     .append(ConstantRegion.PLUS_SIGN);
         }

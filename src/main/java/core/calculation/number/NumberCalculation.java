@@ -82,6 +82,9 @@ public abstract class NumberCalculation implements Calculation {
      */
     @Override
     public void check(String string) throws WrongFormat {
+        if (string.isEmpty()) {
+            throw new WrongFormat("您传入的表达式为null 无法进行计算。");
+        }
         // 左括号出现数量
         int LeftCount = 0;
         // 右括号出现数量

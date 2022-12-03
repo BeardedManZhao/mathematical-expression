@@ -62,11 +62,11 @@ public final class StrUtils {
                 if (isInt) {
                     // 如果当前不是小数点符号 就直接将数值归为整数
                     intRes = NumberUtils.tenfold(intRes) + charToInteger(c);
-                    intSize += 1;
+                    intSize++;
                 } else {
                     // 如果是小数点 就直接将数值归为小数
                     floatRes = NumberUtils.tenfold(floatRes) + charToInteger(c);
-                    floatSize += 1;
+                    floatSize++;
                 }
             } else if (c == ConstantRegion.DECIMAL_POINT) {
                 // 如果是小数点 就判断是否发生精度问题，如果没有发生就切换添加状态
