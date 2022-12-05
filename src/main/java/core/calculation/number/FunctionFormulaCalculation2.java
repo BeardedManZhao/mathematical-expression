@@ -279,7 +279,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(doubles)));
         }
         CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
-        if (equals) {
+        if (this.StartSharedPool) {
             this.shareNumberCalculation = calculation;
         }
         return calculation;

@@ -71,19 +71,18 @@ public class BracketsCalculation2 extends BracketsCalculation {
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        // 迭代每一个字符
-        final char[] chars = Formula.toCharArray();
+        int length = Formula.length();
         // 公式存储区
-        final StringBuilder stringBuilder = new StringBuilder(chars.length);
+        final StringBuilder stringBuilder = new StringBuilder(length);
         // 括号内数据的起始索引
         int start = 0;
         boolean setok = false;
         // 括号内的括号均衡数量，为了确定是一对括号
         int count = 0;
         // 计算结果临时存储
-        final ArrayList<Double> arrayList = new ArrayList<>(chars.length);
-        for (int i = 0; i < chars.length; i++) {
-            char aChar = chars[i];
+        final ArrayList<Double> arrayList = new ArrayList<>(length);
+        for (int i = 0; i < length; i++) {
+            char aChar = Formula.charAt(i);
             if (aChar == ConstantRegion.LEFT_BRACKET) {
                 // 如果当前字符是一个左括号，那么说明括号开始了，这个时候需要将起始点记录
                 if (!setok) {

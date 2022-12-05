@@ -96,19 +96,21 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        final char[] newFormula;
+        final String newFormula;
         if (formatRequired) {
-            newFormula = formatStr(Formula).toCharArray();
+            newFormula = formatStr(Formula);
         } else {
-            newFormula = Formula.toCharArray();
+            newFormula = Formula;
         }
         // 创建操作符栈
         final Stack<Double> doubleStack = new Stack<>();
         // 创建操作数栈
         final Stack<Character> characterStack = new Stack<>();
         // 开始格式化，将符号与操作数进行分类
-        final StringBuilder stringBuilder = new StringBuilder(newFormula.length);
-        for (char c : newFormula) {
+        int length = newFormula.length();
+        final StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            char c = newFormula.charAt(i);
             if (StrUtils.IsAnOperator(c)) {
                 // 如果是操作符，就先将上一个数值计算出来
                 double number = StrUtils.stringToDouble(stringBuilder.toString());
@@ -139,12 +141,12 @@ public class PrefixExpressionOperation extends NumberCalculation {
             }
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
-        double res = doubleStack.get(0);
+        double res = doubleStack.firstElement();
         char back;
         final int size = doubleStack.size();
         Double[] temps = new Double[size - 1];
         // 开始计算
-        final int sizeD2 = size << 1;
+        final int sizeD2 = size >> 1;
         for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
             // 更新操作符
             back = characterStack.get(offset);
