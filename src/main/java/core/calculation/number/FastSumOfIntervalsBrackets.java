@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements SharedCalculation {
 
     public final static BracketsCalculation2 BRACKETS_CALCULATION_2 = BracketsCalculation2.getInstance(CalculationManagement.BRACKETS_CALCULATION_2_NAME);
+    public int step;
     private boolean StartSharedPool = true;
     private String CurrentOwner;
     private String left;
@@ -53,6 +54,7 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
         } else {
             FastSumOfIntervalsBrackets FastSumOfIntervalsBrackets = new FastSumOfIntervalsBrackets(CalculationName);
             CalculationManagement.register(FastSumOfIntervalsBrackets, false);
+            FastSumOfIntervalsBrackets.step = 1;
             return FastSumOfIntervalsBrackets;
         }
     }
@@ -204,7 +206,9 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
     public CalculationNumberResults calculation(CalculationNumberResults start, CalculationNumberResults end) {
         return new CalculationNumberResults(
                 NumberUtils.merge(start.getDoubles(), end.getDoubles()),
-                NumberUtils.sumOfRange(start.getResult(), end.getResult()),
+                this.step == 1 ?
+                        NumberUtils.sumOfRange(start.getResult(), end.getResult()) :
+                        NumberUtils.sumOfRange(start.getResult(), end.getResult(), step),
                 this.Name
         );
     }

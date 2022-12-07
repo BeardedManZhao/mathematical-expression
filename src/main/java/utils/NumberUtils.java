@@ -136,7 +136,46 @@ public final class NumberUtils {
         if (start == end) {
             return start;
         }
-        return ((start + end) * ((end - start) + 1)) / 2;
+        return (start + end) * (Math.abs(end - start) + 1) / 2;
+    }
+
+    /**
+     * 带有步长的方式计算一个区间内所有数值的累加
+     *
+     * @param start 区间起始数值
+     * @param end   区间终止数值
+     * @param step  区间内每一个元素之间的步长
+     * @return 区间内元素之和
+     */
+    public static double sumOfRange(double start, double end, double step) {
+        if (start == end) {
+            return start;
+        }
+        double v = Math.abs(end - start);
+        System.out.println(v);
+        end = end - v % step;
+        return ((start + end) * (v + 1)) / (2 * step);
+    }
+
+    /**
+     * 带有步长的方式计算一个区间内所有数值的累乘
+     *
+     * @param start 区间的起始数值
+     * @param end   区间的终止数值
+     * @param step  区间内每一个元素之间的等差
+     * @return 区间内所有元素的累乘结果
+     */
+    public static double MultiplyOfRange(double start, double end, double step) {
+        if (start == end) {
+            return start;
+        }
+        int res = 1;
+        end = end - (end - start) % step;
+        while (start <= end) {
+            res *= start;
+            start += step;
+        }
+        return res;
     }
 
     /**
