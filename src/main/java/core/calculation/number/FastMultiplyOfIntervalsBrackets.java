@@ -8,8 +8,9 @@ import utils.NumberUtils;
 
 /**
  * 快速的将一个区间内所有元素的累积结果计算出来，该组件继承于“FastSumOfIntervalsBrackets” 父类中的“step” 字段在这里还是作为区间步长，默认为2
- *
+ * <p>
  * Quickly calculate the cumulative results of all elements in an interval. This component inherits the "step" field in the parent class of "FastSumOfIntervalsBrackets". Here, it is still used as the interval step. The default value is 2
+ *
  * @author zhao
  */
 public class FastMultiplyOfIntervalsBrackets extends FastSumOfIntervalsBrackets {
