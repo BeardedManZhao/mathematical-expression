@@ -29,7 +29,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.1.5'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2'
 }
 ```
 
