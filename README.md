@@ -19,7 +19,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.1.5</version>
+        <version>1.2</version>
     </dependency>
 </dependencies>
 ```

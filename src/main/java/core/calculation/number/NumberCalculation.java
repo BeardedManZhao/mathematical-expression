@@ -6,9 +6,7 @@ import core.manager.ConstantRegion;
 import exceptional.WrongFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.HashSet;
+import utils.StrUtils;
 
 /**
  * 计算结果为数值的数学表达式结果，其中提供了数学表达式的计算函数
@@ -18,16 +16,6 @@ import java.util.HashSet;
  * @author zhao
  */
 public abstract class NumberCalculation implements Calculation {
-
-    /**
-     * 合法字符，一个数学表达式的格式中可以包含的所有字符，包含这些字符外的字符，在格式化的时候，将直接判定为格式不正确
-     */
-    public static final HashSet<Character> LEGAL_CHARACTERS = new HashSet<>(
-            Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                    ConstantRegion.EMPTY, ConstantRegion.PLUS_SIGN, ConstantRegion.MINUS_SIGN,
-                    ConstantRegion.MULTIPLICATION_SIGN, ConstantRegion.DIVISION_SIGN, ConstantRegion.REMAINDER_SIGN,
-                    ConstantRegion.LEFT_BRACKET, ConstantRegion.REMAINDER_SIGN, ConstantRegion.DECIMAL_POINT)
-    );
     protected final String Name;
     protected final Logger LOGGER;
 
@@ -85,20 +73,44 @@ public abstract class NumberCalculation implements Calculation {
         if (string.isEmpty()) {
             throw new WrongFormat("您传入的表达式为null 无法进行计算。");
         }
+        int lastIndex = string.length() - 1;
         // 左括号出现数量
         int LeftCount = 0;
         // 右括号出现数量
-        int RightCount = 0;
-        for (char c : string.toCharArray()) {
+        int RightCount;
+        {
+            char lastChar = string.charAt(lastIndex);
+            while (lastChar == ConstantRegion.EMPTY) {
+                lastChar = string.charAt(--lastIndex);
+            }
+            if (!StrUtils.IsANumber(lastChar)) {
+                if (lastChar != ConstantRegion.RIGHT_BRACKET) {
+                    throw new WrongFormat("您传入的表达式格式有误，最后一个字符不是一个数值！！！\nThe format of the expression you passed in is incorrect. The last character is not a numeric value!!!\nERROR => " + lastChar);
+                } else {
+                    RightCount = 1;
+                }
+            } else {
+                RightCount = 0;
+            }
+        }
+        // 上一个字符是否是运算符
+        boolean is = false;
+        for (int i = 0; i < lastIndex; i++) {
+            char c = string.charAt(i);
             if (c == ConstantRegion.LEFT_BRACKET) {
                 ++LeftCount;
             } else if (c == ConstantRegion.RIGHT_BRACKET) {
                 ++RightCount;
-            } else if (!NumberCalculation.LEGAL_CHARACTERS.contains(c)) {
-                throw new WrongFormat("您的格式不正确，出现了数学表达式中不应该存在的字符。\n" +
-                        "Your format is incorrect. There are characters that should not exist in the mathematical expression.\n" +
-                        "Wrong character [" + c + "] from [" + string + "]");
+            } else if (!(StrUtils.IsANumber(c) || c == ConstantRegion.DECIMAL_POINT || c == ConstantRegion.EMPTY)) {
+                if (!StrUtils.IsAnOperator(c)) {
+                    throw new WrongFormat("解析表达式的时候出现了未知符号!!!\nUnknown symbol appears when parsing expression!!!\nWrong format => [" + c + "] from " + string);
+                } else {
+                    if (is) throw new WrongFormat("您的数学表达式不正确，缺失了一个运算数值或多出了一个运算符。ERROR => " + string);
+                    is = true;
+                    continue;
+                }
             }
+            is = false;
         }
         if (LeftCount != RightCount) {
             int abs = Math.abs(LeftCount - RightCount);

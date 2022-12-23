@@ -8,7 +8,7 @@ package core.manager;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.2F;
+    public final static float VERSION = 1.20F; // maven新版本，2022-12-23发布
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -39,7 +39,7 @@ public final class ConstantRegion {
             "|[" + LESS_THAN_SIGN + EQUAL_SIGN1 + GREATER_THAN_SIGN + "]";
     public final static String REGULAR_PURE_LETTER = "[a-zA-Z]+";
     public final static String REGULAR_ADDITION_SUBTRACTION_AMBIGUITY = "\\" + PLUS_SIGN + MINUS_SIGN;
-    public final static String REGULAR_CONTAINS_BRACKET = ".*[" + LEFT_BRACKET + RIGHT_BRACKET + "].*";
+    //    public final static String REGULAR_CONTAINS_BRACKET = ".*?[^()][0-9 ]$";
     public final static String LOG_INFO_GET_FUNCTION = "Get a function component from the manager. => ";
     public final static String LOG_INFO_GET_COMPONENT = "Get a computing component from the manager. => ";
     public final static String LOG_INFO_FIND_FUNCTION = "Find and prepare the startup function: ";
@@ -48,4 +48,15 @@ public final class ConstantRegion {
     public final static String LOG_INFO_UNREGISTER_COMPONENT = "Preparing to unregister the compute component. Component name:";
     public final static String LOG_INFO_UNREGISTER_FUNCTION = "Prepare the logoff of a function. Function name:";
     public final static String LOG_INFO_SHARED_POOL = "Use shared pool data. The identity of the data is: ";
+//    /**
+//     * 合法字符，一个数学表达式的格式中可以包含的所有字符，包含这些字符外的字符，在格式化的时候，将直接判定为格式不正确
+//     */
+//    public static final HashSet<Character> LEGAL_CHARACTERS = new HashSet<>(
+//            Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+//                    ConstantRegion.EMPTY, ConstantRegion.PLUS_SIGN, ConstantRegion.MINUS_SIGN,
+//                    ConstantRegion.MULTIPLICATION_SIGN, ConstantRegion.DIVISION_SIGN, ConstantRegion.REMAINDER_SIGN,
+//                    ConstantRegion.LEFT_BRACKET, ConstantRegion.REMAINDER_SIGN, ConstantRegion.DECIMAL_POINT)
+//    );
+//
+//    public static final Has
 }

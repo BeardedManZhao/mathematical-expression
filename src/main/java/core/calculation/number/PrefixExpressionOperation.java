@@ -59,10 +59,32 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public void check(String string) throws WrongFormat {
-        if (string.matches(ConstantRegion.REGULAR_CONTAINS_BRACKET)) {
-            throw new WrongFormat("本组件只能解析不包含括号的表达式！！！\nThis component can only parse expressions without parentheses!!!\nWrong format => " + string);
+        int last = string.length() - 1;
+        char lastChar = string.charAt(last);
+        while (lastChar == ConstantRegion.EMPTY) {
+            lastChar = string.charAt(--last);
         }
-        super.check(string);
+        if (StrUtils.IsANumber(lastChar)) {
+            boolean is = false;
+            for (int i = 0; i < last; i++) {
+                char c = string.charAt(i);
+                if (c == ConstantRegion.LEFT_BRACKET || c == ConstantRegion.RIGHT_BRACKET) {
+                    throw new WrongFormat("组件" + this.Name + "只能解析无括号的数学表达式，请将表达式中的括号去除。\nThe component " + this.Name + " can only resolve mathematical expressions without parentheses. Please remove the parentheses from the expressions.");
+                }
+                if (!StrUtils.IsANumber(c) && c != ConstantRegion.DECIMAL_POINT && c != ConstantRegion.EMPTY) {
+                    if (!StrUtils.IsAnOperator(c)) {
+                        throw new WrongFormat("解析表达式的时候出现了未知符号!!!\nUnknown symbol appears when parsing expression!!!\nWrong format => [" + c + "] from " + string);
+                    } else {
+                        if (is) throw new WrongFormat("您的数学表达式不正确，缺失了一个运算数值或多出了一个运算符。ERROR => " + string);
+                        is = true;
+                        continue;
+                    }
+                }
+                is = false;
+            }
+        } else {
+            throw new WrongFormat("数学表达式的最后一个字符应是一个数值。\nThe last character of a mathematical expression should be a numeric value.\nERROR => " + lastChar);
+        }
     }
 
     /**

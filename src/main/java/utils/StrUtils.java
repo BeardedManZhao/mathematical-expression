@@ -94,30 +94,11 @@ public final class StrUtils {
      * @return 转换之后的数值
      */
     public static int charToInteger(char c) {
-        switch (c) {
-            case '1':
-                return 1;
-            case '2':
-                return 2;
-            case '3':
-                return 3;
-            case '4':
-                return 4;
-            case '5':
-                return 5;
-            case '6':
-                return 6;
-            case '7':
-                return 7;
-            case '8':
-                return 8;
-            case '9':
-                return 9;
-            case '0':
-                return 0;
-            default:
-                throw new RuntimeException("您在进行字符与数值之间的转换时，由于字符的不正确导致无法成功转换，错误字符：" + c +
-                        "\nWhen you are converting characters to numeric values, the conversion cannot be successful due to incorrect characters. Error characters:" + c);
+        if (StrUtils.IsANumber(c)) {
+            return c - 0x30;
+        } else {
+            throw new RuntimeException("您在进行字符与数值之间的转换时，由于字符的不正确导致无法成功转换，错误字符：" + c +
+                    "\nWhen you are converting characters to numeric values, the conversion cannot be successful due to incorrect characters. Error characters:" + c);
         }
     }
 
@@ -144,6 +125,16 @@ public final class StrUtils {
         return c == ConstantRegion.PLUS_SIGN || c == ConstantRegion.MINUS_SIGN ||
                 c == ConstantRegion.MULTIPLICATION_SIGN || c == ConstantRegion.DIVISION_SIGN ||
                 c == ConstantRegion.REMAINDER_SIGN;
+    }
+
+    /**
+     * 判断以恶字符是不是一个数值
+     *
+     * @param c 需要被判断的自读
+     * @return 如果是一个数值，这里返回True
+     */
+    public static boolean IsANumber(char c) {
+        return c >= 48 && c <= 57;
     }
 
     /**
