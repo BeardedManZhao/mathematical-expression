@@ -148,13 +148,15 @@ public final class NumberUtils {
      * @return 区间内元素之和
      */
     public static double sumOfRange(double start, double end, double step) {
+        if (step == 1) return sumOfRange(start, end);
         if (start == end) {
             return start;
         }
-        double v = Math.abs(end - start);
-        System.out.println(v);
-        end = end - v % step;
-        return ((start + end) * (v + 1)) / (2 * step);
+        double abs = Math.abs(end - start);
+        end -= abs % step;
+        abs = Math.abs(end - start);
+        double n = 1 + (abs / step);
+        return n * start + n * (n - 1) * (Math.max(step, 2)) / 2;
     }
 
     /**

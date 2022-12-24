@@ -481,6 +481,8 @@ public class MAIN {
         // Check the expression. The shared pool has been enabled by default since version 1.2! No need to set manually
         // fast.setStartSharedPool(true);
         fast.check(s);
+        //After version 1.2, the accumulation component supports setting step parameters, and since version 1.2.1, it officially supports the summation of step intervals
+        fast.step = 2;
         // Start calculation
         CalculationNumberResults calculation = fast.calculation(s);
         // Print calculation results
@@ -498,7 +500,7 @@ public class MAIN {
 
 ```
 计算层数：3
-计算结果：36.0
+计算结果：24.0
 计算来源：fastSumOfIntervalsBrackets
 ```
 
