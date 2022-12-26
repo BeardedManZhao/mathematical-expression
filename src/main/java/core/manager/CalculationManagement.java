@@ -28,13 +28,14 @@ public final class CalculationManagement {
      */
     public static final String PREFIX_EXPRESSION_OPERATION_NAME = "PrefixExpressionOperation";
     public static final String BRACKETS_CALCULATION_2_NAME = "BracketsCalculation2";
+    public static final Date START_DATE = new Date();
     private static final HashMap<String, Calculation> STRING_CALCULATION_HASH_MAP = new HashMap<>();
     private static final HashMap<String, Function> STRING_FUNCTION_HASH_MAP = new HashMap<>();
 
     static {
         LOGGER = LoggerFactory.getLogger("Calculation Management");
         LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
-        LOGGER.info("+ \tStart time " + new Date());
+        LOGGER.info("+ \tStart time " + START_DATE);
         LOGGER.info("+ \tversion: " + ConstantRegion.VERSION);
         LOGGER.info("+ \tCalculation component manager initialized successfully");
         LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/mathematical-expression.git");

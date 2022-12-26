@@ -4,6 +4,8 @@ import java.security.PrivilegedActionException;
 
 /**
  * 格式错误，在本框架中进行格式检查的时候，出现了格式类的错误的时候，将会抛出该异常
+ * <p>
+ * Format error. This exception will be thrown when a format class error occurs during the format check in this framework
  */
 public class WrongFormat extends Exception {
     /**

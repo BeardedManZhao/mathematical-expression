@@ -8,7 +8,7 @@ package core.manager;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.20F;
+    public final static float VERSION = 1.21F; // 更新版本，修复错误，于2022-12-26上传新版本
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';

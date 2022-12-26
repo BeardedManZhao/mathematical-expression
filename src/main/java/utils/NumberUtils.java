@@ -3,6 +3,9 @@ package utils;
 import core.manager.ConstantRegion;
 import exceptional.AbnormalOperation;
 
+/**
+ * 数值工具类
+ */
 public final class NumberUtils {
 
     /**
@@ -209,7 +212,7 @@ public final class NumberUtils {
                 // 将P1的数据插入到新数组中的指定位置
                 doubles[P1] = ts1[P1++];
             }
-            // 然后将剩余的一数组数据添加到ts1
+            // 然后将剩余的一数组数据添加到结果数组
             while (P1 < ts1.length) doubles[P1] = ts1[P1++];
         } else {
             // 如果第二个数组较长，这里就以第一个数组为迭代基准
@@ -219,7 +222,7 @@ public final class NumberUtils {
                 // 将P1的数据插入到新数组中的指定位置
                 doubles[P1] = ts1[P1++];
             }
-            // 然后将剩余的二数组数据添加到ts1
+            // 然后将剩余的二数组数据添加到结果数组
             while (P2 < ts2.length) doubles[NP2++] = ts2[P2++];
         }
         return doubles;

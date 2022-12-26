@@ -5,6 +5,9 @@ import exceptional.AbnormalOperation;
 
 import java.util.ArrayList;
 
+/**
+ * 字符串工具类
+ */
 public final class StrUtils {
     /**
      * 将一个字符串的子字符串提取出来

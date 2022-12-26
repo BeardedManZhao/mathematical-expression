@@ -11,7 +11,7 @@ import exceptional.WrongFormat;
 import java.util.Stack;
 
 /**
- * 一个支持函数运算操作的计算组件，在该组件中，支持使用函数进行表达式的运算，需要注意，本类由于是针对数值的计算，因此仅仅支持”ManyToOneNumberFunction“类型的函数进行计算，需要注意的是，在此类中的函数参数只能有一个！
+ * 一个支持函数运算操作的计算组件，在该组件中，支持使用函数进行表达式的运算，需要注意，本类由于是针对数值的计算，因此仅仅支持” ManyToOneNumberFunction “类型的函数进行计算，需要注意的是，在此类中的函数参数只能有一个！
  * <p>
  * A calculation component that supports function operation. In this component, it supports the operation of expressions using functions. Note that this class only supports the calculation of functions of the type "ManyToOneNumberFunction" because it is for numerical calculation
  * <p>

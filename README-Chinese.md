@@ -461,6 +461,54 @@ public class MAIN {
 计算层数：3	计算结果：24.0	计算来源：fast
 ```
 
+### 快速区间累乘计算组件（基于括号表达式）
+
+- 类组件：core.calculation.number.FastMultiplyOfIntervalsBrackets
+- 介绍 1.2版本的新产物，区间快速累乘组件，是针对一个等差为n的区间进行所有元素累乘的快速组件，它将一个区间在逻辑上模拟成为一个数学数列，并通过求和公式进行快速的累乘。
+
+  该组件实现了共享池计算功能，将检查，计算，以及上一次结果记录实现，能够加快计算速度，具体API调用如下所示。
+
+```java
+package utils;
+
+import core.calculation.number.FastMultiplyOfIntervalsBrackets;
+import core.container.CalculationNumberResults;
+import exceptional.WrongFormat;
+
+/**
+ * 测试用类
+ */
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 获取到区间求和快计算组件
+        FastMultiplyOfIntervalsBrackets fast = FastMultiplyOfIntervalsBrackets.getInstance("fast");
+        // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 乘到 13 = (20-(5+2)) 默认等差为2
+        // 结果应为 11 * 13 = 143
+        String s = "1 + 10, 20 - (5 + 2)";
+        // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
+        // fast.setStartSharedPool(true);
+        fast.check(s);
+        // 从1.2版本之后，累加组件支持设置步长参数，1.2.1版本中开始正式支持步长区间的求和
+        fast.step = 2;
+        // 开始计算
+        CalculationNumberResults calculation = fast.calculation(s);
+        // 打印计算结果
+        System.out.println(
+                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                        "\t计算来源：" + calculation.getCalculationSourceName()
+        );
+    }
+}
+```
+
+- 运行结果
+
+  从上面代码中我们可以看到，快速区间求和计算的公式由被逗号分割的两个括号表达式组成
+
+```
+计算层数：3	计算结果：143.0	计算来源：fast
+```
+
 <hr>
 
 更多信息

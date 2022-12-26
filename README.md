@@ -454,7 +454,7 @@ public class MAIN {
 
 ### Fast interval sum calculation component (based on parenthesis expression)
 
-- Full class name：mathematical_expression/core/calculation/number/fastSumOfIntervalsBrackets.py
+- Full class name：core.calculation.number.FastSumOfIntervalsBrackets
 - introduce
 
   The new product of version 1.15, the interval fast sum component, is a fast component that sums all elements of an
@@ -481,7 +481,7 @@ public class MAIN {
         // Check the expression. The shared pool has been enabled by default since version 1.2! No need to set manually
         // fast.setStartSharedPool(true);
         fast.check(s);
-        //After version 1.2, the accumulation component supports setting step parameters, and since version 1.2.1, it officially supports the summation of step intervals
+        // After version 1.2, the accumulation component supports setting step parameters, and since version 1.2.1, it officially supports the summation of step intervals
         fast.step = 2;
         // Start calculation
         CalculationNumberResults calculation = fast.calculation(s);
@@ -499,9 +499,58 @@ public class MAIN {
   从上面代码中我们可以看到，快速区间求和计算的公式由被逗号分割的两个括号表达式组成
 
 ```
-计算层数：3
-计算结果：24.0
-计算来源：fastSumOfIntervalsBrackets
+计算层数：3	计算结果：24.0	计算来源：fast
+```
+
+### Fast interval cumulative calculation component (based on parenthesis expression)
+
+- Full class name：core.calculation.number.FastMultiplyOfIntervalsBrackets
+- Introduction
+
+  A new product of version 1.1.5, the interval fast accumulation component, is a fast component that accumulates all
+  elements of an interval with an equal difference of n. It logically simulates an interval into a mathematical sequence
+  and performs fast accumulation through the sum formula.
+
+  This component implements the shared pool computing function. It will check, calculate, and record the results of the
+  last time, which can speed up computing. The specific API calls are shown below.
+
+```java
+package utils;
+
+import core.calculation.number.FastMultiplyOfIntervalsBrackets;
+import core.container.CalculationNumberResults;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // Get the quick Multiply calculation component of the interval
+        FastMultiplyOfIntervalsBrackets fast = FastMultiplyOfIntervalsBrackets.getInstance("fast");
+        // Build an expression to be calculated. 
+        // The following expression indicates that the result of multiplying 11=(1+10) by 13=(20 - (5+2)) should be 143
+        // The result should be 11 * 13=143
+        String s = "1 + 10, 20 - (5 + 2)";
+        // Check the expression. The shared pool has been enabled by default since version 1.2! No need to set manually
+        // fast.setStartSharedPool(true);
+        fast.check(s);
+        // After version 1.2, the accumulation component supports setting step parameters, and since version 1.2.1, it officially supports the summation of step intervals
+        fast.step = 2;
+        // Start calculation
+        CalculationNumberResults calculation = fast.calculation(s);
+        // Print calculation results
+        System.out.println(
+                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                        "\t计算来源：" + calculation.getCalculationSourceName()
+        );
+    }
+}
+```
+
+- 运行结果
+
+  从上面代码中我们可以看到，快速区间求和计算的公式由被逗号分割的两个括号表达式组成
+
+```
+计算层数：3	计算结果：143.0	计算来源：fast
 ```
 
 <hr>

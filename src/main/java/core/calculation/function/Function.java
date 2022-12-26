@@ -10,6 +10,8 @@ package core.calculation.function;
 public interface Function {
     /**
      * @return 函数的名称，每一个函数都必须要设置一个名称，便于在公式中使用函数
+     * <p>
+     * The name of a function. Each function must have a name set to facilitate the use of functions in formulas
      */
     String getName();
 }
