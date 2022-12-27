@@ -13,7 +13,7 @@ public class MAIN {
         FastMultiplyOfIntervalsBrackets fast = FastMultiplyOfIntervalsBrackets.getInstance("fast");
         // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 乘到 13 = (20-(5+2)) 默认等差为2
         // 结果应为 11 * 13 = 143
-        String s = "1 + 10, 20 - (5 + 2)";
+        String s = "1 + 10, 20 +- (5 + 2)";
         // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
         // fast.setStartSharedPool(true);
         fast.check(s);

@@ -30,6 +30,7 @@ public final class ConstantRegion {
     public final static String EQUAL_SIGN1 = "=";
     public final static String EQUAL_SIGN2 = EQUAL_SIGN1 + EQUAL_SIGN1;
     public final static String NEGATE_SIGN = "!";
+    public final static String MINUS_SIGN_STR = String.valueOf(ConstantRegion.MINUS_SIGN);
     public final static String NOT_EQUAL_SIGN1 = NEGATE_SIGN + EQUAL_SIGN1;
     public final static String NOT_EQUAL_SIGN2 = LESS_THAN_SIGN + GREATER_THAN_SIGN;
     public final static String GREATER_THAN_OR_EQUAL_TO_SIGN = GREATER_THAN_SIGN + EQUAL_SIGN1;

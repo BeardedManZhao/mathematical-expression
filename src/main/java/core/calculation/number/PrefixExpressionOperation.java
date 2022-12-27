@@ -10,6 +10,7 @@ import utils.NumberUtils;
 import utils.StrUtils;
 
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 /**
  * 解析一个无括号的数学计算公式的组件，针对不含括号的计算公式，该组件可以提供计算支持
@@ -19,6 +20,11 @@ import java.util.Stack;
  * @author zhao
  */
 public class PrefixExpressionOperation extends NumberCalculation {
+
+    /**
+     * 正负号，用于将所有的 +- 替换成为 -
+     */
+    protected final static Pattern SIGN_PATTERN = Pattern.compile(ConstantRegion.REGULAR_ADDITION_SUBTRACTION_AMBIGUITY);
 
     protected PrefixExpressionOperation(String name) {
         super(name);
@@ -75,7 +81,8 @@ public class PrefixExpressionOperation extends NumberCalculation {
                     if (!StrUtils.IsAnOperator(c)) {
                         throw new WrongFormat("解析表达式的时候出现了未知符号!!!\nUnknown symbol appears when parsing expression!!!\nWrong format => [" + c + "] from " + string);
                     } else {
-                        if (is) throw new WrongFormat("您的数学表达式不正确，缺失了一个运算数值或多出了一个运算符。ERROR => " + string);
+                        if (c != ConstantRegion.MINUS_SIGN && is)
+                            throw new WrongFormat("您的数学表达式不正确，缺失了一个运算数值或多出了一个运算符。ERROR => " + string);
                         is = true;
                         continue;
                     }
@@ -95,10 +102,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll(
-                ConstantRegion.REGULAR_ADDITION_SUBTRACTION_AMBIGUITY,
-                String.valueOf(ConstantRegion.MINUS_SIGN)
-        ) + ConstantRegion.PLUS_SIGN + '0';
+        return SIGN_PATTERN.matcher(string).replaceAll(ConstantRegion.MINUS_SIGN_STR) + ConstantRegion.PLUS_SIGN + '0';
     }
 
     /**

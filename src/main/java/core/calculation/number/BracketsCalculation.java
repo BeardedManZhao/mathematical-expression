@@ -5,6 +5,8 @@ import exceptional.AbnormalOperation;
 import utils.NumberUtils;
 import utils.StrUtils;
 
+import java.util.regex.Pattern;
+
 /**
  * 括号解析算法计算一个公式的计算组件的父类，其中的计算具体实现是一个抽象，等待实现
  * <p>
@@ -13,6 +15,12 @@ import utils.StrUtils;
  * @author zhao
  */
 public abstract class BracketsCalculation extends NumberCalculation {
+
+    /**
+     * 正则表达式对象，用于将所有的不可见字符删除
+     */
+    protected final static Pattern ALL_INVISIBLE_CHARACTERS_PATTERN = Pattern.compile("\\s+");
+
     protected BracketsCalculation(String name) {
         super(name);
     }
@@ -27,7 +35,7 @@ public abstract class BracketsCalculation extends NumberCalculation {
      */
     @Override
     public String formatStr(String string) {
-        return string.replaceAll("\\s+", ConstantRegion.NO_CHAR);
+        return ALL_INVISIBLE_CHARACTERS_PATTERN.matcher(string).replaceAll(ConstantRegion.NO_CHAR);
     }
 
     /**
