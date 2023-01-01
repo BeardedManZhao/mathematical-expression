@@ -161,7 +161,7 @@ public class PrefixExpressionOperation extends NumberCalculation {
                 }
                 // 清理所有的字符缓冲
                 stringBuilder.delete(0, stringBuilder.length());
-            } else if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' || c == ConstantRegion.DECIMAL_POINT) {
+            } else if (c == ConstantRegion.DECIMAL_POINT || StrUtils.IsANumber(c)) {
                 // 如果是数值的某一位，就将数值存储到变量中
                 stringBuilder.append(c);
             }

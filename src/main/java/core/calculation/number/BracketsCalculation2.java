@@ -73,7 +73,7 @@ public class BracketsCalculation2 extends BracketsCalculation {
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
         int length = Formula.length();
         // 公式存储区
-        final StringBuilder stringBuilder = new StringBuilder(length);
+        final StringBuilder stringBuilder = new StringBuilder(length + 16);
         // 括号内数据的起始索引
         int start = 0;
         boolean setok = false;

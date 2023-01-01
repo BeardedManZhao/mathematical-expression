@@ -82,7 +82,7 @@
         <connection>https://github.com/BeardedManZhao/mathematical-expression.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:BeardedManZhao/mathematical-expression.git
         </developerConnection>
-        <url>https://github.com/BeardedManZhao/mathematical-expressionr</url>
+        <url>https://github.com/BeardedManZhao/mathematical-expression</url>
     </scm>
 
     <profiles>

@@ -9,6 +9,8 @@ import exceptional.WrongFormat;
 import utils.StrUtils;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 累加计算公式解析组件，支持使用未知形参，以及其区间作为公式进行累加加过的计算，例如传入公式 “n [0, 10, 2] (1 + n * n)” 就是 (1 + 0 * 0) + (1 + 2 * 2) + ... + (1 + 10 * 10)
@@ -18,6 +20,9 @@ import java.util.ArrayList;
  * @author zhao
  */
 public class CumulativeCalculation extends BracketsCalculation2 {
+
+    protected final static Pattern INTERVAL_EXTRACTION_PATTERN = Pattern.compile("[\\[\\]]");
+
     protected CumulativeCalculation(String name) {
         super(name);
     }
@@ -59,7 +64,7 @@ public class CumulativeCalculation extends BracketsCalculation2 {
     @Override
     public void check(String string) throws WrongFormat {
         // 判断是否存在区间
-        final String[] split = string.trim().split("[\\[\\]]");
+        final String[] split = INTERVAL_EXTRACTION_PATTERN.split(string);
         if (split.length == 3) {
             // 如果满足上述条件代表有累加符号 有区间 有公式 所以现在判断区间内是否缺少东西
             if (StrUtils.splitByChar(split[1], ConstantRegion.COMMA).size() == 3) {
@@ -83,9 +88,9 @@ public class CumulativeCalculation extends BracketsCalculation2 {
      */
     @Override
     public String formatStr(String string) {
-        final String[] split = string.trim().split("[\\[\\]]");
+        final String[] split = INTERVAL_EXTRACTION_PATTERN.split(string);
         // 获取到累加所属符号
-        final String f = split[0];
+        final Pattern pattern = Pattern.compile(split[0]);
         // 获取到区间的起始，终止，等差值
         final ArrayList<String> arrayList = StrUtils.splitByChar(split[1], ConstantRegion.COMMA);
         final double start = StrUtils.stringToDouble(arrayList.get(0));
@@ -93,13 +98,14 @@ public class CumulativeCalculation extends BracketsCalculation2 {
         final double equalDifference = StrUtils.stringToDouble(arrayList.get(2));
         // 获取公式位
         final String format = split[2];
+        final Matcher matcher = pattern.matcher(format);
         // 开始构造累加公式
         final StringBuilder stringBuilder = new StringBuilder((int) (format.length() * Math.abs(end - start)) + 1);
         for (double v = start; v <= end; v += equalDifference) {
             // 将指定位置的累加符号，变更为当前数值
             stringBuilder
                     .append(ConstantRegion.LEFT_BRACKET)
-                    .append(format.replaceAll(f, Double.toString(v)))
+                    .append(matcher.replaceAll(Double.toString(v)))
                     .append(ConstantRegion.RIGHT_BRACKET)
                     .append(ConstantRegion.PLUS_SIGN);
         }
