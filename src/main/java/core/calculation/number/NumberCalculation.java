@@ -105,7 +105,7 @@ public abstract class NumberCalculation implements Calculation {
                 if (!StrUtils.IsAnOperator(c)) {
                     throw new WrongFormat("解析表达式的时候出现了未知符号!!!\nUnknown symbol appears when parsing expression!!!\nWrong format => [" + c + "] from " + string);
                 } else {
-                    if (c != ConstantRegion.MINUS_SIGN && is)
+                    if (is && c != ConstantRegion.MINUS_SIGN && c != ConstantRegion.PLUS_SIGN)
                         throw new WrongFormat("您的数学表达式不正确，缺失了一个运算数值或多出了一个运算符。ERROR => " + string);
                     is = true;
                     continue;

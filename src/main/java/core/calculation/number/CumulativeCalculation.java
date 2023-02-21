@@ -109,6 +109,7 @@ public class CumulativeCalculation extends BracketsCalculation2 {
                     .append(ConstantRegion.RIGHT_BRACKET)
                     .append(ConstantRegion.PLUS_SIGN);
         }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         return super.formatStr(stringBuilder.toString());
     }
 

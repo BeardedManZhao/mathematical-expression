@@ -1,30 +1,40 @@
 package utils;
 
-import core.calculation.number.FastMultiplyOfIntervalsBrackets;
+import core.Mathematical_Expression;
+import core.calculation.function.ManyToOneNumberFunction;
+import core.calculation.number.NumberCalculation;
 import core.container.CalculationNumberResults;
 import exceptional.WrongFormat;
 
-/**
- * 测试用类
- */
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
-        // 获取到区间求和快计算组件
-        FastMultiplyOfIntervalsBrackets fast = FastMultiplyOfIntervalsBrackets.getInstance("fast");
-        // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 乘到 13 = (20-(5+2)) 默认等差为2
-        // 结果应为 11 * 13 = 143
-        String s = "1 + 10, 20 +- (5 + 2)";
-        // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
-        // fast.setStartSharedPool(true);
-        fast.check(s);
-        // 从1.2版本之后，累加组件支持设置步长参数，1.2.1版本中开始正式支持步长区间的求和
-        fast.step = 2;
-        // 开始计算
-        CalculationNumberResults calculation = fast.calculation(s);
-        // 打印计算结果
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
-                        "\t计算来源：" + calculation.getCalculationSourceName()
+        // 使用门户类获取到一个函数表达式计算组件
+        NumberCalculation fun = Mathematical_Expression.getInstance(
+                Mathematical_Expression.FunctionFormulaCalculation2,
+                "fun"
         );
+        // 实现一个 sum 函数 注册到管理者中
+        ManyToOneNumberFunction sum = new ManyToOneNumberFunction("sum") {
+            @Override
+            public double run(double... numbers) {
+                double res = 0;
+                for (double number : numbers) {
+                    res += number;
+                }
+                return res;
+            }
+        };
+        boolean isOk = Mathematical_Expression.register_function(sum);
+        if (isOk) {
+            // 生成一个需要被计算的函数数学表达式
+            String s = "1 + 2 + sum(10, 20, 30) * 2";
+            // 使用函数表达式计算组件检查与计算表达式
+            fun.check(s);
+            CalculationNumberResults calculation = fun.calculation(s);
+            // 打印结果数据
+            System.out.println(calculation.getResult());
+            // 取消函数的注册
+            Mathematical_Expression.unregister_function(sum);
+        }
     }
 }
