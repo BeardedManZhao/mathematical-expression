@@ -33,7 +33,7 @@ public enum Mathematical_Expression {
     }
 
     public static boolean unregister_function(Function function) {
-        return CalculationManagement.unregisterF(function.getName());
+        return unregister_function(function.getName());
     }
 
     /**

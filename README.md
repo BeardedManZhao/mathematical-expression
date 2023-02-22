@@ -35,6 +35,59 @@ dependencies {
 
 ## Framework
 
+### Obtain and calculate the calculation components directly through the mathematical-expression library
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.number.NumberCalculation;
+import core.container.CalculationNumberResults;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // Build two expressions to be evaluated
+        String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
+        // Obtain the calculation component for calculating the expression without parentheses through the library
+        NumberCalculation prefixExpressionOperation = Mathematical_Expression.getInstance(
+                Mathematical_Expression.PrefixExpressionOperation, "prefixExpressionOperation"
+        );
+        // Obtain the calculation component for calculating bracketed expressions through the library
+        NumberCalculation bracketsCalculation2 = Mathematical_Expression.getInstance(
+                Mathematical_Expression.BracketsCalculation2, "bracketsCalculation2"
+        );
+        // Pass the first formula to the calculation component of an expression without parentheses
+        prefixExpressionOperation.check(s1);
+        CalculationNumberResults calculation1 = prefixExpressionOperation.calculation(s1);
+        // Print the calculation result of the first expression
+        System.out.println("计算层数：" + calculation1.getResultLayers() + "\n计算结果：" + calculation1.getResult() +
+                "\n计算来源：" + calculation1.getCalculationSourceName());
+
+
+        // Pass the second formula to the calculation component of the parenthesis expression
+        bracketsCalculation2.check(s2);
+        CalculationNumberResults calculation2 = bracketsCalculation2.calculation(s2);
+        // Print the calculation result of the second expression
+        System.out.println("计算层数：" + calculation2.getResultLayers() + "\n计算结果：" + calculation2.getResult() +
+                "\n计算来源：" + calculation2.getCalculationSourceName());
+    }
+}
+```
+
+- 运行结果
+
+  通过导入包可以获取到各个计算组件的模块对象，能够有效的减少代码导包代码。
+
+```
+计算层数：1
+计算结果：23.0
+计算来源：prefixExpressionOperation
+计算层数：2
+计算结果：15.0
+计算来源：bracketsCalculation2
+```
+
 ### Calculation Manager
 
 - Full class name：core.manager.CalculationManagement

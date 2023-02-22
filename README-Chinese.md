@@ -31,6 +31,59 @@ dependencies {
 
 ## 框架架构
 
+### 通过 mathematical-expression 库直接获取到计算组件并进行计算
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.number.NumberCalculation;
+import core.container.CalculationNumberResults;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 构建需要计算的两种表达式
+        String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
+        // 通过库获取到计算无括号表达式的计算组件
+        NumberCalculation prefixExpressionOperation = Mathematical_Expression.getInstance(
+                Mathematical_Expression.PrefixExpressionOperation, "prefixExpressionOperation"
+        );
+        // 通过库获取到计算有括号表达式的计算组件
+        NumberCalculation bracketsCalculation2 = Mathematical_Expression.getInstance(
+                Mathematical_Expression.BracketsCalculation2, "bracketsCalculation2"
+        );
+        // 将第一个公式传递给无括号表达式的计算组件
+        prefixExpressionOperation.check(s1);
+        CalculationNumberResults calculation1 = prefixExpressionOperation.calculation(s1);
+        // 打印出第一个表达式的计算结果
+        System.out.println("计算层数：" + calculation1.getResultLayers() + "\n计算结果：" + calculation1.getResult() +
+                "\n计算来源：" + calculation1.getCalculationSourceName());
+
+
+        // 将第二个公式传递给无括号表达式的计算组件
+        bracketsCalculation2.check(s2);
+        CalculationNumberResults calculation2 = bracketsCalculation2.calculation(s2);
+        // 打印出第二个表达式的计算结果
+        System.out.println("计算层数：" + calculation2.getResultLayers() + "\n计算结果：" + calculation2.getResult() +
+                "\n计算来源：" + calculation2.getCalculationSourceName());
+    }
+}
+```
+
+- 运行结果
+
+  通过导入包可以获取到各个计算组件的模块对象，能够有效的减少代码导包代码。
+
+```
+计算层数：1
+计算结果：23.0
+计算来源：prefixExpressionOperation
+计算层数：2
+计算结果：15.0
+计算来源：bracketsCalculation2
+```
+
 ### 计算管理者
 
 - 类组件：core.manager.CalculationManagement
