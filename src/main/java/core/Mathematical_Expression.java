@@ -15,10 +15,10 @@ import exceptional.ExtractException;
  */
 public enum Mathematical_Expression {
 
-    BracketsCalculation2, CumulativeCalculation,
-    FastMultiplyOfIntervalsBrackets, FastSumOfIntervalsBrackets,
-    FunctionFormulaCalculation, FunctionFormulaCalculation2,
-    PrefixExpressionOperation;
+    bracketsCalculation2, cumulativeCalculation,
+    fastMultiplyOfIntervalsBrackets, fastSumOfIntervalsBrackets,
+    functionFormulaCalculation, functionFormulaCalculation2,
+    prefixExpressionOperation;
 
     public static NumberCalculation getInstance(Mathematical_Expression calculation) {
         return getInstance(calculation, calculation.toString());
@@ -51,19 +51,19 @@ public enum Mathematical_Expression {
      */
     public static NumberCalculation getInstance(Mathematical_Expression calculation, String calculationName) {
         switch (calculation) {
-            case BracketsCalculation2:
+            case bracketsCalculation2:
                 return core.calculation.number.BracketsCalculation2.getInstance(calculationName);
-            case CumulativeCalculation:
+            case cumulativeCalculation:
                 return core.calculation.number.CumulativeCalculation.getInstance(calculationName);
-            case FastMultiplyOfIntervalsBrackets:
+            case fastMultiplyOfIntervalsBrackets:
                 return core.calculation.number.FastMultiplyOfIntervalsBrackets.getInstance(calculationName);
-            case FastSumOfIntervalsBrackets:
+            case fastSumOfIntervalsBrackets:
                 return core.calculation.number.FastSumOfIntervalsBrackets.getInstance(calculationName);
-            case FunctionFormulaCalculation:
+            case functionFormulaCalculation:
                 return core.calculation.number.FunctionFormulaCalculation.getInstance(calculationName);
-            case FunctionFormulaCalculation2:
+            case functionFormulaCalculation2:
                 return core.calculation.number.FunctionFormulaCalculation2.getInstance(calculationName);
-            case PrefixExpressionOperation:
+            case prefixExpressionOperation:
                 return core.calculation.number.PrefixExpressionOperation.getInstance(calculationName);
             default:
                 throw new ExtractException("UNKnow " + calculation);

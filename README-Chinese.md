@@ -47,11 +47,11 @@ public class MAIN {
         String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
         // 通过库获取到计算无括号表达式的计算组件
         NumberCalculation prefixExpressionOperation = Mathematical_Expression.getInstance(
-                Mathematical_Expression.PrefixExpressionOperation, "prefixExpressionOperation"
+                Mathematical_Expression.prefixExpressionOperation, "prefixExpressionOperation"
         );
         // 通过库获取到计算有括号表达式的计算组件
         NumberCalculation bracketsCalculation2 = Mathematical_Expression.getInstance(
-                Mathematical_Expression.BracketsCalculation2, "bracketsCalculation2"
+                Mathematical_Expression.bracketsCalculation2, "bracketsCalculation2"
         );
         // 将第一个公式传递给无括号表达式的计算组件
         prefixExpressionOperation.check(s1);

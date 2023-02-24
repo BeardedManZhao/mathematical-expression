@@ -51,11 +51,11 @@ public class MAIN {
         String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
         // Obtain the calculation component for calculating the expression without parentheses through the library
         NumberCalculation prefixExpressionOperation = Mathematical_Expression.getInstance(
-                Mathematical_Expression.PrefixExpressionOperation, "prefixExpressionOperation"
+                Mathematical_Expression.prefixExpressionOperation, "prefixExpressionOperation"
         );
         // Obtain the calculation component for calculating bracketed expressions through the library
         NumberCalculation bracketsCalculation2 = Mathematical_Expression.getInstance(
-                Mathematical_Expression.BracketsCalculation2, "bracketsCalculation2"
+                Mathematical_Expression.bracketsCalculation2, "bracketsCalculation2"
         );
         // Pass the first formula to the calculation component of an expression without parentheses
         prefixExpressionOperation.check(s1);

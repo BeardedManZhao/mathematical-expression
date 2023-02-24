@@ -27,7 +27,7 @@ public class MAIN {
     public static void main(String[] args) throws WrongFormat {
         // 使用门户类获取到一个函数表达式计算组件
         NumberCalculation fun = Mathematical_Expression.getInstance(
-                Mathematical_Expression.BracketsCalculation2,
+                Mathematical_Expression.bracketsCalculation2,
                 "fun"
         );
         // 实现一个 sum 函数 注册到管理者中
