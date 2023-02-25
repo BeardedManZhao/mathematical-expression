@@ -156,7 +156,7 @@ public final class CalculationManagement {
 
     /**
      * 将一个计算组件取消注册，如果取消注册成功会返回false 请注意，不建议注销所有被依赖的组件
-     * Cancel the registration of a computing component. If the registration is cancelled successfully, false will be returned. Please note that it is not recommended to unregister all dependent components
+     * Cancel the registration of a computing component. If the registration is cancelled successfully, false will be returned. Please note that it is not recommended unregistering all dependent components
      *
      * @param CalculationName 需要取消注册的计算组件的名称
      *                        <p>

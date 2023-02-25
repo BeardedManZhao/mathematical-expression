@@ -20,18 +20,66 @@ public enum Mathematical_Expression {
     functionFormulaCalculation, functionFormulaCalculation2,
     prefixExpressionOperation;
 
+    /**
+     * 使用枚举的方式获取到一个计算组件对象。
+     * <p>
+     * Obtain a calculated component object by enumerating.
+     *
+     * @param calculation 计算组件对象的类型。您可以直接传递枚举累中的各个选项选择出您需要使用的计算组件。
+     *                    <p>
+     *                    Calculate the type of component object. You can directly pass the options in the enumeration to select the calculation components you need to use.
+     * @return 计算组件对象。
+     * <p>
+     * Calculate Component Object.
+     */
     public static NumberCalculation getInstance(Mathematical_Expression calculation) {
         return getInstance(calculation, calculation.toString());
     }
 
+    /**
+     * 注册一个函数到函数库中，使得所有需要使用函数计算的组件都可以获取到函数对象的数据类型。
+     * <p>
+     * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
+     *
+     * @param function 函数实现类所示例化出来的对象。
+     *                 <p>
+     *                 The object instantiated by the function implementation class.
+     * @return 如果返回true 则代表函数注册操作成功!!!
+     * <p>
+     * If true is returned, the function registration operation is successful!!!
+     */
     public static boolean register_function(Function function) {
         return CalculationManagement.register(function);
     }
 
+    /**
+     * 将一个已经注册的函数从函数库中注销注册，释放其所占用的内存空间。
+     * <p>
+     * Unregister a registered function from the function library to free the memory space it occupies.
+     *
+     * @param functionName 函数的名称。
+     *                     <p>
+     *                     The name of the function.
+     * @return 如果返回 true 代表函数注销的操作执行成功!!!
+     * <p>
+     * If true is returned, the function logout operation is successful!!!
+     */
     public static boolean unregister_function(String functionName) {
         return CalculationManagement.unregisterF(functionName);
     }
 
+    /**
+     * 将一个已经注册的函数从函数库中注销注册，释放其所占用的内存空间。
+     * <p>
+     * Unregister a registered function from the function library to free the memory space it occupies.
+     *
+     * @param function 函数的实现类对象。
+     *                 <p>
+     *                 The implementation class object of the function.
+     * @return 如果返回 true 代表函数注销的操作执行成功!!!
+     * <p>
+     * If true is returned, the function logout operation is successful!!!
+     */
     public static boolean unregister_function(Function function) {
         return unregister_function(function.getName());
     }

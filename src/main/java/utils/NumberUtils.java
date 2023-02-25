@@ -23,7 +23,9 @@ public final class NumberUtils {
      *
      * @param number 需要被计算的数值
      * @return 数值的 1/10倍
+     * @deprecated 项目中未使用过的函数，未来可能会移除
      */
+    @Deprecated
     public static int divideByTen(int number) {
         return (number >> 1) / 5;
     }
@@ -74,7 +76,7 @@ public final class NumberUtils {
      *
      * @param s1 操作符1
      * @param s2 操作符2
-     * @return s1 是否小于 s2
+     * @return s1操作符的优先级 是否小于 s2操作符的优先级
      */
     public static boolean PriorityComparison(char s1, char s2) {
         return (s1 == ConstantRegion.PLUS_SIGN || s1 == ConstantRegion.MINUS_SIGN) &&
@@ -120,7 +122,9 @@ public final class NumberUtils {
      * @param start 区间起始数值
      * @param end   区间终止数值
      * @return 区间内所有数值的累加结果
+     * @deprecated 项目中未使用过的函数，未来可能会移除
      */
+    @Deprecated
     public static int sumOfRange(int start, int end) {
         if (start == end) {
             return start;

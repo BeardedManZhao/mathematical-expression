@@ -16,7 +16,9 @@ public final class StrUtils {
      * @param PositiveSequenceFirst 正序开始的第一个字符
      * @param ReverseOrderFirst     倒叙开始的第一个字符
      * @return 正第一个字符与倒第一字符之间的字符串数据
+     * @deprecated 项目中未使用过的函数，未来可能会移除
      */
+    @Deprecated
     public static String getSubinterval(String string, char PositiveSequenceFirst, char ReverseOrderFirst) {
         StringBuilder stringBuilder = new StringBuilder();
         char[] chars = string.toCharArray();

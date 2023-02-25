@@ -8,7 +8,7 @@ package core.manager;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.21F; // 更新版本，修复错误，于2022-12-26上传新版本
+    public final static float VERSION = 1.22F; // 更新版本，修复错误，于2023-02-25上传新版本
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -40,7 +40,6 @@ public final class ConstantRegion {
             "|[" + LESS_THAN_SIGN + EQUAL_SIGN1 + GREATER_THAN_SIGN + "]";
     public final static String REGULAR_PURE_LETTER = "[a-zA-Z]+";
     public final static String REGULAR_ADDITION_SUBTRACTION_AMBIGUITY = "\\" + PLUS_SIGN + MINUS_SIGN;
-    //    public final static String REGULAR_CONTAINS_BRACKET = ".*?[^()][0-9 ]$";
     public final static String LOG_INFO_GET_FUNCTION = "Get a function component from the manager. => ";
     public final static String LOG_INFO_GET_COMPONENT = "Get a computing component from the manager. => ";
     public final static String LOG_INFO_FIND_FUNCTION = "Find and prepare the startup function: ";

@@ -1,35 +1,50 @@
 package utils;
 
 import core.Mathematical_Expression;
+import core.calculation.function.ManyToOneNumberFunction;
 import core.calculation.number.NumberCalculation;
 import core.container.CalculationNumberResults;
+import core.manager.CalculationManagement;
 import exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
-        // 构建需要计算的两种表达式
-        String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
-        // 通过库获取到计算无括号表达式的计算组件
-        NumberCalculation prefixExpressionOperation = Mathematical_Expression.getInstance(
-                Mathematical_Expression.prefixExpressionOperation, "prefixExpressionOperation"
-        );
-        // 通过库获取到计算有括号表达式的计算组件
-        NumberCalculation bracketsCalculation2 = Mathematical_Expression.getInstance(
-                Mathematical_Expression.bracketsCalculation2, "bracketsCalculation2"
-        );
-        // 将第一个公式传递给无括号表达式的计算组件
-        prefixExpressionOperation.check(s1);
-        CalculationNumberResults calculation1 = prefixExpressionOperation.calculation(s1);
-        // 打印出第一个表达式的计算结果
-        System.out.println("计算层数：" + calculation1.getResultLayers() + "\n计算结果：" + calculation1.getResult() +
-                "\n计算来源：" + calculation1.getCalculationSourceName());
-
-
-        // 将第二个公式传递给无括号表达式的计算组件
-        bracketsCalculation2.check(s2);
-        CalculationNumberResults calculation2 = bracketsCalculation2.calculation(s2);
-        // 打印出第二个表达式的计算结果
-        System.out.println("计算层数：" + calculation2.getResultLayers() + "\n计算结果：" + calculation2.getResult() +
-                "\n计算来源：" + calculation2.getCalculationSourceName());
+        System.out.println("这是一个示例代码样本！");
+        // 构建一个需要被计算的函数表达式
+        String s = "1 + 3 + (sum(1, 2, 3, 4, 9 - 1) - 8) + 1";
+        // 实现 sum 函数 并注册到管理者中
+        ManyToOneNumberFunction sumFunction = new ManyToOneNumberFunction("sum") {
+            @Override
+            public double run(double... numbers) {
+                double res = 0;
+                for (double number : numbers) {
+                    res += number;
+                }
+                return res;
+            }
+        };
+        // 将函数注册
+        boolean isOk = Mathematical_Expression.register_function(sumFunction);
+        if (isOk) {
+            // 获取到多参数函数计算组件
+            NumberCalculation fun = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2, "fun");
+            // 检查数学表达式是否有错误
+            fun.check(s);
+            // 计算出结果并打印结果数据
+            CalculationNumberResults results = fun.calculation(s);
+            System.out.println(results);
+            // 取消函数注册
+            if (Mathematical_Expression.unregister_function("sum")) {
+                System.out.println("oK!!!");
+            }
+            // 也可以使用函数对象取消函数注册
+            if (Mathematical_Expression.unregister_function(sumFunction)) {
+                System.out.println("oK!!!");
+            }
+            // 取消计算组件的实例化（可省略）
+            if (CalculationManagement.unregister(fun.getName())) {
+                System.out.println("unregister ok!!!");
+            }
+        }
     }
 }

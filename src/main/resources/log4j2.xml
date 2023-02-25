@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!--
+<?xml version="1.0" encoding="UTF-8" ?><!--
     status="warn" 日志框架本身的输出日志级别，可以修改为debug
     monitorInterval="5" 自动加载配置文件的间隔时间，不低于 5秒；生产环境中修改配置文件，是热更新，无需重启应用
  -->
-<configuration status="warn" monitorInterval="5">
+<configuration monitorInterval="5" status="warn">
     <!--
     集中配置属性进行管理
     使用时通过:${name}
@@ -16,7 +15,7 @@
     <Appenders>
         <!-- 控制台输出 appender，SYSTEM_OUT输出黑色，SYSTEM_ERR输出红色 -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%p][%c][%d{yy-MM-dd:hh}]] : %m%n"/>
+            <PatternLayout pattern="[%p][%c][%d{yy-MM-dd:hh}]] : %m%n" />
         </Console>
 
         <!--        &lt;!&ndash; 日志文件输出 appender &ndash;&gt;-->
@@ -26,7 +25,7 @@
 
         <!-- 使用随机读写流的日志文件输出 appender，性能提高 -->
         <RandomAccessFile name="accessFile" fileName="${LOG_HOME}/ME.log">
-            <PatternLayout pattern="[%p][%c][%d{yy-MM-dd:hh:mm:ss}]] : %m%n"/>
+            <PatternLayout pattern="[%p][%c][%d{yy-MM-dd:hh:mm:ss}]] : %m%n" />
         </RandomAccessFile>
     </Appenders>
 
@@ -35,8 +34,8 @@
         <!-- 使用 rootLogger 配置 日志级别 level="info" -->
         <Root level="info">
             <!-- 指定日志使用的处理器 -->
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="accessFile"/>
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="accessFile" />
         </Root>
     </Loggers>
 </configuration>
