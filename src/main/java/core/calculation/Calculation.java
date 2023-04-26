@@ -1,5 +1,6 @@
 package core.calculation;
 
+import core.container.CalculationResults;
 import exceptional.WrongFormat;
 
 /**
@@ -39,4 +40,35 @@ public interface Calculation {
      *                     The exception is thrown when an error is detected, and the format error found during the format check will be recorded in the exception.
      */
     void check(String string) throws WrongFormat;
+
+    /**
+     * 计算一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
+     * <p>
+     * Compute a mathematical expression and store the calculation details and results in the numerical result set.
+     *
+     * @param Formula 被计算的表达式，要求返回值是一个数值。
+     *                <p>
+     *                The returned value of the evaluated expression is required to be a numeric value.
+     * @return 数值结果集对象，其中保存着每一步的操作数据，以及最终结果数值
+     * <p>
+     * Numerical result set object, which stores the operation data of each step and the final result value
+     */
+    CalculationResults calculation(String Formula);
+
+    /**
+     * 计算一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
+     * <p>
+     * Compute a mathematical expression and store the calculation details and results in the numerical result set.
+     *
+     * @param Formula        被计算的表达式，要求返回值是一个数值。
+     *                       <p>
+     *                       The returned value of the evaluated expression is required to be a numeric value.
+     * @param formatRequired 是否需要被格式化，用于确保公式格式正确。
+     *                       <p>
+     *                       Whether it needs to be formatted to ensure that the formula format is correct.
+     * @return 数值结果集对象，其中保存着每一步的操作数据，以及最终结果数值
+     * <p>
+     * Numerical result set object, which stores the operation data of each step and the final result value
+     */
+    CalculationResults calculation(String Formula, boolean formatRequired);
 }
