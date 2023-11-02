@@ -9,43 +9,6 @@ import java.util.ArrayList;
  * 字符串工具类
  */
 public final class StrUtils {
-    /**
-     * 将一个字符串的子字符串提取出来
-     *
-     * @param string                需要被提取的字符串
-     * @param PositiveSequenceFirst 正序开始的第一个字符
-     * @param ReverseOrderFirst     倒叙开始的第一个字符
-     * @return 正第一个字符与倒第一字符之间的字符串数据
-     * @deprecated 项目中未使用过的函数，未来可能会移除
-     */
-    @Deprecated
-    public static String getSubinterval(String string, char PositiveSequenceFirst, char ReverseOrderFirst) {
-        StringBuilder stringBuilder = new StringBuilder();
-        char[] chars = string.toCharArray();
-        int start = 0;
-        int end = 0;
-        // 正向迭代所有字符
-        for (int i = 0; i < chars.length; ++i) {
-            if (chars[i] == PositiveSequenceFirst) {
-                // 如果遇到正向首字符就将此字符记录
-                start = i;
-                break;
-            }
-        }
-        // 逆向迭代所有字符
-        for (int i = chars.length - 1; i >= 0; --i) {
-            if (chars[i] == ReverseOrderFirst) {
-                // 如果遇到逆向首字符就将此字符记录
-                end = i;
-                break;
-            }
-        }
-        // 返回左右开区间内的字符串
-        for (int i = start + 1; i < end; ++i) {
-            stringBuilder.append(chars[i]);
-        }
-        return stringBuilder.toString();
-    }
 
     /**
      * 将一个字符串转换为浮点数值

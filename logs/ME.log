@@ -1,0 +1,9 @@
+[INFO][Calculation Management][23-11-02:05:18:24]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][23-11-02:05:18:24]] : + 	Start time Thu Nov 02 17:18:24 CST 2023
+[INFO][Calculation Management][23-11-02:05:18:24]] : + 	version: 1.23
+[INFO][Calculation Management][23-11-02:05:18:24]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][23-11-02:05:18:24]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][23-11-02:05:18:24]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][23-11-02:05:18:24]] : A computing component is registered prefixExpressionOperation
+[INFO][Calculation Management][23-11-02:05:18:24]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][23-11-02:05:18:24]] : A computing component is registered bracketsCalculation2
