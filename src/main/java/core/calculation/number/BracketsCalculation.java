@@ -43,7 +43,9 @@ public abstract class BracketsCalculation extends NumberCalculation {
      *
      * @param BinaryFormula 公式 例如 1 + 2
      * @return 计算结果数值
+     * @deprecated 已不再使用此函数
      */
+    @Deprecated
     public double calculation2(String BinaryFormula) {
         final StringBuilder a = new StringBuilder();
         final StringBuilder b = new StringBuilder();

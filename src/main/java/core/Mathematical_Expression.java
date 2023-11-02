@@ -1,9 +1,8 @@
 package core;
 
+import core.calculation.Calculation;
 import core.calculation.function.Function;
-import core.calculation.number.NumberCalculation;
 import core.manager.CalculationManagement;
-import exceptional.ExtractException;
 
 /**
  * 数学表达式解析库的门户类，在该类中能够直接获取到需要的计算组件并进行相对应的函数注册操作。
@@ -15,10 +14,50 @@ import exceptional.ExtractException;
  */
 public enum Mathematical_Expression {
 
-    bracketsCalculation2, cumulativeCalculation,
-    fastMultiplyOfIntervalsBrackets, fastSumOfIntervalsBrackets,
-    functionFormulaCalculation, functionFormulaCalculation2,
-    prefixExpressionOperation;
+    bracketsCalculation2 {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.number.BracketsCalculation2.getInstance(calculationName);
+        }
+    }, cumulativeCalculation {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.number.CumulativeCalculation.getInstance(calculationName);
+        }
+    },
+    fastMultiplyOfIntervalsBrackets {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.number.FastMultiplyOfIntervalsBrackets.getInstance(calculationName);
+        }
+    }, fastSumOfIntervalsBrackets {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.number.FastSumOfIntervalsBrackets.getInstance(calculationName);
+        }
+    },
+    functionFormulaCalculation {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.number.FunctionFormulaCalculation.getInstance(calculationName);
+        }
+    }, functionFormulaCalculation2 {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.number.FunctionFormulaCalculation2.getInstance(calculationName);
+        }
+    },
+    prefixExpressionOperation {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.number.PrefixExpressionOperation.getInstance(calculationName);
+        }
+    }, booleanCalculation2 {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return core.calculation.bool.BooleanCalculation2.getInstance(calculationName);
+        }
+    };
 
     /**
      * 使用枚举的方式获取到一个计算组件对象。
@@ -32,7 +71,7 @@ public enum Mathematical_Expression {
      * <p>
      * Calculate Component Object.
      */
-    public static NumberCalculation getInstance(Mathematical_Expression calculation) {
+    public static Calculation getInstance(Mathematical_Expression calculation) {
         return getInstance(calculation, calculation.toString());
     }
 
@@ -97,24 +136,15 @@ public enum Mathematical_Expression {
      * <p>
      * Calculate component objects.
      */
-    public static NumberCalculation getInstance(Mathematical_Expression calculation, String calculationName) {
-        switch (calculation) {
-            case bracketsCalculation2:
-                return core.calculation.number.BracketsCalculation2.getInstance(calculationName);
-            case cumulativeCalculation:
-                return core.calculation.number.CumulativeCalculation.getInstance(calculationName);
-            case fastMultiplyOfIntervalsBrackets:
-                return core.calculation.number.FastMultiplyOfIntervalsBrackets.getInstance(calculationName);
-            case fastSumOfIntervalsBrackets:
-                return core.calculation.number.FastSumOfIntervalsBrackets.getInstance(calculationName);
-            case functionFormulaCalculation:
-                return core.calculation.number.FunctionFormulaCalculation.getInstance(calculationName);
-            case functionFormulaCalculation2:
-                return core.calculation.number.FunctionFormulaCalculation2.getInstance(calculationName);
-            case prefixExpressionOperation:
-                return core.calculation.number.PrefixExpressionOperation.getInstance(calculationName);
-            default:
-                throw new ExtractException("UNKnow " + calculation);
-        }
+    public static Calculation getInstance(Mathematical_Expression calculation, String calculationName) {
+        return calculation.getInstance(calculationName);
     }
+
+    /**
+     * 获取到一个指定名称的计算组件。
+     *
+     * @param calculationName 计算组件的名称，该参数将会被用于内存地址中的编号映射，能够通过名称获取到指定的实例化号的计算组件对象。
+     * @return 计算组件对象
+     */
+    public abstract Calculation getInstance(String calculationName);
 }
