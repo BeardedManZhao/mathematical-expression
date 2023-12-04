@@ -612,4 +612,6 @@ More information
 
 - date: 2022-11-14
 - 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
-- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-py)
+- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-py.git)
+- [mathematical-expression-JS](https://github.com/BeardedManZhao/mathematical-expression-JS.git)
+- [mathematical-expression-C++](https://github.com/BeardedManZhao/mathematical-expression-cpp.git)
