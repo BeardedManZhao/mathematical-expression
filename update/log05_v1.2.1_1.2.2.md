@@ -61,7 +61,7 @@ public class MAIN {
                 System.out.println("oK!!!");
             }
             // 取消计算组件的实例化（可省略）
-            if (CalculationManagement.unregister(fun.getName())){
+            if (CalculationManagement.unregister(fun.getName())) {
                 System.out.println("unregister ok!!!");
             }
         }

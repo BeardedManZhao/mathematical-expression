@@ -22,6 +22,11 @@ public final class StrUtils {
         int intSize = 0;
         int floatSize = 0;
         boolean isInt = true;
+        // 判断是否为负数
+        final boolean isF = s.charAt(0) == ConstantRegion.MINUS_SIGN;
+        if (isF) {
+            s = s.substring(1);
+        }
         final int length = s.length();
         for (int i = 0; i < length; i++) {
             char c = s.charAt(i);
@@ -50,9 +55,9 @@ public final class StrUtils {
             throw new AbnormalOperation("数值的小数部分数值位数过长，无法计算" + s);
         }
         // 计算出来数值本身
-        final double res = intRes + floatRes / (double) NumberUtils.PowerOfTen(10, floatSize);
+        final double res = intRes + floatRes / NumberUtils.PowerOfTen(10, floatSize);
         // 判断是否为负数，如果不是负数直接返回值
-        return s.charAt(0) == ConstantRegion.MINUS_SIGN ? -res : res;
+        return isF ? -res : res;
     }
 
     /**
