@@ -37,12 +37,8 @@ public final class NumberUtils {
      * @param n      次方数量
      * @return number * 10的n次方
      */
-    public static int PowerOfTen(int number, int n) {
-        int res = number;
-        for (int i = 1; i < n; i++) {
-            res = tenfold(res);
-        }
-        return res;
+    public static double PowerOfTen(int number, int n) {
+        return number * Math.pow(10, n);
     }
 
     /**

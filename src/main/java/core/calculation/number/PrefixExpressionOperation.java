@@ -135,10 +135,13 @@ public class PrefixExpressionOperation extends NumberCalculation {
         // 开始格式化，将符号与操作数进行分类
         int length = newFormula.length();
         final StringBuilder stringBuilder = new StringBuilder(length);
+        // 创建标记点 标记上一个是否是操作符
+        boolean backIsOpt = true;
         for (int i = 0; i < length; i++) {
             char c = newFormula.charAt(i);
-            if (StrUtils.IsAnOperator(c)) {
-                // 如果是操作符，就先将上一个数值计算出来
+            if (!backIsOpt && StrUtils.IsAnOperator(c)) {
+                backIsOpt = true;
+                // 如果上一个不是操作符，且当前是操作符，就先将上一个数值计算出来
                 double number = StrUtils.stringToDouble(stringBuilder.toString());
                 if (characterStack.isEmpty()) {
                     // 如果栈为空 直接将运算符添加到栈顶
@@ -161,9 +164,10 @@ public class PrefixExpressionOperation extends NumberCalculation {
                 }
                 // 清理所有的字符缓冲
                 stringBuilder.delete(0, stringBuilder.length());
-            } else if (c == ConstantRegion.DECIMAL_POINT || StrUtils.IsANumber(c)) {
+            } else if (c == ConstantRegion.DECIMAL_POINT || c == ConstantRegion.MINUS_SIGN || StrUtils.IsANumber(c)) {
                 // 如果是数值的某一位，就将数值存储到变量中
                 stringBuilder.append(c);
+                backIsOpt = false;
             }
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
