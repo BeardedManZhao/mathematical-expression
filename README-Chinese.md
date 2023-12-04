@@ -568,4 +568,6 @@ public class MAIN {
 
 - date: 2022-11-14
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
-- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-Py)
+- [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-py.git)
+- [mathematical-expression-JS](https://github.com/BeardedManZhao/mathematical-expression-JS.git)
+- [mathematical-expression-C++](https://github.com/BeardedManZhao/mathematical-expression-cpp.git)
