@@ -1,3 +1,12 @@
+# 1.2.4 -> 1.2.5 版本更新日志
+
+### 更新时间：2024年1月8日
+
+==Java==
+
+* 提供了内置函数包，您可以直接通过内置的函数包实现一些函数的注册操作，对于函数包中已有函数，则不需要手动实现!
+
+```java
 package utils;
 
 import core.Mathematical_Expression;
@@ -23,3 +32,4 @@ public class MAIN {
         System.out.println("计算结果：" + results);
     }
 }
+```

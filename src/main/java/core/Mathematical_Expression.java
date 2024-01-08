@@ -2,6 +2,7 @@ package core;
 
 import core.calculation.Calculation;
 import core.calculation.function.Function;
+import core.calculation.function.FunctionPackage;
 import core.manager.CalculationManagement;
 
 /**
@@ -89,6 +90,19 @@ public enum Mathematical_Expression {
      */
     public static boolean register_function(Function function) {
         return CalculationManagement.register(function);
+    }
+
+    /**
+     * 将一个函数包注册到管理者中，这将会导致函数包中的所有函数被注册。
+     * <p>
+     * Registering a function package with the manager will result in all functions in the package being registered.
+     *
+     * @param functionPackage 包含需要被注册的所有函数的函数包
+     *                        <p>
+     *                        A function package containing all the functions that need to be registered
+     */
+    public static void register_function(FunctionPackage functionPackage) {
+        CalculationManagement.register(functionPackage);
     }
 
     /**
