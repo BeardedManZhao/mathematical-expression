@@ -2,6 +2,7 @@ package core.manager;
 
 import core.calculation.Calculation;
 import core.calculation.function.Function;
+import core.calculation.function.FunctionPackage;
 import exceptional.ExtractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +109,19 @@ public final class CalculationManagement {
     }
 
     /**
+     * 将一个函数包注册到管理者中，这将会导致函数包中的所有函数被注册。
+     * <p>
+     * Registering a function package with the manager will result in all functions in the package being registered.
+     *
+     * @param functionPackage 包含需要被注册的所有函数的函数包
+     *                        <p>
+     *                        A function package containing all the functions that need to be registered
+     */
+    public static void register(FunctionPackage functionPackage) {
+        STRING_FUNCTION_HASH_MAP.putAll(functionPackage.getFunctionMap());
+    }
+
+    /**
      * 通过函数的名字获取到一个函数的对象
      * <p>
      * Get the object of a function through the name of the function
@@ -135,6 +149,26 @@ public final class CalculationManagement {
                 throw new ExtractException("您要提取的函数被找到了，但是它不适用您指定的类型，请在泛型中对该函数的类型进行调整。\nThe function you want to extract has been found, but it does not apply to the type you specified. Please adjust the type of the function in the generic type.\nERROR FUNCTION => " + function.getName());
             }
         }
+    }
+
+    /**
+     * 通过函数的名字获取到一个函数的对象
+     * <p>
+     * Get the object of a function through the name of the function
+     *
+     * @param FunctionName   需要获取的函数的名字
+     *                       <p>
+     *                       Name of the function to be obtained
+     * @param <functionType> 函数的实现类型，需要注意在这里的实现类型如果与找到的函数不一致，那么这里会抛出"ExtractException"
+     *                       <p>
+     *                       The implementation type of the function. Note that if the implementation type here is inconsistent with the found function, an "ExtractException" will be thrown here
+     * @return 通过函数名字获取到的函数对象
+     * <p>
+     * Function object obtained by function name
+     */
+    @SuppressWarnings("unchecked")
+    public static <functionType extends Function> functionType getFunctionByNameNoCheck(String FunctionName) {
+        return (functionType) STRING_FUNCTION_HASH_MAP.get(FunctionName);
     }
 
     /**
