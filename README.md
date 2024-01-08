@@ -19,7 +19,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.2.4</version>
+        <version>1.2.5</version>
     </dependency>
 </dependencies>
 ```
@@ -29,7 +29,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.4'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.5'
 }
 ```
 
