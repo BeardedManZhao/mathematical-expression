@@ -19,7 +19,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.2.5</version>
+        <version>1.2.6</version>
     </dependency>
 </dependencies>
 ```
@@ -29,7 +29,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.5'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.6'
 }
 ```
 
@@ -503,6 +503,32 @@ public class MAIN {
 
 ```
 计算层数：2	计算结果：397.8	计算来源：BracketsCalculation2
+```
+
+#### Mathematical function expression registration
+
+You can directly use the mathematical expression of a function to register a function. The format of the function
+expression is' function name (parameter 1, parameter 2, parameter 3)=function logical expression, such as parameter
+1+parameter 2 '. Below is a registration example
+
+This registered function can also be directly used in mathematical expressions!
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.manager.ConstantRegion;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        System.out.println(ConstantRegion.VERSION);
+        // Start registering TODO. We have registered a function called mySum here, which takes in two parameters and outputs the sum of the two parameters
+        if (Mathematical_Expression.register_function("mySum(a, b) = a + b")) {
+            System.out.println("函数注册成功!");
+        }
+    }
+}
 ```
 
 ### Fast interval sum calculation component (based on parenthesis expression)

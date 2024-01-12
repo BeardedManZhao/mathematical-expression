@@ -123,10 +123,12 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
                 ShareEnd.addAll(end);
                 ShareNames.addAll(names);
             }
-            // 如果一致，就进行函数内部每一个公式的检查 这里首先将函数中的每一个公式切割出来
-            for (String s : StrUtils.splitByChar(string.substring(start.pop(), end.pop()), ConstantRegion.COMMA)) {
-                // 将每一个公式进行检查
-                FunctionFormulaCalculation.BRACKETS_CALCULATION_2.check(s);
+            if (!(start.isEmpty() || end.isEmpty())) {
+                // 如果一致，就进行函数内部每一个公式的检查 这里首先将函数中的每一个公式切割出来
+                for (String s : StrUtils.splitByChar(string.substring(start.pop(), end.pop()), ConstantRegion.COMMA)) {
+                    // 将每一个公式进行检查
+                    FunctionFormulaCalculation.BRACKETS_CALCULATION_2.check(s);
+                }
             }
             // 如果函数没有问题就检查整个公式
             FunctionFormulaCalculation.BRACKETS_CALCULATION_2.check(stringBuilder.toString());
