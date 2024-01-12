@@ -16,7 +16,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.2.5</version>
+        <version>1.2.6</version>
     </dependency>
 </dependencies>
 ```
@@ -25,7 +25,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.5'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.6'
 }
 ```
 
@@ -470,6 +470,30 @@ public class MAIN {
 
 ```
 计算层数：2	计算结果：397.8	计算来源：BracketsCalculation2
+```
+
+#### 数学函数表达式注册
+
+您可以直接使用一个函数的数学表达式来实现某个函数的注册，函数表达式的格式为 `函数名字(参数1,参数2,参数3) = 函数逻辑表达式，例如 参数1 + 参数2` 下面是一个注册示例
+
+这样注册的函数 也是可以直接在数学表达式中使用的！
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.manager.ConstantRegion;
+import exceptional.WrongFormat;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        System.out.println(ConstantRegion.VERSION);
+        // 开始进行注册 TODO 我们在这里注册了一个叫做 mySum 的函数 它接收两个参数 输出的是两个参数的求和结果
+        if (Mathematical_Expression.register_function("mySum(a, b) = a + b")) {
+            System.out.println("函数注册成功!");
+        }
+    }
+}
 ```
 
 ### 快速区间求和计算组件（基于括号表达式）
