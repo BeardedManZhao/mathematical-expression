@@ -1,7 +1,6 @@
 package utils;
 
 import core.manager.ConstantRegion;
-import exceptional.AbnormalOperation;
 
 import java.util.ArrayList;
 
@@ -17,47 +16,7 @@ public final class StrUtils {
      * @return 字符串转换的浮点数值
      */
     public static double stringToDouble(String s) {
-        int floatRes = 0;
-        int intRes = 0;
-        int intSize = 0;
-        int floatSize = 0;
-        boolean isInt = true;
-        // 判断是否为负数
-        final boolean isF = s.charAt(0) == ConstantRegion.MINUS_SIGN;
-        if (isF) {
-            s = s.substring(1);
-        }
-        final int length = s.length();
-        for (int i = 0; i < length; i++) {
-            char c = s.charAt(i);
-            if (c != ConstantRegion.DECIMAL_POINT && c != ConstantRegion.EMPTY) {
-                // 如果当前不是小数点符号 就直接对数值进行位分配
-                if (isInt) {
-                    // 如果当前不是小数点符号 就直接将数值归为整数
-                    intRes = NumberUtils.tenfold(intRes) + charToInteger(c);
-                    intSize++;
-                } else {
-                    // 如果是小数点 就直接将数值归为小数
-                    floatRes = NumberUtils.tenfold(floatRes) + charToInteger(c);
-                    floatSize++;
-                }
-            } else if (c == ConstantRegion.DECIMAL_POINT) {
-                // 如果是小数点 就判断是否发生精度问题，如果没有发生就切换添加状态
-                if (!isInt) {
-                    throw new AbnormalOperation("数值的浮点符号出现次数过多，无法计算" + s);
-                } else if (intSize > 9) {
-                    throw new AbnormalOperation("数值的整数部分数值位数过长，无法计算" + s);
-                }
-                isInt = false;
-            }
-        }
-        if (floatSize > 9) {
-            throw new AbnormalOperation("数值的小数部分数值位数过长，无法计算" + s);
-        }
-        // 计算出来数值本身
-        final double res = intRes + floatRes / NumberUtils.PowerOfTen(10, floatSize);
-        // 判断是否为负数，如果不是负数直接返回值
-        return isF ? -res : res;
+        return Double.parseDouble(s);
     }
 
     /**

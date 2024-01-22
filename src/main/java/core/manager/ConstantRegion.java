@@ -8,7 +8,7 @@ package core.manager;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.26F;
+    public final static float VERSION = 1.30F;
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -48,15 +48,4 @@ public final class ConstantRegion {
     public final static String LOG_INFO_UNREGISTER_COMPONENT = "Preparing to unregister the compute component. Component name:";
     public final static String LOG_INFO_UNREGISTER_FUNCTION = "Prepare the logoff of a function. Function name:";
     public final static String LOG_INFO_SHARED_POOL = "Use shared pool data. The identity of the data is: ";
-//    /**
-//     * 合法字符，一个数学表达式的格式中可以包含的所有字符，包含这些字符外的字符，在格式化的时候，将直接判定为格式不正确
-//     */
-//    public static final HashSet<Character> LEGAL_CHARACTERS = new HashSet<>(
-//            Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-//                    ConstantRegion.EMPTY, ConstantRegion.PLUS_SIGN, ConstantRegion.MINUS_SIGN,
-//                    ConstantRegion.MULTIPLICATION_SIGN, ConstantRegion.DIVISION_SIGN, ConstantRegion.REMAINDER_SIGN,
-//                    ConstantRegion.LEFT_BRACKET, ConstantRegion.REMAINDER_SIGN, ConstantRegion.DECIMAL_POINT)
-//    );
-//
-//    public static final Has
 }

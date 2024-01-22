@@ -6,6 +6,9 @@
 
 本框架是一种针对数学公式解析的有效工具，能够解析包含嵌套函数，包含函数，数列步长累加等数学公式，返回值是一个数值的结果对象，同时也可以进行比较运算的操作，再进行比较的时候，返回值是一个布尔值结果对象。
 
+**_PS 请尽量使用 1.3.0 版本以及以上的版本，这将有助于您使用更加稳定的版本，修复了 1.2.x
+中[所有已知的bug](https://github.com/BeardedManZhao/mathematical-expression/issues)_**
+
 - Maven依赖坐标
 
   您可以直接使用maven将本框架导入到项目中使用，能够高效的使用该功能
@@ -16,7 +19,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.2.6</version>
+        <version>1.3.0</version>
     </dependency>
 </dependencies>
 ```
@@ -25,7 +28,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.6'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.0'
 }
 ```
 
