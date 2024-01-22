@@ -9,6 +9,9 @@ nested functions, including functions, and step accumulation of series. The retu
 At the same time, it can also be used for comparison operations. When comparing again, the return value is a Boolean
 result object.
 
+**_PS, please try to use version 1.3.0 and above as much as possible. This will help you use a more stable version and
+fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/issues) in 1.2.x_**
+
 - Maven depends on coordinates
 
   You can directly use Maven to import this framework into the project and use it effectively
@@ -19,7 +22,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.2.6</version>
+        <version>1.3.0</version>
     </dependency>
 </dependencies>
 ```
@@ -29,7 +32,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.2.6'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.0'
 }
 ```
 
