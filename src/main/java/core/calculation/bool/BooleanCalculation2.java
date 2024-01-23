@@ -70,7 +70,7 @@ public class BooleanCalculation2 extends BooleanCalculation {
             NewFormula = Formula;
         }
         // 先按照表达式的比较运算符进行一个切分
-        final String[] split = NewFormula.split(ConstantRegion.REGULAR_COMPARISON_OPERATOR);
+        final String[] split = ConstantRegion.REGULAR_COMPARISON_OPERATOR_PATTERN.split(NewFormula);
         final String s1 = split[0];
         final String s2 = split[1];
         // 进行比较运算符的提取

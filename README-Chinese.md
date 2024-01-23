@@ -6,7 +6,7 @@
 
 本框架是一种针对数学公式解析的有效工具，能够解析包含嵌套函数，包含函数，数列步长累加等数学公式，返回值是一个数值的结果对象，同时也可以进行比较运算的操作，再进行比较的时候，返回值是一个布尔值结果对象。
 
-**_PS 请尽量使用 1.3.0 版本以及以上的版本，这将有助于您使用更加稳定的版本，修复了 1.2.x
+**_PS 请尽量使用 1.3.1 版本以及以上的版本，这将有助于您使用更加稳定的版本，修复了 1.2.x
 中[所有已知的bug](https://github.com/BeardedManZhao/mathematical-expression/issues)_**
 
 - Maven依赖坐标
@@ -19,7 +19,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.0</version>
+        <version>1.3.1</version>
     </dependency>
 </dependencies>
 ```
@@ -28,7 +28,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.0'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.1'
 }
 ```
 
@@ -589,11 +589,82 @@ public class MAIN {
 计算层数：3	计算结果：143.0	计算来源：fast
 ```
 
+## 高阶操作
+
+### 数学方式的函数注册与计算
+
+```java
+package top.lingyuzhao;
+
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.FunctionPackage;
+import exceptional.WrongFormat;
+
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+    	// 将 f 函数注册进来
+        Mathematical_Expression.register_function("f(x) = x * x");
+        // 准备要计算的表达式
+        final String data = "1 + f(20) + 3";
+        // 获取到计算组件
+        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+        // 检查与计算
+        instance.check(data);
+        System.out.println(instance.calculation(data));
+    }
+}
+```
+
+下面就是计算结果
+
+```
+CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
+```
+
+### 匿名实现的函数注册于计算
+
+```java
+package top.lingyuzhao;
+
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.FunctionPackage;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 将 f 函数注册进来
+        Mathematical_Expression.register_function(new ManyToOneNumberFunction("f") {
+            @Override
+            public double run(double... numbers) {
+                return 1 + numbers[0] * numbers[0] + 3;
+            }
+        });
+        // 准备要计算的表达式
+        final String data = "1 + f(20) + 3";
+        // 获取到计算组件
+        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+        // 检查与计算
+        instance.check(data);
+        System.out.println(instance.calculation(data));
+    }
+}
+```
+
+下面就是计算结果
+
+```
+CalculationNumberResults{result=408.0, source='BracketsCalculation2'}
+```
+
 <hr>
 
 更多信息
 
-- date: 2022-11-14
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
 - [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-py.git)
 - [mathematical-expression-JS](https://github.com/BeardedManZhao/mathematical-expression-JS.git)

@@ -152,6 +152,22 @@ public final class CalculationManagement {
     }
 
     /**
+     * 判断指定的函数是否存在
+     * <p>
+     * Determine whether the specified function exists
+     *
+     * @param FunctionName 指定的函数名字
+     *                     <p>
+     *                     The specified function name
+     * @return 如果存在返回 true
+     * <p>
+     * If there is, return true
+     */
+    public static boolean isFunctionExist(String FunctionName) {
+        return STRING_FUNCTION_HASH_MAP.containsKey(FunctionName);
+    }
+
+    /**
      * 通过函数的名字获取到一个函数的对象
      * <p>
      * Get the object of a function through the name of the function
