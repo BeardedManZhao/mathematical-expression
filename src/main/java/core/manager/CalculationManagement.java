@@ -153,13 +153,14 @@ public final class CalculationManagement {
 
     /**
      * 判断指定的函数是否存在
-     *
+     * <p>
      * Determine whether the specified function exists
-     * @param FunctionName 指定的函数名字
      *
+     * @param FunctionName 指定的函数名字
+     *                     <p>
      *                     The specified function name
      * @return 如果存在返回 true
-     *
+     * <p>
      * If there is, return true
      */
     public static boolean isFunctionExist(String FunctionName) {

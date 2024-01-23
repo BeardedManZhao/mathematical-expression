@@ -8,8 +8,6 @@ import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import utils.NumberUtils;
 
-import java.util.Arrays;
-
 /**
  * 计算一个布尔返回值的表达式，该组件针对两个表达式或数值之间的比较来计算结果数值，用于比较表达式是否成立
  * <p>

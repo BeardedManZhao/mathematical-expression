@@ -578,7 +578,8 @@ public class MAIN {
 
 - Running results
 
-  从上面代码中我们可以看到，快速区间求和计算的公式由被逗号分割的两个括号表达式组成
+  From the above code, we can see that the formula for fast interval summation is composed of two parentheses separated
+  by commas.
 
 ```
 计算层数：3	计算结果：24.0	计算来源：fast
@@ -627,19 +628,91 @@ public class MAIN {
 }
 ```
 
-- 运行结果
+- Running results
 
-  从上面代码中我们可以看到，快速区间求和计算的公式由被逗号分割的两个括号表达式组成
+  From the above code, we can see that the formula for fast interval summation is composed of two parentheses separated
+  by commas
 
 ```
 计算层数：3	计算结果：143.0	计算来源：fast
+```
+
+## Advanced Operations
+
+### Registration and calculation of mathematical functions
+
+```java
+package top.lingyuzhao;
+
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.FunctionPackage;
+import exceptional.WrongFormat;
+
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+    	// 将 f 函数注册进来
+        Mathematical_Expression.register_function("f(x) = x * x");
+        // 准备要计算的表达式
+        final String data = "1 + f(20) + 3";
+        // 获取到计算组件
+        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+        // 检查与计算
+        instance.check(data);
+        System.out.println(instance.calculation(data));
+    }
+}
+```
+
+- Running results
+
+```
+CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
+```
+
+### Registering anonymous implemented functions for computation
+
+```java
+package top.lingyuzhao;
+
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.FunctionPackage;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 将 f 函数注册进来
+        Mathematical_Expression.register_function(new ManyToOneNumberFunction("f") {
+            @Override
+            public double run(double... numbers) {
+                return 1 + numbers[0] * numbers[0] + 3;
+            }
+        });
+        // 准备要计算的表达式
+        final String data = "1 + f(20) + 3";
+        // 获取到计算组件
+        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+        // 检查与计算
+        instance.check(data);
+        System.out.println(instance.calculation(data));
+    }
+}
+```
+
+- Running results
+
+```
+CalculationNumberResults{result=408.0, source='BracketsCalculation2'}
 ```
 
 <hr>
 
 More information
 
-- date: 2022-11-14
 - 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
 - [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-py.git)
 - [mathematical-expression-JS](https://github.com/BeardedManZhao/mathematical-expression-JS.git)

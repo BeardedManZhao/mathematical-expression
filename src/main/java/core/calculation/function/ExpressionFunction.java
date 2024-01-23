@@ -108,7 +108,7 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
                     arrayList2.add(i);
                 } else if (!StrUtils.IsANumber(group)) {
                     // 不是数值且不是形参，看看是不是函数名字
-                    if (matcher.end() >= string.length()){
+                    if (matcher.end() >= string.length()) {
                         // 不用判断了 这个不是函数 因为长度不够 直接返回错误
                         throw new WrongFormat("Unknown formal parameter [" + group + "] comes from [" + string + "].");
                     }
@@ -151,7 +151,7 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
             for (Integer integer : this.indexList) {
                 stringBuilder.append(this.expression.get(index++)).append(numbers[integer]);
             }
-            if (this.expression.size() > index){
+            if (this.expression.size() > index) {
                 stringBuilder.append(this.expression.get(index));
             }
             // 开始替换参数
