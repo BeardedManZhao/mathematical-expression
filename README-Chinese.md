@@ -641,7 +641,7 @@ public class MAIN {
         Mathematical_Expression.register_function(new ManyToOneNumberFunction("f") {
             @Override
             public double run(double... numbers) {
-                return 1 + numbers[0] * numbers[0] + 3;
+                return numbers[0] * numbers[0];
             }
         });
         // 准备要计算的表达式
@@ -658,7 +658,7 @@ public class MAIN {
 下面就是计算结果
 
 ```
-CalculationNumberResults{result=408.0, source='BracketsCalculation2'}
+CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
 ```
 
 <hr>
