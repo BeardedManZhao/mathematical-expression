@@ -60,7 +60,22 @@ public final class StrUtils {
     }
 
     /**
-     * 判断以恶字符是不是一个数值
+     * 判断一个字符串是不是一个数值
+     *
+     * @param c 需要被判断的自读
+     * @return 如果是一个数值，这里返回True
+     */
+    public static boolean IsANumber(CharSequence c) {
+        for (int i = 0; i < c.length(); i++) {
+            if (!IsANumber(c.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 判断一个字符是不是一个数值
      *
      * @param c 需要被判断的自读
      * @return 如果是一个数值，这里返回True

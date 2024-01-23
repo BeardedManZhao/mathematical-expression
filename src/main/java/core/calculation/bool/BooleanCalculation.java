@@ -63,7 +63,7 @@ public abstract class BooleanCalculation implements Calculation {
     @Override
     public void check(String string) throws WrongFormat {
         // 先按照表达式的比较运算符进行一个切分
-        final String[] split = string.split(ConstantRegion.REGULAR_COMPARISON_OPERATOR);
+        final String[] split = ConstantRegion.REGULAR_COMPARISON_OPERATOR_PATTERN.split(string);
         // 判断是否属于布尔表达式，使用切分之后是否有两个表达式判断
         if (split.length == 2) {
             // 检查表达式两边是否符合条件

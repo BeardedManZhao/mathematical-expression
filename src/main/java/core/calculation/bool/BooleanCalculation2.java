@@ -8,6 +8,8 @@ import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import utils.NumberUtils;
 
+import java.util.Arrays;
+
 /**
  * 计算一个布尔返回值的表达式，该组件针对两个表达式或数值之间的比较来计算结果数值，用于比较表达式是否成立
  * <p>
@@ -70,7 +72,7 @@ public class BooleanCalculation2 extends BooleanCalculation {
             NewFormula = Formula;
         }
         // 先按照表达式的比较运算符进行一个切分
-        final String[] split = NewFormula.split(ConstantRegion.REGULAR_COMPARISON_OPERATOR);
+        final String[] split = ConstantRegion.REGULAR_COMPARISON_OPERATOR_PATTERN.split(NewFormula);
         final String s1 = split[0];
         final String s2 = split[1];
         // 进行比较运算符的提取
