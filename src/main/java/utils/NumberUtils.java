@@ -42,6 +42,16 @@ public final class NumberUtils {
     }
 
     /**
+     * 计算一个数值的阶乘
+     *
+     * @param number 运算数值
+     * @return 计算出来的结果
+     */
+    public static double factorial(double number) {
+        return number <= 1 ? number : number * factorial(number - 1);
+    }
+
+    /**
      * 计算一个数值的结果
      *
      * @param CalculationType 计算类型

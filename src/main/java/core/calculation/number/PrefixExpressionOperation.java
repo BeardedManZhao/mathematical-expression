@@ -164,10 +164,21 @@ public class PrefixExpressionOperation extends NumberCalculation {
                 }
                 // 清理所有的字符缓冲
                 stringBuilder.delete(0, stringBuilder.length());
-            } else if (c == ConstantRegion.DECIMAL_POINT || c == ConstantRegion.MINUS_SIGN || StrUtils.IsANumber(c)) {
+                continue;
+            }
+            if (StrUtils.IsANumber(c)) {
                 // 如果是数值的某一位，就将数值存储到变量中
                 stringBuilder.append(c);
                 backIsOpt = false;
+                continue;
+            }
+            switch (c) {
+                case ConstantRegion.FACTORIAL_SIGN:
+                case ConstantRegion.DECIMAL_POINT:
+                case ConstantRegion.MINUS_SIGN:
+                    // 如果是数值的某一位，就将数值存储到变量中
+                    stringBuilder.append(c);
+                    backIsOpt = false;
             }
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));

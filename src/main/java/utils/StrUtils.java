@@ -10,12 +10,38 @@ import java.util.ArrayList;
 public final class StrUtils {
 
     /**
+     * 删除一个字符串中所有的空字符
+     *
+     * @param s 需要被删除的字符串
+     * @return 删除后的字符串
+     */
+    public static String removeEmpty(String s) {
+        StringBuilder stringBuilder = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            final char c = s.charAt(i);
+            if (c != ConstantRegion.EMPTY) {
+                stringBuilder.append(c);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
      * 将一个字符串转换为浮点数值
      *
      * @param s 需要被转换的字符串
      * @return 字符串转换的浮点数值
      */
     public static double stringToDouble(String s) {
+        final int lastIndex = s.length() - 1;
+        if (s.charAt(lastIndex) == ConstantRegion.FACTORIAL_SIGN) {
+            // 代表要进行阶乘计算
+            final double v = Double.parseDouble(s.substring(0, lastIndex));
+            if (v < 0) {
+                throw new UnsupportedOperationException("负数不支持计算阶乘:" + v);
+            }
+            return NumberUtils.factorial(v);
+        }
         return Double.parseDouble(s);
     }
 
@@ -54,9 +80,15 @@ public final class StrUtils {
      * @return 如果是一个操作符就返回True
      */
     public static boolean IsAnOperator(char c) {
-        return c == ConstantRegion.PLUS_SIGN || c == ConstantRegion.MINUS_SIGN ||
-                c == ConstantRegion.MULTIPLICATION_SIGN || c == ConstantRegion.DIVISION_SIGN ||
-                c == ConstantRegion.REMAINDER_SIGN;
+        switch (c) {
+            case ConstantRegion.PLUS_SIGN:
+            case ConstantRegion.MINUS_SIGN:
+            case ConstantRegion.MULTIPLICATION_SIGN:
+            case ConstantRegion.DIVISION_SIGN:
+            case ConstantRegion.REMAINDER_SIGN:
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -72,6 +104,21 @@ public final class StrUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * 判断一个字符串是不是一个数值 允许阶乘
+     *
+     * @param c              需要被判断的自读
+     * @param allowFactorial 允许阶乘则设置为 true
+     * @return 如果是一个数值，这里返回True
+     */
+    public static boolean IsANumber(CharSequence c, boolean allowFactorial) {
+        final int i = c.length() - 1;
+        if (allowFactorial && c.charAt(i) == ConstantRegion.FACTORIAL_SIGN) {
+            return IsANumber(c.subSequence(0, c.length()));
+        }
+        return IsANumber(c);
     }
 
     /**

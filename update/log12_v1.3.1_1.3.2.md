@@ -1,3 +1,12 @@
+# 1.3.1 -> 1.3.2 版本更新日志
+
+### 更新时间：2024年?月??日
+
+==Java==
+
+* 支持了新操作符 `!` 这代表的就是阶乘的意思，例如 `x!` 或者是 `2!` 且此操作符可以在自定义函数中使用，下面是一个示例
+
+```java
 package utils;
 
 import core.Mathematical_Expression;
@@ -18,3 +27,8 @@ public class MAIN {
         System.out.println(instance.calculation(data));
     }
 }
+```
+
+* 针对诸多的 分支判断以及检查操作使用了性能更好的处理算法
+* 在函数包 `FunctionPackage.MATH` 中 新增了阶乘函数 `factorial`
+* 针对函数计算组件的共享池使用 hash 缓冲表进行存储，实现更加广泛的缓存操作

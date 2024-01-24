@@ -19,7 +19,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.1</version>
+        <version>1.3.2</version>
     </dependency>
 </dependencies>
 ```
@@ -28,7 +28,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.1'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.2'
 }
 ```
 
@@ -604,7 +604,7 @@ import exceptional.WrongFormat;
 public class MAIN {
 
     public static void main(String[] args) throws WrongFormat {
-    	// 将 f 函数注册进来
+        // 将 f 函数注册进来
         Mathematical_Expression.register_function("f(x) = x * x");
         // 准备要计算的表达式
         final String data = "1 + f(20) + 3";

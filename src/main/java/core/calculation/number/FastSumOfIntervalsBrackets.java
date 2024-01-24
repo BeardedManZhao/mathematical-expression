@@ -11,6 +11,7 @@ import utils.NumberUtils;
 import utils.StrUtils;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * 快速的将一个等差区间中的所有数值之和计算出来，在该计算组件中的公式由两个组成，例如 "a+b,a+b+10"，会将a+b+1 + a+b+2 + a+b+3 +...+a+b+10 的结果计算出来。
@@ -231,5 +232,16 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
     @Override
     public void setStartSharedPool(boolean startSharedPool) {
         this.StartSharedPool = startSharedPool;
+    }
+
+    /**
+     * 是否已经缓存了指定字符串的数据
+     *
+     * @param name 要检查的字符串
+     * @return 如果已经缓存则返回true，否则返回false
+     */
+    @Override
+    public boolean isCache(String name) {
+        return Objects.equals(this.CurrentOwner, name);
     }
 }

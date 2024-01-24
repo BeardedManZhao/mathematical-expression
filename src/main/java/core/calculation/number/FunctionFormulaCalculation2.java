@@ -11,6 +11,7 @@ import exceptional.WrongFormat;
 import utils.StrUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -22,11 +23,9 @@ import java.util.Stack;
  */
 public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation implements SharedCalculation {
 
-    private final Stack<Integer> ShareStart = new Stack<>();
-    private final Stack<Integer> ShareEnd = new Stack<>();
-    private final Stack<String> ShareNames = new Stack<>();
+    private final HashMap<String, Object[]> ShareHashMap = new HashMap<>();
+    private final HashMap<String, CalculationNumberResults> ShareResultsHashMap = new HashMap<>();
     private boolean StartSharedPool = true;
-    private String CurrentOwner;
     private CalculationNumberResults shareNumberCalculation;
 
     protected FunctionFormulaCalculation2(String name) {
@@ -79,6 +78,17 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
     }
 
     /**
+     * 是否已经缓存了指定字符串的数据
+     *
+     * @param name 要检查的字符串
+     * @return 如果已经缓存则返回true，否则返回false
+     */
+    @Override
+    public boolean isCache(String name) {
+        return this.ShareHashMap.containsKey(name);
+    }
+
+    /**
      * 检查公式格式是否正确，如果不正确就会抛出一个异常
      * <p>
      * Check whether the formula format is correct. If not, an exception will be thrown
@@ -89,8 +99,8 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      */
     @Override
     public void check(String string) throws WrongFormat {
-        boolean equals = string.equals(this.CurrentOwner);
-        if (this.StartSharedPool && equals) {
+        string = StrUtils.removeEmpty(string);
+        if (this.StartSharedPool && this.isCache(string)) {
             return;
         }
         // 准备函数元数据缓冲区
@@ -108,22 +118,11 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             // 检查无误后，判断是否启动共享池，如果启动了的话，将格式化中的没有问题的数据提供给共享池
             if (StartSharedPool) {
                 // 更新共享池所属公式
-                CurrentOwner = string;
-                // 刷入所有的数据
-                if (ShareStart.size() != 0) {
-                    ShareStart.clear();
-                }
-                if (ShareEnd.size() != 0) {
-                    ShareEnd.clear();
-                }
-                if (ShareNames.size() != 0) {
-                    ShareNames.clear();
-                }
-                ShareStart.addAll(start);
-                ShareEnd.addAll(end);
-                ShareNames.addAll(names);
+                ShareHashMap.put(string, new Object[]{
+                        start.clone(), end.clone(), names
+                });
             }
-            if (!(start.isEmpty() || end.isEmpty())) {
+            while (!(start.isEmpty() || end.isEmpty())) {
                 // 如果一致，就进行函数内部每一个公式的检查 这里首先将函数中的每一个公式切割出来
                 for (String s : StrUtils.splitByChar(string.substring(start.pop(), end.pop()), ConstantRegion.COMMA)) {
                     // 将每一个公式进行检查
@@ -239,10 +238,20 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      * Numerical result set object, which stores the operation data of each step and the final result value
      */
     @Override
+    @SuppressWarnings("unchecked")
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        boolean equals = this.StartSharedPool && Formula.equals(this.CurrentOwner);
-        if (equals && this.shareNumberCalculation != null) {
-            return this.shareNumberCalculation;
+        if (formatRequired) {
+            Formula = StrUtils.removeEmpty(Formula);
+        }
+        boolean equals = this.StartSharedPool;
+        Object[] objects = null;
+        if (equals) {
+            final CalculationNumberResults calculationNumberResults = this.ShareResultsHashMap.get(Formula);
+            if (calculationNumberResults != null) {
+                return calculationNumberResults;
+            }
+            objects = this.ShareHashMap.get(Formula);
+            equals = objects != null;
         }
         Stack<Integer> start;
         Stack<Integer> end;
@@ -250,15 +259,16 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         StringBuilder stringBuilder = new StringBuilder(Formula);
         // 开始进行函数计算，首先判断是否启用了共享池 以及身份是否正确，确保两个公式是同一个
         if (equals) {
-            start = this.ShareStart;
-            end = this.ShareEnd;
-            names = this.ShareNames;
-            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.DECIMAL_POINT + CurrentOwner);
+            start = (Stack<Integer>) objects[0];
+            end = (Stack<Integer>) objects[1];
+            names = (Stack<String>) objects[2];
+            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         } else {
             start = new Stack<>();
             end = new Stack<>();
             names = new Stack<>();
             FunctionParameterExtraction(Formula, start, end, names);
+            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL_NO_USE + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         }
         // 开始计算，首先迭代所有函数的公式与函数的名字，计算出来函数的结果
         while (!start.isEmpty()) {
@@ -271,7 +281,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             // 通过函数索引获取实参
             for (String s : StrUtils.splitByChar(Formula.substring(pop1, pop2), ConstantRegion.COMMA)) {
                 // 将每一个函数实参计算出来，存储到临时列表
-                functionArguments.add(FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s).getResult());
+                functionArguments.add(FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s, false).getResult());
             }
             // 将当前函数索引区间内的数据字符串替换为当前函数的运算结果
             double[] doubles = new double[functionArguments.size()];
@@ -280,7 +290,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             }
             stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(doubles)));
         }
-        CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
+        CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString(), false);
         if (this.StartSharedPool) {
             this.shareNumberCalculation = calculation;
         }

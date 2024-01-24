@@ -159,7 +159,7 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
         }
         try {
             this.functionFormulaCalculation.check(s);
-            return ((CalculationNumberResults) this.functionFormulaCalculation.calculation(s)).getResult();
+            return ((CalculationNumberResults) this.functionFormulaCalculation.calculation(s, false)).getResult();
         } catch (WrongFormat e) {
             throw new UnsupportedOperationException(e);
         }

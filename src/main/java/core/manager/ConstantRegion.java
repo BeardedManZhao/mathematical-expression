@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.31F;
+    public final static float VERSION = 1.32F;
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -26,6 +26,7 @@ public final class ConstantRegion {
     public final static char MULTIPLICATION_SIGN = '*';
     public final static char DIVISION_SIGN = '/';
     public final static char REMAINDER_SIGN = '%';
+    public final static char FACTORIAL_SIGN = '!';
     public final static char COMMA = ',';
     public final static String GREATER_THAN_SIGN = ">";
     public final static String LESS_THAN_SIGN = "<";
@@ -51,4 +52,6 @@ public final class ConstantRegion {
     public final static String LOG_INFO_UNREGISTER_COMPONENT = "Preparing to unregister the compute component. Component name:";
     public final static String LOG_INFO_UNREGISTER_FUNCTION = "Prepare the logoff of a function. Function name:";
     public final static String LOG_INFO_SHARED_POOL = "Use shared pool data. The identity of the data is: ";
+    public final static String LOG_INFO_SHARED_POOL_NO_USE = "No Use shared pool: ";
+
 }

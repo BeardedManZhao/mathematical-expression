@@ -1,6 +1,7 @@
 package core.calculation.function;
 
 import core.manager.CalculationManagement;
+import utils.NumberUtils;
 
 import java.util.HashMap;
 
@@ -38,6 +39,13 @@ public enum FunctionPackage {
                 @Override
                 public double run(double... numbers) {
                     return Math.sqrt(numbers[0]);
+                }
+            },
+            // 求 ! 函数
+            new ManyToOneNumberFunction("factorial") {
+                @Override
+                public double run(double... numbers) {
+                    return NumberUtils.factorial(numbers[0]);
                 }
             },
             // 求均值函数

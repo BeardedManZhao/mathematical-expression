@@ -83,9 +83,9 @@ public abstract class NumberCalculation implements Calculation {
             while (lastChar == ConstantRegion.EMPTY) {
                 lastChar = string.charAt(--lastIndex);
             }
-            if (!StrUtils.IsANumber(lastChar)) {
+            if (!StrUtils.IsANumber(lastChar) && lastChar != ConstantRegion.FACTORIAL_SIGN) {
                 if (lastChar != ConstantRegion.RIGHT_BRACKET) {
-                    throw new WrongFormat("您传入的表达式格式有误，最后一个字符不是一个数值！！！\nThe format of the expression you passed in is incorrect. The last character is not a numeric value!!!\nERROR => " + lastChar);
+                    throw new WrongFormat("您传入的表达式格式有误，最后一个字符不是一个数值！！！\nThe format of the expression you passed in is incorrect. The last character is not a numeric value!!!\nERROR => " + lastChar + " in " + string);
                 } else {
                     RightCount = 1;
                 }
@@ -101,7 +101,21 @@ public abstract class NumberCalculation implements Calculation {
                 ++LeftCount;
             } else if (c == ConstantRegion.RIGHT_BRACKET) {
                 ++RightCount;
-            } else if (!(StrUtils.IsANumber(c) || c == ConstantRegion.DECIMAL_POINT || c == ConstantRegion.EMPTY)) {
+            } else {
+                boolean isOk = StrUtils.IsANumber(c);
+                if (isOk) {
+                    continue;
+                }
+                switch (c) {
+                    case ConstantRegion.FACTORIAL_SIGN:
+                    case ConstantRegion.DECIMAL_POINT:
+                    case ConstantRegion.EMPTY:
+                        isOk = true;
+                        break;
+                }
+                if (isOk) {
+                    continue;
+                }
                 if (!StrUtils.IsAnOperator(c)) {
                     throw new WrongFormat("解析表达式的时候出现了未知符号!!!\nUnknown symbol appears when parsing expression!!!\nWrong format => [" + c + "] from " + string);
                 } else {
