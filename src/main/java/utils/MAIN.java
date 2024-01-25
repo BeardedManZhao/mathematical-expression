@@ -13,10 +13,6 @@ public class MAIN {
             final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
             final CalculationResults calculation = instance.calculation("f(3)");
             System.out.println(calculation);
-            // 计算一个包含 f(3) 的公式
-            // 这里由于 f(3) 会被多次调用 所以会使用多次共享缓冲池
-            instance.check("f(1 + 2) + f(3)");
-            System.out.println(instance.calculation("f(1 + 2) + f(3)"));
         }
     }
 }

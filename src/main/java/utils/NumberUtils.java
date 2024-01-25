@@ -85,8 +85,18 @@ public final class NumberUtils {
      * @return s1操作符的优先级 是否小于 s2操作符的优先级
      */
     public static boolean PriorityComparison(char s1, char s2) {
-        return (s1 == ConstantRegion.PLUS_SIGN || s1 == ConstantRegion.MINUS_SIGN) &&
-                (s2 == ConstantRegion.MULTIPLICATION_SIGN || s2 == ConstantRegion.DIVISION_SIGN || s2 == ConstantRegion.REMAINDER_SIGN);
+        switch (s1) {
+            case ConstantRegion.PLUS_SIGN:
+            case ConstantRegion.MINUS_SIGN:
+                switch (s2) {
+                    case ConstantRegion.MULTIPLICATION_SIGN:
+                    case ConstantRegion.DIVISION_SIGN:
+                    case ConstantRegion.REMAINDER_SIGN:
+                        return true;
+                }
+                break;
+        }
+        return false;
     }
 
     /**

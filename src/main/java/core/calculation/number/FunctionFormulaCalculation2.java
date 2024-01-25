@@ -176,7 +176,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
                     start.push(i + 1);
                     // 然后为缓冲的公式进行 0 的追加
                     formulaBuilder.append('0');
-                } else if (count != 0){
+                } else if (count != 0) {
                     // 如果 count 不为0 代表找到了函数参数，但是参数里面有字母 所以肯定有问题
                     throw new WrongFormat("请勿在参数位使用函数嵌套，您可以在函数的表达式中使用嵌套，例如 f(x) = x + ff(x), 调用为f(1 + 2); \n但是不能在函数的形参中使用嵌套，例如 f(x, b) = x + b, 调用为f(1 + 2, ff(1 + 2)) 是不允许滴\n嵌套发生的位置 = " + string.substring(i) + " 来自于 " + string);
                 }
@@ -307,7 +307,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             ArrayList<Double> results = new ArrayList<>();
 
             for (String s : StrUtils.splitByChar(subFormula, ConstantRegion.COMMA)) {
-                double result = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s, false).getResult();
+                double result = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s).getResult();
                 tempDouble.add(result);
                 results.add(result);
             }
@@ -318,7 +318,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             // 最后替换字符串内容
             stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(resultArray)));
         }
-        CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString(), false);
+        CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
         tempDouble.add(calculation.getResult());
         final Double[] doubles = tempDouble.toArray(new Double[0]);
         if (this.StartSharedPool) {
