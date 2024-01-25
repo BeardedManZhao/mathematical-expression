@@ -1,5 +1,6 @@
 package core.calculation.number;
 
+import core.Mathematical_Expression;
 import core.calculation.Calculation;
 import core.calculation.function.ManyToOneNumberFunction;
 import core.container.CalculationNumberResults;
@@ -27,6 +28,10 @@ public class FunctionFormulaCalculation extends NumberCalculation {
 
     protected FunctionFormulaCalculation(String name) {
         super(name);
+    }
+
+    protected FunctionFormulaCalculation() {
+        this(Mathematical_Expression.functionFormulaCalculation.name() + "_temp");
     }
 
     /**

@@ -244,4 +244,14 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
     public boolean isCache(String name) {
         return Objects.equals(this.CurrentOwner, name);
     }
+
+    /**
+     * 清理缓存数据
+     */
+    @Override
+    public void clearCache() {
+        this.left = null;
+        this.right = null;
+        this.CurrentOwner = null;
+    }
 }

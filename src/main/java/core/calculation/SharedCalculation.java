@@ -30,4 +30,9 @@ public interface SharedCalculation extends Calculation {
      * @return 如果已经缓存则返回true，否则返回false
      */
     boolean isCache(String name);
+
+    /**
+     * 清理缓存数据
+     */
+    void clearCache();
 }
