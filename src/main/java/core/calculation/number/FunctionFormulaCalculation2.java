@@ -160,6 +160,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      * @param end            公式中所有包含函数实参公式的的终止索引值
      * @param names          公式中所有包含函数的名字
      * @param formulaBuilder 公式缓冲区，这个用于存储转换之后的公式，当需要进行公式检查的时候才会使用到该参数
+     * @throws WrongFormat 如果公式格式不正确，就会抛出一个异常
      */
     public void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names, StringBuilder formulaBuilder) throws WrongFormat {
         // 创建一个标记，标记是否进入函数

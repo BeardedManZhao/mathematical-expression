@@ -1,10 +1,7 @@
 package core;
 
 import core.calculation.Calculation;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.Function;
-import core.calculation.function.FunctionPackage;
-import core.calculation.function.ManyToOneNumberFunction;
+import core.calculation.function.*;
 import core.manager.CalculationManagement;
 import exceptional.WrongFormat;
 
@@ -104,6 +101,31 @@ public enum Mathematical_Expression {
      * <p>
      * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
      *
+     * @param function 被 Functions 注解的类的实例，此示例中的 Functions 中所有的函数表达式将会被注册。
+     *                 <p>
+     *                 The instance of the class annotated by Functions, all function expressions in the Functions in this example will be registered.
+     * @return 如果返回true 则代表函数注册操作成功!!!
+     * <p>
+     * If true is returned, the function registration operation is successful!!!
+     * @throws WrongFormat 函数的格式发生错误则会抛出此异常
+     */
+    public static boolean register_function(Class<?> function) throws WrongFormat {
+        final Functions annotation = function.getAnnotation(Functions.class);
+        if (annotation != null) {
+            for (String functionExpression : annotation.value()) {
+                Mathematical_Expression.register_function(functionExpression);
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 注册一个函数到函数库中，使得所有需要使用函数计算的组件都可以获取到函数对象的数据类型。
+     * <p>
+     * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
+     *
      * @param function 函数的序列化文件，您可以在这里指定一个函数文件的路径，并将自动的注册进来
      *                 <p>
      *                 The expression of a function, you can use mathematical formats to define a function, such as f (x)=2 * x
@@ -180,6 +202,9 @@ public enum Mathematical_Expression {
      * <p>
      * Output and save the current function object
      *
+     * @param manyToOneNumberFunction 需要被导出为序列化文件的函数对象。
+     *
+     *                                The function object that needs to be exported as a serialized file.
      * @param file 当前函数对象要保存到的目标位置
      *             <p>
      *             The target location to save the current function object to
