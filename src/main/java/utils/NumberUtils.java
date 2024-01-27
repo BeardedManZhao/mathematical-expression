@@ -42,6 +42,16 @@ public final class NumberUtils {
     }
 
     /**
+     * 计算一个数值的阶乘
+     *
+     * @param number 运算数值
+     * @return 计算出来的结果
+     */
+    public static double factorial(double number) {
+        return number <= 1 ? number : number * factorial(number - 1);
+    }
+
+    /**
      * 计算一个数值的结果
      *
      * @param CalculationType 计算类型
@@ -75,8 +85,18 @@ public final class NumberUtils {
      * @return s1操作符的优先级 是否小于 s2操作符的优先级
      */
     public static boolean PriorityComparison(char s1, char s2) {
-        return (s1 == ConstantRegion.PLUS_SIGN || s1 == ConstantRegion.MINUS_SIGN) &&
-                (s2 == ConstantRegion.MULTIPLICATION_SIGN || s2 == ConstantRegion.DIVISION_SIGN || s2 == ConstantRegion.REMAINDER_SIGN);
+        switch (s1) {
+            case ConstantRegion.PLUS_SIGN:
+            case ConstantRegion.MINUS_SIGN:
+                switch (s2) {
+                    case ConstantRegion.MULTIPLICATION_SIGN:
+                    case ConstantRegion.DIVISION_SIGN:
+                    case ConstantRegion.REMAINDER_SIGN:
+                        return true;
+                }
+                break;
+        }
+        return false;
     }
 
     /**

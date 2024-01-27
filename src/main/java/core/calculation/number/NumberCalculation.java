@@ -71,7 +71,7 @@ public abstract class NumberCalculation implements Calculation {
     @Override
     public void check(String string) throws WrongFormat {
         if (string.isEmpty()) {
-            throw new WrongFormat("您传入的表达式为null 无法进行计算。");
+            throw new WrongFormat("您传入的表达式为空字符串 无法进行计算。");
         }
         int lastIndex = string.length() - 1;
         // 左括号出现数量
@@ -83,9 +83,9 @@ public abstract class NumberCalculation implements Calculation {
             while (lastChar == ConstantRegion.EMPTY) {
                 lastChar = string.charAt(--lastIndex);
             }
-            if (!StrUtils.IsANumber(lastChar)) {
+            if (!StrUtils.IsANumber(lastChar) && lastChar != ConstantRegion.FACTORIAL_SIGN) {
                 if (lastChar != ConstantRegion.RIGHT_BRACKET) {
-                    throw new WrongFormat("您传入的表达式格式有误，最后一个字符不是一个数值！！！\nThe format of the expression you passed in is incorrect. The last character is not a numeric value!!!\nERROR => " + lastChar);
+                    throw new WrongFormat("您传入的表达式格式有误，最后一个字符不是一个数值！！！\nThe format of the expression you passed in is incorrect. The last character is not a numeric value!!!\nERROR => " + lastChar + " in " + string);
                 } else {
                     RightCount = 1;
                 }
@@ -97,21 +97,45 @@ public abstract class NumberCalculation implements Calculation {
         boolean is = false;
         for (int i = 0; i < lastIndex; i++) {
             char c = string.charAt(i);
-            if (c == ConstantRegion.LEFT_BRACKET) {
-                ++LeftCount;
-            } else if (c == ConstantRegion.RIGHT_BRACKET) {
-                ++RightCount;
-            } else if (!(StrUtils.IsANumber(c) || c == ConstantRegion.DECIMAL_POINT || c == ConstantRegion.EMPTY)) {
-                if (!StrUtils.IsAnOperator(c)) {
-                    throw new WrongFormat("解析表达式的时候出现了未知符号!!!\nUnknown symbol appears when parsing expression!!!\nWrong format => [" + c + "] from " + string);
-                } else {
-                    if (is && c != ConstantRegion.MINUS_SIGN && c != ConstantRegion.PLUS_SIGN)
-                        throw new WrongFormat("您的数学表达式不正确，缺失了一个运算数值或多出了一个运算符。ERROR => " + string);
-                    is = true;
-                    continue;
-                }
+            switch (c) {
+                case ConstantRegion.LEFT_BRACKET:
+                    ++LeftCount;
+                    break;
+                case ConstantRegion.RIGHT_BRACKET:
+                    ++RightCount;
+                    break;
+                default:
+                    boolean isOk = StrUtils.IsANumber(c);
+                    if (isOk) {
+                        // 当前是数值
+                        is = false;
+                        continue;
+                    }
+                    switch (c) {
+                        case ConstantRegion.FACTORIAL_SIGN:
+                        case ConstantRegion.DECIMAL_POINT:
+                        case ConstantRegion.EMPTY:
+                            isOk = true;
+                            break;
+                    }
+                    if (isOk) {
+                        is = false;
+                        continue;
+                    }
+                    // 当前字符不是数值 也不是 . - !
+                    if (!StrUtils.IsAnOperator(c)) {
+                        // 当前不是数值 不是一个运算符 也不是 运算符中的 . - !
+                        throw new WrongFormat("解析表达式的时候出现了未知符号!!!\nUnknown symbol appears when parsing expression!!!\nWrong format => [" + c + "] from " + string);
+                    } else {
+                        // 当前是运算符，但是上一个字符有可能是 . - !以及数值
+                        if (is && c != ConstantRegion.MINUS_SIGN && c != ConstantRegion.PLUS_SIGN) {
+                            // 上一个是运算符 而当前也是运算符 所以直接报错
+                            throw new WrongFormat("您的数学表达式不正确，缺失了一个运算数值或多出了一个运算符。ERROR => " + c + " in " + string);
+                        }
+                        // 当前是运算符
+                        is = true;
+                    }
             }
-            is = false;
         }
         if (LeftCount != RightCount) {
             int abs = Math.abs(LeftCount - RightCount);

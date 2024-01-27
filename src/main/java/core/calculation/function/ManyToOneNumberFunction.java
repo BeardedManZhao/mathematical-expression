@@ -3,6 +3,8 @@ package core.calculation.function;
 import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 
+import java.io.Serializable;
+
 /**
  * 多对一的数值型函数，在该函数中，可以传入很多参数，最终计算出来结果数值，是针对数值计算的有效函数，需要实现其中的run方法。
  * <p>
@@ -21,6 +23,10 @@ public abstract class ManyToOneNumberFunction implements Function {
             throw new ExtractException("您的函数名称中只能包含字母，同时函数名称的长度不能为0，请您更改函数名称\nYour function name can only contain letters, and the length of the function name cannot be 0. Please change the function name\n" +
                     "ERROR NAME => " + name);
         }
+    }
+
+    protected ManyToOneNumberFunction() {
+        this("f");
     }
 
     /**
@@ -44,5 +50,19 @@ public abstract class ManyToOneNumberFunction implements Function {
     @Override
     public String toString() {
         return this.Name;
+    }
+
+
+    /**
+     * 是否允许序列化操作
+     * <p>
+     * Is serialization allowed
+     *
+     * @return 如果当前函数对象允许序列化操作则返回true 否则返回false。
+     * <p>
+     * If the current function object allows serialization operations, return true; otherwise, return false.
+     */
+    public boolean AllowSerialization() {
+        return this instanceof Serializable;
     }
 }

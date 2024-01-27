@@ -22,7 +22,7 @@ fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/i
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.1</version>
+        <version>1.3.2</version>
     </dependency>
 </dependencies>
 ```
@@ -32,7 +32,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.1'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.2'
 }
 ```
 
@@ -652,7 +652,7 @@ import exceptional.WrongFormat;
 public class MAIN {
 
     public static void main(String[] args) throws WrongFormat {
-    	// 将 f 函数注册进来
+        // 将 f 函数注册进来
         Mathematical_Expression.register_function("f(x) = x * x");
         // 准备要计算的表达式
         final String data = "1 + f(20) + 3";
@@ -707,6 +707,44 @@ public class MAIN {
 
 ```
 CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
+```
+
+### Annotation based implementation of function registration and calculation
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.Functions;
+import exceptional.WrongFormat;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 构建需要计算的表达式
+            final String string = "1 + ff(1 + 2) * 2";
+            // 获取到函数计算组件
+            Calculation calculation = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+            // 开始进行计算
+            calculation.check(string);
+            System.out.println(calculation.calculation(string));
+        }
+    }
+}
+```
+
+Here are the calculation results
+
+```
+CalculationNumberResults{result=21.0, source='functionFormulaCalculation2'}
 ```
 
 <hr>

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * 计算管理者类，在框架中的所有计算组件既可以复用，也可以进行动态的实例化，获取计算组件与动态注册组件的操作都可以在这里进行。
@@ -165,6 +166,19 @@ public final class CalculationManagement {
      */
     public static boolean isFunctionExist(String FunctionName) {
         return STRING_FUNCTION_HASH_MAP.containsKey(FunctionName);
+    }
+
+    /**
+     * 获取到所有已注册的函数的名字
+     * <p>
+     * Get the names of all registered functions
+     *
+     * @return 所有已注册的函数的名字的集合
+     * <p>
+     * A collection of the names of all registered functions
+     */
+    public static Set<String> getFunctionMap() {
+        return STRING_FUNCTION_HASH_MAP.keySet();
     }
 
     /**

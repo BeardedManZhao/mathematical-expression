@@ -8,6 +8,7 @@ package core.calculation.function;
  * @author zhao
  */
 public interface Function {
+
     /**
      * @return 函数的名称，每一个函数都必须要设置一个名称，便于在公式中使用函数
      * <p>

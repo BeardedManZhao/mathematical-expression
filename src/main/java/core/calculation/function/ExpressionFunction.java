@@ -8,7 +8,9 @@ import core.manager.ConstantRegion;
 import exceptional.WrongFormat;
 import utils.StrUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,16 +19,18 @@ import java.util.regex.Pattern;
  *
  * @author zhao
  */
-public class ExpressionFunction extends ManyToOneNumberFunction {
+public class ExpressionFunction extends ManyToOneNumberFunction implements Serializable {
 
     /**
      * 参数提取器
      */
     final static Pattern pattern = Pattern.compile(ConstantRegion.REGULAR_PURE_LETTER + "(?!\\()");
+    private final static long serialVersionUID = "ExpressionFunction".hashCode();
     private final Calculation functionFormulaCalculation;
     private final ArrayList<String> expression;
     private final ArrayList<Integer> indexList;
     private final int paramSize;
+    private final String f;
 
     /**
      * 构建一个函数对象
@@ -36,9 +40,11 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
      * @param expression                 函数的所有形参
      * @param paramSize                  函数的参数个数
      * @param indexList                  函数的参数索引 元素是形参索引，元素索引是在表达式中参数的顺序
+     * @param f                          函数的字符串对象
      */
-    protected ExpressionFunction(Calculation functionFormulaCalculation, String name, ArrayList<String> expression, int paramSize, ArrayList<Integer> indexList) {
+    protected ExpressionFunction(Calculation functionFormulaCalculation, String name, ArrayList<String> expression, int paramSize, ArrayList<Integer> indexList, String f) {
         super(name);
+        this.f = f;
         this.functionFormulaCalculation = functionFormulaCalculation;
         this.expression = expression;
         this.paramSize = paramSize;
@@ -129,7 +135,7 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
         if (functionName == null) {
             throw new WrongFormat("您的函数名提取失败，可能是格式错误，正确的格式示例:sum(a, b)，您的格式：" + trim);
         }
-        return new ExpressionFunction(instance, functionName, arrayList1, params.size(), arrayList2);
+        return new ExpressionFunction(instance, functionName, arrayList1, params.size(), arrayList2, expression);
     }
 
     /**
@@ -141,7 +147,7 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
     @Override
     public double run(double... numbers) {
         if (numbers.length != this.paramSize) {
-            throw new UnsupportedOperationException("参数不正确，期望参数数量为：" + this.paramSize + "，实际参数数量为：" + numbers.length);
+            throw new UnsupportedOperationException("参数不正确，期望参数数量为：" + this.paramSize + "，实际参数数量为：" + numbers.length + " error => " + Arrays.toString(numbers));
         }
         String s;
         {
@@ -159,9 +165,14 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
         }
         try {
             this.functionFormulaCalculation.check(s);
-            return ((CalculationNumberResults) this.functionFormulaCalculation.calculation(s)).getResult();
+            return ((CalculationNumberResults) this.functionFormulaCalculation.calculation(s, false)).getResult();
         } catch (WrongFormat e) {
             throw new UnsupportedOperationException(e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.f;
     }
 }

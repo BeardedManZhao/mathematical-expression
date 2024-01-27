@@ -1,11 +1,12 @@
 package core;
 
 import core.calculation.Calculation;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.Function;
-import core.calculation.function.FunctionPackage;
+import core.calculation.function.*;
 import core.manager.CalculationManagement;
 import exceptional.WrongFormat;
+
+import java.io.*;
+import java.util.Set;
 
 /**
  * 数学表达式解析库的门户类，在该类中能够直接获取到需要的计算组件并进行相对应的函数注册操作。
@@ -100,6 +101,55 @@ public enum Mathematical_Expression {
      * <p>
      * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
      *
+     * @param function 被 Functions 注解的类的实例，此示例中的 Functions 中所有的函数表达式将会被注册。
+     *                 <p>
+     *                 The instance of the class annotated by Functions, all function expressions in the Functions in this example will be registered.
+     * @return 如果返回true 则代表函数注册操作成功!!!
+     * <p>
+     * If true is returned, the function registration operation is successful!!!
+     * @throws WrongFormat 函数的格式发生错误则会抛出此异常
+     */
+    public static boolean register_function(Class<?> function) throws WrongFormat {
+        final Functions annotation = function.getAnnotation(Functions.class);
+        if (annotation != null) {
+            for (String functionExpression : annotation.value()) {
+                Mathematical_Expression.register_function(functionExpression);
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 注册一个函数到函数库中，使得所有需要使用函数计算的组件都可以获取到函数对象的数据类型。
+     * <p>
+     * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
+     *
+     * @param function 函数的序列化文件，您可以在这里指定一个函数文件的路径，并将自动的注册进来
+     *                 <p>
+     *                 The expression of a function, you can use mathematical formats to define a function, such as f (x)=2 * x
+     * @return 如果返回true 则代表函数注册操作成功!!!
+     * <p>
+     * If true is returned, the function registration operation is successful!!!
+     * @throws IOException            针对函数文件的反序列化操作出现错误的时候会抛出此异常对象
+     * @throws ClassNotFoundException Class of a serialized object cannot be found.
+     */
+    public static boolean register_function(File function) throws IOException, ClassNotFoundException {
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(function))) {
+            final Object o = objectInputStream.readObject();
+            if (o instanceof Function) {
+                return CalculationManagement.register((Function) o);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * 注册一个函数到函数库中，使得所有需要使用函数计算的组件都可以获取到函数对象的数据类型。
+     * <p>
+     * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
+     *
      * @param function 函数实现类所示例化出来的对象。
      *                 <p>
      *                 The object instantiated by the function implementation class.
@@ -122,6 +172,52 @@ public enum Mathematical_Expression {
      */
     public static void register_function(FunctionPackage functionPackage) {
         CalculationManagement.register(functionPackage);
+    }
+
+    /**
+     * 获取一个函数对象
+     *
+     * @param functionName 函数的名称。
+     * @return 函数对应的函数对象
+     */
+    public static ManyToOneNumberFunction getFunction(String functionName) {
+        return CalculationManagement.getFunctionByName(functionName);
+    }
+
+    /**
+     * 获取到所有已注册的函数的名字
+     * <p>
+     * Get the names of all registered functions
+     *
+     * @return 所有已注册的函数的名字的集合
+     * <p>
+     * A collection of the names of all registered functions
+     */
+    public static Set<String> getFunctionMap() {
+        return CalculationManagement.getFunctionMap();
+    }
+
+    /**
+     * 将当前的函数对象输出并保存
+     * <p>
+     * Output and save the current function object
+     *
+     * @param manyToOneNumberFunction 需要被导出为序列化文件的函数对象。
+     *
+     *                                The function object that needs to be exported as a serialized file.
+     * @param file 当前函数对象要保存到的目标位置
+     *             <p>
+     *             The target location to save the current function object to
+     * @throws IOException IO异常
+     *                     <p>
+     *                     IO exception
+     */
+    public static void saveFunction(ManyToOneNumberFunction manyToOneNumberFunction, File file) throws IOException {
+        if (manyToOneNumberFunction.AllowSerialization()) {
+            try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+                objectOutputStream.writeObject(manyToOneNumberFunction);
+            }
+        }
     }
 
     /**

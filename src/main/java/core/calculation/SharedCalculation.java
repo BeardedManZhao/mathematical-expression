@@ -22,4 +22,17 @@ public interface SharedCalculation extends Calculation {
      * @param startSharedPool 共享池如果设置为true，代表被打开，将会共享检查与
      */
     void setStartSharedPool(boolean startSharedPool);
+
+    /**
+     * 是否已经缓存了指定字符串的数据
+     *
+     * @param name 要检查的字符串
+     * @return 如果已经缓存则返回true，否则返回false
+     */
+    boolean isCache(String name);
+
+    /**
+     * 清理缓存数据
+     */
+    void clearCache();
 }

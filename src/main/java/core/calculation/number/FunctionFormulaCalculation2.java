@@ -1,5 +1,6 @@
 package core.calculation.number;
 
+import core.Mathematical_Expression;
 import core.calculation.Calculation;
 import core.calculation.SharedCalculation;
 import core.calculation.function.ManyToOneNumberFunction;
@@ -10,7 +11,9 @@ import exceptional.ExtractException;
 import exceptional.WrongFormat;
 import utils.StrUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -20,17 +23,20 @@ import java.util.Stack;
  *
  * @author zhao
  */
-public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation implements SharedCalculation {
+public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation implements SharedCalculation, Serializable {
 
-    private final Stack<Integer> ShareStart = new Stack<>();
-    private final Stack<Integer> ShareEnd = new Stack<>();
-    private final Stack<String> ShareNames = new Stack<>();
+    private final static long serialVersionUID = "FunctionFormulaCalculation2".hashCode();
+
+    private final HashMap<String, Object[]> ShareHashMap = new HashMap<>();
+    private final HashMap<String, CalculationNumberResults> ShareResultsHashMap = new HashMap<>();
     private boolean StartSharedPool = true;
-    private String CurrentOwner;
-    private CalculationNumberResults shareNumberCalculation;
 
     protected FunctionFormulaCalculation2(String name) {
         super(name);
+    }
+
+    protected FunctionFormulaCalculation2() {
+        this(Mathematical_Expression.functionFormulaCalculation2.name() + "_temp");
     }
 
     /**
@@ -79,6 +85,26 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
     }
 
     /**
+     * 是否已经缓存了指定字符串的数据
+     *
+     * @param name 要检查的字符串
+     * @return 如果已经缓存则返回true，否则返回false
+     */
+    @Override
+    public boolean isCache(String name) {
+        return this.ShareHashMap.containsKey(name);
+    }
+
+    /**
+     * 清理缓存数据
+     */
+    @Override
+    public void clearCache() {
+        this.ShareResultsHashMap.clear();
+        this.ShareHashMap.clear();
+    }
+
+    /**
      * 检查公式格式是否正确，如果不正确就会抛出一个异常
      * <p>
      * Check whether the formula format is correct. If not, an exception will be thrown
@@ -89,8 +115,8 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      */
     @Override
     public void check(String string) throws WrongFormat {
-        boolean equals = string.equals(this.CurrentOwner);
-        if (this.StartSharedPool && equals) {
+        string = StrUtils.removeEmpty(string);
+        if (this.StartSharedPool && this.isCache(string)) {
             return;
         }
         // 准备函数元数据缓冲区
@@ -108,22 +134,11 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             // 检查无误后，判断是否启动共享池，如果启动了的话，将格式化中的没有问题的数据提供给共享池
             if (StartSharedPool) {
                 // 更新共享池所属公式
-                CurrentOwner = string;
-                // 刷入所有的数据
-                if (ShareStart.size() != 0) {
-                    ShareStart.clear();
-                }
-                if (ShareEnd.size() != 0) {
-                    ShareEnd.clear();
-                }
-                if (ShareNames.size() != 0) {
-                    ShareNames.clear();
-                }
-                ShareStart.addAll(start);
-                ShareEnd.addAll(end);
-                ShareNames.addAll(names);
+                ShareHashMap.put(string, new Object[]{
+                        start.clone(), end.clone(), names
+                });
             }
-            if (!(start.isEmpty() || end.isEmpty())) {
+            while (!(start.isEmpty() || end.isEmpty())) {
                 // 如果一致，就进行函数内部每一个公式的检查 这里首先将函数中的每一个公式切割出来
                 for (String s : StrUtils.splitByChar(string.substring(start.pop(), end.pop()), ConstantRegion.COMMA)) {
                     // 将每一个公式进行检查
@@ -145,8 +160,9 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      * @param end            公式中所有包含函数实参公式的的终止索引值
      * @param names          公式中所有包含函数的名字
      * @param formulaBuilder 公式缓冲区，这个用于存储转换之后的公式，当需要进行公式检查的时候才会使用到该参数
+     * @throws WrongFormat 如果公式格式不正确，就会抛出一个异常
      */
-    public void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names, StringBuilder formulaBuilder) {
+    public void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names, StringBuilder formulaBuilder) throws WrongFormat {
         // 创建一个标记，标记是否进入函数
         boolean b = false;
         int count = 0;
@@ -161,6 +177,9 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
                     start.push(i + 1);
                     // 然后为缓冲的公式进行 0 的追加
                     formulaBuilder.append('0');
+                } else if (count != 0) {
+                    // 如果 count 不为0 代表找到了函数参数，但是参数里面有字母 所以肯定有问题
+                    throw new WrongFormat("请勿在参数位使用函数嵌套，您可以在函数的表达式中使用嵌套，例如 f(x) = x + ff(x), 调用为f(1 + 2); \n但是不能在函数的形参中使用嵌套，例如 f(x, b) = x + b, 调用为f(1 + 2, ff(1 + 2)) 是不允许滴\n嵌套发生的位置 = " + string.substring(i) + " 来自于 " + string);
                 }
                 // 将当前函数名字字符添加到函数名称缓冲区
                 stringBuilder.append(aChar);
@@ -239,10 +258,21 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      * Numerical result set object, which stores the operation data of each step and the final result value
      */
     @Override
+    @SuppressWarnings("unchecked")
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        boolean equals = this.StartSharedPool && Formula.equals(this.CurrentOwner);
-        if (equals && this.shareNumberCalculation != null) {
-            return this.shareNumberCalculation;
+        if (formatRequired) {
+            Formula = StrUtils.removeEmpty(Formula);
+        }
+        boolean equals = this.StartSharedPool;
+        Object[] objects = null;
+        if (equals) {
+            final CalculationNumberResults calculationNumberResults = this.ShareResultsHashMap.get(Formula);
+            if (calculationNumberResults != null) {
+                LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
+                return calculationNumberResults;
+            }
+            objects = this.ShareHashMap.get(Formula);
+            equals = objects != null;
         }
         Stack<Integer> start;
         Stack<Integer> end;
@@ -250,16 +280,18 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         StringBuilder stringBuilder = new StringBuilder(Formula);
         // 开始进行函数计算，首先判断是否启用了共享池 以及身份是否正确，确保两个公式是同一个
         if (equals) {
-            start = this.ShareStart;
-            end = this.ShareEnd;
-            names = this.ShareNames;
-            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.DECIMAL_POINT + CurrentOwner);
+            start = (Stack<Integer>) objects[0];
+            end = (Stack<Integer>) objects[1];
+            names = (Stack<String>) objects[2];
+            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         } else {
             start = new Stack<>();
             end = new Stack<>();
             names = new Stack<>();
             FunctionParameterExtraction(Formula, start, end, names);
+            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL_NO_USE + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         }
+        final ArrayList<Double> tempDouble = new ArrayList<>();
         // 开始计算，首先迭代所有函数的公式与函数的名字，计算出来函数的结果
         while (!start.isEmpty()) {
             int pop1 = start.pop();
@@ -267,22 +299,32 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             String pop = names.pop();
             // 通过函数名字获取函数对象
             final ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(pop);
-            final ArrayList<Double> functionArguments = new ArrayList<>();
             // 通过函数索引获取实参
-            for (String s : StrUtils.splitByChar(Formula.substring(pop1, pop2), ConstantRegion.COMMA)) {
-                // 将每一个函数实参计算出来，存储到临时列表
-                functionArguments.add(FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s).getResult());
+
+            // 提前计算substring，避免重复计算
+            String subFormula = Formula.substring(pop1, pop2);
+
+            // 使用ArrayList收集结果，以便于添加和转换为数组
+            ArrayList<Double> results = new ArrayList<>();
+
+            for (String s : StrUtils.splitByChar(subFormula, ConstantRegion.COMMA)) {
+                double result = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s).getResult();
+                tempDouble.add(result);
+                results.add(result);
             }
-            // 将当前函数索引区间内的数据字符串替换为当前函数的运算结果
-            double[] doubles = new double[functionArguments.size()];
-            for (int i = 0; i < doubles.length; i++) {
-                doubles[i] = functionArguments.get(i);
-            }
-            stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(doubles)));
+
+            // 将ArrayList转换为double[]数组，这一步在内部已经优化过
+            double[] resultArray = results.stream().mapToDouble(Double::doubleValue).toArray();
+
+            // 最后替换字符串内容
+            stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(resultArray)));
         }
         CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
+        tempDouble.add(calculation.getResult());
+        final Double[] doubles = tempDouble.toArray(new Double[0]);
         if (this.StartSharedPool) {
-            this.shareNumberCalculation = calculation;
+            calculation = new CalculationNumberResults(doubles, calculation.getResult(), this.Name);
+            this.ShareResultsHashMap.put(Formula, calculation);
         }
         return calculation;
     }
