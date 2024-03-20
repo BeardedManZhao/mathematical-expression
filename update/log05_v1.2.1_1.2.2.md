@@ -8,7 +8,8 @@
 * Optimize the checking and formatting logic between symbols to reduce unnecessary operations
 * Error reporting during interval accumulation calculation correction
 * Fix the expression checking logic in the FunctionFormulaCalculation calculation component.
-* Can be directly accessed through Mathematics_ The Expression class obtains all computing components and completes the deregistration and registration of functions.
+* Can be directly accessed through Mathematics_ The Expression class obtains all computing components and completes the
+  deregistration and registration of functions.
 
 <hr>
 

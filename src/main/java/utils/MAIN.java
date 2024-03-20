@@ -1,27 +1,28 @@
 package utils;
 
 import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.Functions;
-import exceptional.WrongFormat;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.ManyToOneNumberFunction;
 
-@Functions({
-        // 这里是需要被注册的两个函数 在这里标记一下
-        "f(x) = x * x",
-        "ff(x) = f(x) + 1"
-})
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
-        // 将 MAIN 类中标记的所有函数注册
-        if (Mathematical_Expression.register_function(MAIN.class)) {
-            // 构建需要计算的表达式
-            final String string = "1 + ff(1 + 2) * 2";
-            // 获取到函数计算组件
-            Calculation calculation = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-            // 开始进行计算
-            calculation.check(string);
-            System.out.println(calculation.calculation(string));
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ManyToOneNumberFunction ff, f;
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+            // 在这里读取到函数对象（要注意这里和保存时的顺序一致哦！！）
+            ff = ExpressionFunction.readFrom(objectInputStream);
+            f = ExpressionFunction.readFrom(objectInputStream);
         }
+        // 把函数注册回 Mathematical_Expression
+        Mathematical_Expression.register_function(ff);
+        Mathematical_Expression.register_function(f);
+        // 也可以直接使用它
+        final double run = ff.run(1024);
+        System.out.println(run);
     }
 }

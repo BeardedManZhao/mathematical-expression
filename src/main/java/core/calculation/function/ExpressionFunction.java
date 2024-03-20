@@ -8,6 +8,9 @@ import core.manager.ConstantRegion;
 import exceptional.WrongFormat;
 import utils.StrUtils;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +19,8 @@ import java.util.regex.Pattern;
 
 /**
  * 表达式函数，通过表达式操作解析出来的函数对象
+ * <p>
+ * Expression function, a function object parsed through expression operations
  *
  * @author zhao
  */
@@ -139,6 +144,28 @@ public class ExpressionFunction extends ManyToOneNumberFunction implements Seria
     }
 
     /**
+     * 从一个数据流中读取一个函数对象，然后将函数对象直接返回。
+     * <p>
+     * Read a function object from a data stream and return the function object directly.
+     *
+     * @param inputStream 包含函数序列化数据的数据流对象。
+     *                    <p>
+     *                    A data stream object that contains function serialized data.
+     * @return 返回一个函数对象。
+     * <p>
+     * Return a function object.
+     * @throws IOException            如果在操作过程中发生错误，抛出此异常！
+     *                                <p>
+     *                                If an error occurs during the operation, throw this exception!
+     * @throws ClassNotFoundException 如果您的数据类型有所缺失，则无法进行反序列化操作！
+     *                                <p>
+     *                                If your data type is missing, you cannot deserialize it!
+     */
+    public static ExpressionFunction readFrom(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
+        return (ExpressionFunction) inputStream.readObject();
+    }
+
+    /**
      * 函数的运行逻辑实现
      *
      * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
@@ -175,4 +202,36 @@ public class ExpressionFunction extends ManyToOneNumberFunction implements Seria
     public String toString() {
         return this.f;
     }
+
+    /**
+     * 将当前函数对象直接通过序列化的操作将其保存为一个文件。
+     * <p>
+     * Save the current function object as a file directly through serialization.
+     *
+     * @param outputStream 需要用来存储输出结果的数据流对象。
+     *                     <p>
+     *                     A data flow object is required to store the output results.
+     * @throws IOException 如果在操作过程中发生错误，抛出此异常！
+     *                     <p>
+     *                     If an error occurs during the operation, throw this exception!
+     */
+    public void saveTo(ObjectOutputStream outputStream) throws IOException {
+        outputStream.writeObject(this);
+    }
+
+    // 实现readObject方法以自定义反序列化过程
+    private void readObject(ObjectInputStream aInput) throws IOException, ClassNotFoundException {
+        // 调用默认的readObject方法以读取除field2之外的所有字段
+        aInput.defaultReadObject();
+        super.setName(aInput.readUTF());
+    }
+
+    // 实现writeObject方法以自定义序列化过程（如果需要）
+    private void writeObject(ObjectOutputStream aOutput) throws IOException {
+        // 调用默认的writeObject方法以序列化除field2之外的所有字段
+        aOutput.defaultWriteObject();
+        // 将 Name 写进去
+        aOutput.writeUTF(this.getName());
+    }
+
 }

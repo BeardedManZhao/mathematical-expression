@@ -316,7 +316,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             // 将ArrayList转换为double[]数组，这一步在内部已经优化过
             double[] resultArray = results.stream().mapToDouble(Double::doubleValue).toArray();
 
-            // 最后替换字符串内容
+            // 最后替换字符串内容 functionByName
             stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(resultArray)));
         }
         CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());

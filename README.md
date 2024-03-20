@@ -22,7 +22,7 @@ fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/i
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.2</version>
+        <version>1.3.3</version>
     </dependency>
 </dependencies>
 ```
@@ -32,7 +32,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.2'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.3'
 }
 ```
 
@@ -747,9 +747,199 @@ Here are the calculation results
 CalculationNumberResults{result=21.0, source='functionFormulaCalculation2'}
 ```
 
+## Directly Obtaining Function Objects and Saving Function Objects to Files
+
+All function objects can be extracted, and functions registered against "mathematical expression" can be saved to files.
+We can perform serialization operations directly to save them. Below, we will demonstrate some examples.
+Extracting a Function Object for Individual Computation
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.IOException;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+            // 计算出结果
+            final double run = ff.run(1024);
+            System.out.println(run);
+        }
+    }
+}
+```
+
+The computed result is:
+
+```
+1048577.0
+```
+
+#### Extracting a Function Object and Saving it to a File
+
+Extracting a Function Object and Saving it to a File
+Note that if you want to save a function that uses other functions `ff(x) = f(x) + 1)`, you must also
+save `f(x) = x * x` to the file. The following code demonstrates how to save a single function.
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("f");
+            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+                // 将 ff 保存到数据流中
+                ((ExpressionFunction) ff).saveTo(objectOutput);
+            }
+        }
+    }
+}
+```
+
+In fact, you can also save multiple function objects into one file, which helps resolve function dependency issues!
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数 以及 f 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+            final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+                // 将 ff 和 f 保存到数据流中
+                ((ExpressionFunction) ff).saveTo(objectOutput);
+                ((ExpressionFunction) f).saveTo(objectOutput);
+            }
+        }
+    }
+}
+```
+
+### Loading Function Objects from Files into the Library
+
+Functions can be serialized and deserialized. After deserialization, they can be registered back into the library or
+used directly!!!
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.ManyToOneNumberFunction;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MAIN {
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ManyToOneNumberFunction function;
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+            // 在这里读取到函数对象
+            function = ExpressionFunction.readFrom(objectInputStream);
+        }
+        // 把函数注册回 Mathematical_Expression
+        Mathematical_Expression.register_function(function);
+        // 也可以直接使用它
+        final double run = function.run(1024);
+        System.out.println(run);
+    }
+}
+```
+
+Deserialization also supports loading multiple function objects. Below is an example:
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.ManyToOneNumberFunction;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MAIN {
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ManyToOneNumberFunction ff, f;
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+            // 在这里读取到函数对象（要注意这里和保存时的顺序一致哦！！）
+            ff = ExpressionFunction.readFrom(objectInputStream);
+            f = ExpressionFunction.readFrom(objectInputStream);
+        }
+        // 把函数注册回 Mathematical_Expression
+        Mathematical_Expression.register_function(ff);
+        Mathematical_Expression.register_function(f);
+        // 也可以直接使用它
+        final double run = ff.run(1024);
+        System.out.println(run);
+    }
+}
+```
+
 <hr>
 
-More information
+## More information
 
 - 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
 - [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-py.git)

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.32F;
+    public final static float VERSION = 1.33F;
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';

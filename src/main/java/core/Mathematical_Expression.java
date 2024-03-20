@@ -5,7 +5,11 @@ import core.calculation.function.*;
 import core.manager.CalculationManagement;
 import exceptional.WrongFormat;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.util.Set;
 
 /**
@@ -136,7 +140,7 @@ public enum Mathematical_Expression {
      * @throws ClassNotFoundException Class of a serialized object cannot be found.
      */
     public static boolean register_function(File function) throws IOException, ClassNotFoundException {
-        try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(function))) {
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(function.toPath()))) {
             final Object o = objectInputStream.readObject();
             if (o instanceof Function) {
                 return CalculationManagement.register((Function) o);
@@ -203,18 +207,18 @@ public enum Mathematical_Expression {
      * Output and save the current function object
      *
      * @param manyToOneNumberFunction 需要被导出为序列化文件的函数对象。
-     *
+     *                                <p>
      *                                The function object that needs to be exported as a serialized file.
-     * @param file 当前函数对象要保存到的目标位置
-     *             <p>
-     *             The target location to save the current function object to
+     * @param file                    当前函数对象要保存到的目标位置
+     *                                <p>
+     *                                The target location to save the current function object to
      * @throws IOException IO异常
      *                     <p>
      *                     IO exception
      */
     public static void saveFunction(ManyToOneNumberFunction manyToOneNumberFunction, File file) throws IOException {
         if (manyToOneNumberFunction.AllowSerialization()) {
-            try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(Files.newOutputStream(file.toPath()))) {
                 objectOutputStream.writeObject(manyToOneNumberFunction);
             }
         }

@@ -19,7 +19,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.2</version>
+        <version>1.3.3</version>
     </dependency>
 </dependencies>
 ```
@@ -28,7 +28,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.2'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.3'
 }
 ```
 
@@ -418,7 +418,8 @@ public class MAIN {
 
   针对一些在表达式中使用了函数的表达式计算，可以使用上面的类进行操作，它是“core.calculation.number.FunctionFormulaCalculation”类的升级版，从1.1版本开始出现，同时也是它的一个子类拓展实现。
 
-  相较于父类，本组件弥补了父类只能解析带有一个参数函数表达式的不足，在该组件中，可以使用很多的实参进行函数的运算，例如sum(1,2,3)
+  相较于父类，本组件弥补了父类只能解析带有一个参数函数表达式的不足，在该组件中，可以使用很多的实参进行函数的运算，例如sum(
+  1,2,3)
   这类函数，就是一个多参函数，接下来请看API的使用示例，在此示例中，展示了多惨函数表达式的计算与结果。
 
 ```java
@@ -477,7 +478,8 @@ public class MAIN {
 
 #### 数学函数表达式注册
 
-您可以直接使用一个函数的数学表达式来实现某个函数的注册，函数表达式的格式为 `函数名字(参数1,参数2,参数3) = 函数逻辑表达式，例如 参数1 + 参数2` 下面是一个注册示例
+您可以直接使用一个函数的数学表达式来实现某个函数的注册，函数表达式的格式为 `函数名字(参数1,参数2,参数3) = 函数逻辑表达式，例如 参数1 + 参数2`
+下面是一个注册示例
 
 这样注册的函数 也是可以直接在数学表达式中使用的！
 
@@ -591,7 +593,7 @@ public class MAIN {
 
 ## 高阶操作
 
-### 数学方式的函数注册与计算
+### 数学方式的函数注册与计算和使用
 
 ```java
 package top.lingyuzhao;
@@ -699,9 +701,198 @@ public class MAIN {
 CalculationNumberResults{result=21.0, source='functionFormulaCalculation2'}
 ```
 
+### 直接获取到函数对象 以及 将函数对象保存到文件
+
+所有的函数对象都可以被提取出来，而针对“数学函数表达式”所注册的函数是可以被保存到文件中的，我们可以直接进行序列化的操作保存它，接下来我们将展示一些示例。
+
+#### 提取出函数对象 单独计算
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.IOException;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+            // 计算出结果
+            final double run = ff.run(1024);
+            System.out.println(run);
+        }
+    }
+}
+```
+
+下面就是计算结果
+
+```
+1048577.0
+```
+
+#### 提取出函数对象 保存到文件
+
+需要注意的是，如果您要保存的函数中使用到了其它函数，例如 `ff(x) = f(x) + 1`，那么您需要将 `f(x) = x * x`
+也保存到文件中，在下面展示的是保存一个函数的代码。
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("f");
+            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+                // 将 ff 保存到数据流中
+                ((ExpressionFunction) ff).saveTo(objectOutput);
+            }
+        }
+    }
+}
+```
+
+事实上，您还可以一次保存多个函数对象到一个文件中，这将会有助于帮助您解决函数依赖问题！
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数 以及 f 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+            final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+                // 将 ff 和 f 保存到数据流中
+                ((ExpressionFunction) ff).saveTo(objectOutput);
+                ((ExpressionFunction) f).saveTo(objectOutput);
+            }
+        }
+    }
+}
+```
+
+### 将文件保存的函数对象加载到库中
+
+函数可以被序列化，当然也可以被反序列化，反序列化之后您可以将其注册到库中，也可以直接使用它！！！
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.ManyToOneNumberFunction;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MAIN {
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ManyToOneNumberFunction function;
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+            // 在这里读取到函数对象
+            function = ExpressionFunction.readFrom(objectInputStream);
+        }
+        // 把函数注册回 Mathematical_Expression
+        Mathematical_Expression.register_function(function);
+        // 也可以直接使用它
+        final double run = function.run(1024);
+        System.out.println(run);
+    }
+}
+```
+
+当然，反序列化也支持多个函数对象的加载，下面是一个示例
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.ManyToOneNumberFunction;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MAIN {
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ManyToOneNumberFunction ff, f;
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+            // 在这里读取到函数对象（要注意这里和保存时的顺序一致哦！！）
+            // 如果要是不确定顺序，可以读取直接读取出来注册到库里 库会自动将函数的名称解析出来
+            ff = ExpressionFunction.readFrom(objectInputStream);
+            f = ExpressionFunction.readFrom(objectInputStream);
+        }
+        // 把函数注册回 Mathematical_Expression
+        Mathematical_Expression.register_function(ff);
+        Mathematical_Expression.register_function(f);
+        // 也可以直接使用它
+        final double run = ff.run(1024);
+        System.out.println(run);
+    }
+}
+```
+
 <hr>
 
-更多信息
+## 更多信息
 
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
 - [mathematical-expression-py](https://github.com/BeardedManZhao/mathematical-expression-py.git)
