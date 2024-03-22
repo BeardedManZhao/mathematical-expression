@@ -9,8 +9,5 @@
         <module name="mathematical-expression" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="mathematical-expression" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

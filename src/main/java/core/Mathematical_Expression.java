@@ -6,6 +6,9 @@ import core.manager.CalculationManagement;
 import exceptional.WrongFormat;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.util.AbstractMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -136,12 +139,42 @@ public enum Mathematical_Expression {
      * @throws ClassNotFoundException Class of a serialized object cannot be found.
      */
     public static boolean register_function(File function) throws IOException, ClassNotFoundException {
-        try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(function))) {
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(function.toPath()))) {
             final Object o = objectInputStream.readObject();
             if (o instanceof Function) {
                 return CalculationManagement.register((Function) o);
             }
             return false;
+        }
+    }
+
+
+    /**
+     * 将一个数据流中所包含的函数对象的序列化数据进行读取并进行解析和注册，最终返回注册结果！
+     *
+     * @param inputStream 包含函数对象序列化数据的数据流对象。
+     * @return 返回一个 二元组，其中 k 代表的就是注册成功的函数对象的数量，v 代表的是注册失败的函数对象的数量。
+     * @throws WrongFormat 如果在格式化操作进行的时候出现了格式错误，则在这里打印出此异常。
+     * @throws IOException 如果发生了 IO 错误直接抛出此异常。
+     */
+    public static Map.Entry<Integer, Integer> register_function(InputStream inputStream) throws WrongFormat, IOException {
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+            int count = 0, errrorCount = 0;
+            do {
+                try {
+                    final Object o = objectInputStream.readObject();
+                    if (o instanceof Function && CalculationManagement.register((Function) o)) {
+                        ++count;
+                    } else {
+                        ++errrorCount;
+                    }
+                } catch (EOFException e) {
+                    break;
+                }
+            } while (true);
+            return new AbstractMap.SimpleEntry<>(count, errrorCount);
+        } catch (ClassNotFoundException e) {
+            throw new WrongFormat("The data stream you provided has an unknown class and cannot continue parsing functions in the file!");
         }
     }
 
@@ -213,9 +246,34 @@ public enum Mathematical_Expression {
      *                     IO exception
      */
     public static void saveFunction(ManyToOneNumberFunction manyToOneNumberFunction, File file) throws IOException {
-        if (manyToOneNumberFunction.AllowSerialization()) {
-            try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
-                objectOutputStream.writeObject(manyToOneNumberFunction);
+        try (final OutputStream outputStream = Files.newOutputStream(file.toPath())) {
+            saveFunction(outputStream, manyToOneNumberFunction);
+        }
+    }
+
+    /**
+     * 将当前的函数对象输出并保存
+     * <p>
+     * Output and save the current function object
+     *
+     * @param outputStream            当序列化数据产生之后，需要通过此数据流来进行数据输出操作，因此您可以直接在这里传递外界已经建立好的数据流对象。
+     *                                <p>
+     *                                After the serialized data is generated, it is necessary to perform data output operations through this data stream, so you can directly pass the established data stream objects from the outside world here.
+     * @param manyToOneNumberFunction 需要被导出为序列化文件的函数对象。
+     *                                <p>
+     *                                The function object that needs to be exported as a serialized file.
+     * @throws IOException IO异常
+     *                     <p>
+     *                     IO exception
+     */
+    public static void saveFunction(OutputStream outputStream, ManyToOneNumberFunction... manyToOneNumberFunction) throws IOException {
+        try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
+            for (ManyToOneNumberFunction toOneNumberFunction : manyToOneNumberFunction) {
+                if (toOneNumberFunction.AllowSerialization()) {
+                    objectOutputStream.writeObject(toOneNumberFunction);
+                    continue;
+                }
+                CalculationManagement.LOGGER.warn("The function " + toOneNumberFunction.getName() + " is not allowed to be serialized.");
             }
         }
     }

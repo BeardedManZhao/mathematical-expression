@@ -22,7 +22,7 @@ fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/i
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.2</version>
+        <version>1.3.4</version>
     </dependency>
 </dependencies>
 ```
@@ -32,7 +32,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.2'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.4'
 }
 ```
 
@@ -745,6 +745,294 @@ Here are the calculation results
 
 ```
 CalculationNumberResults{result=21.0, source='functionFormulaCalculation2'}
+```
+
+### Directly Acquiring Function Objects and Saving Function Objects to Files
+
+All function objects can be extracted, and functions registered based on "mathematical expression" can be saved to files. We can directly perform serialization operations to save them. Below, we will show some examples.
+
+#### Extracting Function Objects for Individual Computation
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.IOException;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+            // 计算出结果
+            final double run = ff.run(1024);
+            System.out.println(run);
+        }
+    }
+}
+```
+
+下面就是计算结果
+
+```
+1048577.0
+```
+
+#### Extracting Function Objects and Saving Them to Files
+
+Note that if your saved function uses other functions, e.g., `ff(x) = f(x) + 1`, you need to save `f(x) = x * x` to the file as well. The following demonstrates how to save a single function:
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("f");
+            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+                // 将 ff 保存到数据流中
+                ((ExpressionFunction) ff).saveTo(objectOutput);
+            }
+        }
+    }
+}
+```
+
+In fact, you can also save multiple function objects to a single file, which helps resolve function dependency issues!
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将 MAIN 类中标记的所有函数注册
+        if (Mathematical_Expression.register_function(MAIN.class)) {
+            // 获取到 ff 函数 以及 f 函数
+            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+            final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+                // 将 ff 和 f 保存到数据流中
+                ((ExpressionFunction) ff).saveTo(objectOutput);
+                ((ExpressionFunction) f).saveTo(objectOutput);
+            }
+        }
+    }
+}
+```
+
+### Loading Function Objects Saved in Files into the Library
+
+Functions can be serialized and, consequently, deserialized. After deserialization, you can either register them back into the library or use them directly!!!
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.ManyToOneNumberFunction;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MAIN {
+
+    public static void main(String[] args) throws IOException {
+        ManyToOneNumberFunction function;
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+            // 在这里读取到函数对象
+            function = ExpressionFunction.readFrom(objectInputStream);
+        }
+        // 把函数注册回 Mathematical_Expression
+        Mathematical_Expression.register_function(function);
+        // 也可以直接使用它
+        final double run = function.run(1024);
+        System.out.println(run);
+    }
+}
+```
+
+Deserialization also supports loading multiple function objects. Here's an example:
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ExpressionFunction;
+import core.calculation.function.ManyToOneNumberFunction;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MAIN {
+
+    public static void main(String[] args) throws IOException {
+        ManyToOneNumberFunction ff, f;
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+            // 在这里读取到函数对象（要注意这里和保存时的顺序一致哦！！）
+            // 如果要是不确定顺序，可以读取直接读取出来注册到库里 库会自动将函数的名称解析出来
+            ff = ExpressionFunction.readFrom(objectInputStream);
+            f = ExpressionFunction.readFrom(objectInputStream);
+        }
+        // 把函数注册回 Mathematical_Expression
+        Mathematical_Expression.register_function(ff);
+        Mathematical_Expression.register_function(f);
+        // 也可以直接使用它
+        final double run = ff.run(1024);
+        System.out.println(run);
+    }
+}
+```
+
+### Batch Serialization/Registration of Functions
+
+Starting from version 1.3.4, you can directly serialize/register functions using data streams within the Mathematical_Expression class, which simplifies the code. Here's an example:
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+@Functions({
+        // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 以及 fff 几个函数
+        "f(x) = x * x",
+        "ff(x) = f(x) + 1",
+        "fff(x) = x! + ff(x) + f(x)"
+})
+public class MAIN {
+
+    public static void main(String[] args) throws IOException, WrongFormat {
+        // 将函数注册一下
+        Mathematical_Expression.register_function(MAIN.class);
+        // 获取到 几个函数 的对象
+        ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+        ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+        ManyToOneNumberFunction fff = Mathematical_Expression.getFunction("fff");
+        // 直接将这几个函数输出到文件中
+        try (final FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\zhao\\Desktop\\fsdownload\\f.ME")) {
+            Mathematical_Expression.saveFunction(fileOutputStream, f, ff, fff);
+        }
+    }
+}
+```
+
+Next, we can manually read the file into memory and use it, demonstrating the deserialization operation in Mathematical_Expression.
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Map;
+
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将函数注册一下
+        try (final FileInputStream fileInputStream = new FileInputStream("C:\\Users\\zhao\\Desktop\\fsdownload\\f.ME")) {
+            // 直接在这里使用数据流来进行反序列化操作，这个数据流对应的文件包含的函数都会开始尝试注册
+            final Map.Entry<Integer, Integer> integerIntegerEntry = Mathematical_Expression.register_function(fileInputStream);
+            // 注册完毕之后在这里就可以查看到结果
+            System.out.println("注册成功的数量：" + integerIntegerEntry.getKey());
+            System.out.println("注册失败的数量：" + integerIntegerEntry.getValue());
+        }
+        // 然后我们就可以开始使用了 在这里的数据流中 包含的三个函数分别是 f ff fff
+        final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+        final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+        final ManyToOneNumberFunction fff = Mathematical_Expression.getFunction("fff");
+        System.out.println(f.run(10));
+        System.out.println(ff.run(10));
+        System.out.println(fff.run(10));
+    }
+}
+```
+
+Below are the calculation results:
+
+```
+[INFO][Calculation Management][24-03-22:01]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-03-22:01]] : A computing component is registered BracketsCalculation2
+[INFO][Calculation Management][24-03-22:01]] : A function is registered f
+[INFO][Calculation Management][24-03-22:01]] : A function is registered ff
+[INFO][Calculation Management][24-03-22:01]] : A function is registered fff
+注册成功的数量：3
+注册失败的数量：0
+[INFO][Calculation Management][24-03-22:01]] : Get a function component from the manager. => f
+[INFO][Calculation Management][24-03-22:01]] : Get a function component from the manager. => ff
+[INFO][Calculation Management][24-03-22:01]] : Get a function component from the manager. => fff
+[INFO][functionFormulaCalculation_temp][24-03-22:01]] : Use shared pool data. The identity of the data is: functionFormulaCalculation_temp(10.0*10.0)
+100.0
+[INFO][functionFormulaCalculation_temp][24-03-22:01]] : No Use shared pool: functionFormulaCalculation_temp(f(10.0) + 1)
+[INFO][Calculation Management][24-03-22:01]] : Get a function component from the manager. => f
+[INFO][functionFormulaCalculation_temp][24-03-22:01]] : Use shared pool data. The identity of the data is: functionFormulaCalculation_temp(10.0*10.0)
+101.0
+[INFO][functionFormulaCalculation_temp][24-03-22:01]] : No Use shared pool: functionFormulaCalculation_temp(10.0! + ff(10.0) + f(10.0))
+[INFO][Calculation Management][24-03-22:01]] : Get a function component from the manager. => f
+[INFO][functionFormulaCalculation_temp][24-03-22:01]] : Use shared pool data. The identity of the data is: functionFormulaCalculation_temp(10.0*10.0)
+[INFO][Calculation Management][24-03-22:01]] : Get a function component from the manager. => ff
+[INFO][functionFormulaCalculation_temp][24-03-22:01]] : Use shared pool data. The identity of the data is: functionFormulaCalculation_temp(f(10.0) + 1)
+3629001.0
 ```
 
 <hr>
