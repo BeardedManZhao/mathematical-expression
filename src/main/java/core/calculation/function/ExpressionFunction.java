@@ -139,6 +139,16 @@ public class ExpressionFunction extends ManyToOneNumberFunction implements Seria
     }
 
     /**
+     *
+     * @return 函数期望接收的参数数量。
+     *
+     * The number of parameters that the function expects to receive.
+     */
+    public int getParamSize() {
+        return this.paramSize;
+    }
+
+    /**
      * 函数的运行逻辑实现
      *
      * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
