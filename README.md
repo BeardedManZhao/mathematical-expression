@@ -749,7 +749,8 @@ CalculationNumberResults{result=21.0, source='functionFormulaCalculation2'}
 
 ### Directly Acquiring Function Objects and Saving Function Objects to Files
 
-All function objects can be extracted, and functions registered based on "mathematical expression" can be saved to files. We can directly perform serialization operations to save them. Below, we will show some examples.
+All function objects can be extracted, and functions registered based on "mathematical expression" can be saved to
+files. We can directly perform serialization operations to save them. Below, we will show some examples.
 
 #### Extracting Function Objects for Individual Computation
 
@@ -791,7 +792,8 @@ public class MAIN {
 
 #### Extracting Function Objects and Saving Them to Files
 
-Note that if your saved function uses other functions, e.g., `ff(x) = f(x) + 1`, you need to save `f(x) = x * x` to the file as well. The following demonstrates how to save a single function:
+Note that if your saved function uses other functions, e.g., `ff(x) = f(x) + 1`, you need to save `f(x) = x * x` to the
+file as well. The following demonstrates how to save a single function:
 
 ```java
 package utils;
@@ -870,7 +872,8 @@ public class MAIN {
 
 ### Loading Function Objects Saved in Files into the Library
 
-Functions can be serialized and, consequently, deserialized. After deserialization, you can either register them back into the library or use them directly!!!
+Functions can be serialized and, consequently, deserialized. After deserialization, you can either register them back
+into the library or use them directly!!!
 
 ```java
 package utils;
@@ -937,7 +940,8 @@ public class MAIN {
 
 ### Batch Serialization/Registration of Functions
 
-Starting from version 1.3.4, you can directly serialize/register functions using data streams within the Mathematical_Expression class, which simplifies the code. Here's an example:
+Starting from version 1.3.4, you can directly serialize/register functions using data streams within the
+Mathematical_Expression class, which simplifies the code. Here's an example:
 
 ```java
 package utils;
@@ -973,7 +977,8 @@ public class MAIN {
 }
 ```
 
-Next, we can manually read the file into memory and use it, demonstrating the deserialization operation in Mathematical_Expression.
+Next, we can manually read the file into memory and use it, demonstrating the deserialization operation in
+Mathematical_Expression.
 
 ```java
 package utils;

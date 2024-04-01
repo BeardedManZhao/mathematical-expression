@@ -236,11 +236,11 @@ public enum Mathematical_Expression {
      * Output and save the current function object
      *
      * @param manyToOneNumberFunction 需要被导出为序列化文件的函数对象。
-     *
+     *                                <p>
      *                                The function object that needs to be exported as a serialized file.
-     * @param file 当前函数对象要保存到的目标位置
-     *             <p>
-     *             The target location to save the current function object to
+     * @param file                    当前函数对象要保存到的目标位置
+     *                                <p>
+     *                                The target location to save the current function object to
      * @throws IOException IO异常
      *                     <p>
      *                     IO exception
