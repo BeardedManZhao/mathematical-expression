@@ -10,6 +10,8 @@ import java.util.Comparator;
  * @author zhao
  */
 public class CalculationNumberResults implements CalculationResults, Comparator<CalculationNumberResults>, Comparable<CalculationNumberResults> {
+
+    private final static long serialVersionUID = "CalculationNumberResults".hashCode();
     private final Double[] doubles;
     private final double result;
     private final String source;

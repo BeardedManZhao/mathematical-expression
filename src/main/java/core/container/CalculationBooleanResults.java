@@ -10,6 +10,9 @@ import java.util.Comparator;
  * @author zhao
  */
 public class CalculationBooleanResults implements CalculationResults, Comparator<CalculationBooleanResults>, Comparable<CalculationBooleanResults> {
+
+    private static final long serialVersionUID = "CalculationBooleanResults".hashCode();
+
     private final boolean result;
     private final String source;
     private final int Layers;
