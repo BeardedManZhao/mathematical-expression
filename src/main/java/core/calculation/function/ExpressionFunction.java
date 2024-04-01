@@ -8,9 +8,6 @@ import core.manager.ConstantRegion;
 import exceptional.WrongFormat;
 import utils.StrUtils;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +16,6 @@ import java.util.regex.Pattern;
 
 /**
  * 表达式函数，通过表达式操作解析出来的函数对象
- * <p>
- * Expression function, a function object parsed through expression operations
  *
  * @author zhao
  */
@@ -46,14 +41,17 @@ public class ExpressionFunction extends ManyToOneNumberFunction implements Seria
      * @param paramSize                  函数的参数个数
      * @param indexList                  函数的参数索引 元素是形参索引，元素索引是在表达式中参数的顺序
      * @param f                          函数的字符串对象
+     * @throws WrongFormat 如果函数表达式的格式有错误，则抛出此异常;If the format of the function expression is incorrect, throw this exception
      */
-    protected ExpressionFunction(Calculation functionFormulaCalculation, String name, ArrayList<String> expression, int paramSize, ArrayList<Integer> indexList, String f) {
+    protected ExpressionFunction(Calculation functionFormulaCalculation, String name, ArrayList<String> expression, int paramSize, ArrayList<Integer> indexList, String f) throws WrongFormat {
         super(name);
         this.f = f;
         this.functionFormulaCalculation = functionFormulaCalculation;
         this.expression = expression;
         this.paramSize = paramSize;
         this.indexList = indexList;
+        // 开始进行检查
+        this.functionFormulaCalculation.check(this.explain(new double[this.paramSize]));
     }
 
     /**
@@ -61,7 +59,7 @@ public class ExpressionFunction extends ManyToOneNumberFunction implements Seria
      *
      * @param expression 表达式字符串
      * @return 解析出来的函数对象
-     * @throws WrongFormat 如果函数表达式的格式有错误，则抛出此异常
+     * @throws WrongFormat 如果函数表达式的格式有错误，则抛出此异常;If the format of the function expression is incorrect, throw this exception
      */
     public static ExpressionFunction parse(String expression) throws WrongFormat {
         // 获取到函数的形参部分 以及 函数的表达式部分
@@ -144,94 +142,62 @@ public class ExpressionFunction extends ManyToOneNumberFunction implements Seria
     }
 
     /**
-     * 从一个数据流中读取一个函数对象，然后将函数对象直接返回。
+     * @return 函数期望接收的参数数量。
      * <p>
-     * Read a function object from a data stream and return the function object directly.
-     *
-     * @param inputStream 包含函数序列化数据的数据流对象。
-     *                    <p>
-     *                    A data stream object that contains function serialized data.
-     * @return 返回一个函数对象。
-     * <p>
-     * Return a function object.
-     * @throws IOException            如果在操作过程中发生错误，抛出此异常！
-     *                                <p>
-     *                                If an error occurs during the operation, throw this exception!
-     * @throws ClassNotFoundException 如果您的数据类型有所缺失，则无法进行反序列化操作！
-     *                                <p>
-     *                                If your data type is missing, you cannot deserialize it!
+     * The number of parameters that the function expects to receive.
      */
-    public static ExpressionFunction readFrom(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
-        return (ExpressionFunction) inputStream.readObject();
+    public int getParamSize() {
+        return this.paramSize;
     }
 
     /**
-     * 函数的运行逻辑实现
+     * 函数的运行逻辑实现，在这里是所有数学表达式统一的计算方法！
+     * <p>
+     * The implementation of the running logic of the function is the unified calculation method for all mathematical expressions here!
      *
      * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
+     *                <p>
+     *                This is the data input object for the function, and the framework passes the data input parameters here
      * @return 这里是数据经过函数转换之后的数据
+     * <p>
+     * Here is the data after function conversion
      */
     @Override
     public double run(double... numbers) {
+        return ((CalculationNumberResults) this.functionFormulaCalculation.calculation(this.explain(numbers), false)).getResult();
+    }
+
+    /**
+     * 解释计算表达式，我们可以在这里传递一些参数，这些参数将做为函数的输入参数，在这里返回的就是函数带有数值的内部表达式
+     * <p>
+     * Explain the calculation expression. We can pass some parameters here, which will be used as input parameters for the function. Here, we return the internal expression of the function with numerical values
+     *
+     * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
+     *                <p>
+     *                This is the data input object for the function, and the framework passes the data input parameters here
+     * @return 这里是数据经过函数转换之后的带有参数的表达式数据，用于构建数学表达式的！
+     * <p>
+     * This is the expression data with parameters after function conversion, used to construct mathematical expressions!
+     */
+    public String explain(double... numbers) {
         if (numbers.length != this.paramSize) {
             throw new UnsupportedOperationException("参数不正确，期望参数数量为：" + this.paramSize + "，实际参数数量为：" + numbers.length + " error => " + Arrays.toString(numbers));
         }
-        String s;
-        {
-            // 开始进行参数替换
-            StringBuilder stringBuilder = new StringBuilder();
-            int index = 0;
-            for (Integer integer : this.indexList) {
-                stringBuilder.append(this.expression.get(index++)).append(numbers[integer]);
-            }
-            if (this.expression.size() > index) {
-                stringBuilder.append(this.expression.get(index));
-            }
-            // 开始替换参数
-            s = stringBuilder.toString();
+        // 开始进行参数替换
+        final StringBuilder stringBuilder = new StringBuilder();
+        int index = 0;
+        for (Integer integer : this.indexList) {
+            stringBuilder.append(this.expression.get(index++)).append(numbers[integer]);
         }
-        try {
-            this.functionFormulaCalculation.check(s);
-            return ((CalculationNumberResults) this.functionFormulaCalculation.calculation(s, false)).getResult();
-        } catch (WrongFormat e) {
-            throw new UnsupportedOperationException(e);
+        if (this.expression.size() > index) {
+            stringBuilder.append(this.expression.get(index));
         }
+        // 开始替换参数
+        return stringBuilder.toString();
     }
 
     @Override
     public String toString() {
         return this.f;
     }
-
-    /**
-     * 将当前函数对象直接通过序列化的操作将其保存为一个文件。
-     * <p>
-     * Save the current function object as a file directly through serialization.
-     *
-     * @param outputStream 需要用来存储输出结果的数据流对象。
-     *                     <p>
-     *                     A data flow object is required to store the output results.
-     * @throws IOException 如果在操作过程中发生错误，抛出此异常！
-     *                     <p>
-     *                     If an error occurs during the operation, throw this exception!
-     */
-    public void saveTo(ObjectOutputStream outputStream) throws IOException {
-        outputStream.writeObject(this);
-    }
-
-    // 实现readObject方法以自定义反序列化过程
-    private void readObject(ObjectInputStream aInput) throws IOException, ClassNotFoundException {
-        // 调用默认的readObject方法以读取除field2之外的所有字段
-        aInput.defaultReadObject();
-        super.setName(aInput.readUTF());
-    }
-
-    // 实现writeObject方法以自定义序列化过程（如果需要）
-    private void writeObject(ObjectOutputStream aOutput) throws IOException {
-        // 调用默认的writeObject方法以序列化除field2之外的所有字段
-        aOutput.defaultWriteObject();
-        // 将 Name 写进去
-        aOutput.writeUTF(this.getName());
-    }
-
 }
