@@ -1,4 +1,4 @@
-# ![image](https://user-images.githubusercontent.com/113756063/203919312-dcec4a61-2136-4af2-a361-66b2ed4e6a54.png) 数学表达式
+# ![image](https://user-images.githubusercontent.com/113756063/203919312-dcec4a61-2136-4af2-a361-66b2ed4e6a54.png) 数学表达式 - （MAE）解析库
 
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
 
