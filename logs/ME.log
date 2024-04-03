@@ -1,0 +1,76 @@
+[INFO][Calculation Management][24-04-03:11:18:22]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-04-03:11:18:22]] : + 	Start time Wed Apr 03 11:18:22 CST 2024
+[INFO][Calculation Management][24-04-03:11:18:22]] : + 	version: 1.34
+[INFO][Calculation Management][24-04-03:11:18:22]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-04-03:11:18:22]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-04-03:11:18:22]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-04-03:11:18:22]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-04-03:11:18:22]] : A computing component is registered bracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:19:42]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-04-03:11:19:42]] : + 	Start time Wed Apr 03 11:19:41 CST 2024
+[INFO][Calculation Management][24-04-03:11:19:42]] : + 	version: 1.34
+[INFO][Calculation Management][24-04-03:11:19:42]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-04-03:11:19:42]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-04-03:11:19:42]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-04-03:11:19:42]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-04-03:11:19:42]] : A computing component is registered bracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:24:21]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-04-03:11:24:21]] : + 	Start time Wed Apr 03 11:24:21 CST 2024
+[INFO][Calculation Management][24-04-03:11:24:21]] : + 	version: 1.34
+[INFO][Calculation Management][24-04-03:11:24:21]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-04-03:11:24:21]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-04-03:11:24:21]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-04-03:11:24:21]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-04-03:11:24:21]] : A computing component is registered BracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:24:21]] : A computing component is registered functionFormulaCalculation2
+[INFO][Calculation Management][24-04-03:11:24:21]] : A function is registered f
+[INFO][Calculation Management][24-04-03:11:24:21]] : Get a computing component from the manager. => functionFormulaCalculation2
+[INFO][functionFormulaCalculation2][24-04-03:11:24:21]] : Use shared pool data. The identity of the data is: functionFormulaCalculation2(f(1+2)-3)
+[INFO][Calculation Management][24-04-03:11:24:21]] : Get a function component from the manager. => f
+[INFO][functionFormulaCalculation2][24-04-03:11:24:21]] : No Use shared pool: functionFormulaCalculation2(3.0! + 1)
+[INFO][Calculation Management][24-04-03:11:26:28]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-04-03:11:26:28]] : + 	Start time Wed Apr 03 11:26:28 CST 2024
+[INFO][Calculation Management][24-04-03:11:26:28]] : + 	version: 1.34
+[INFO][Calculation Management][24-04-03:11:26:28]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-04-03:11:26:28]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-04-03:11:26:28]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-04-03:11:26:28]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-04-03:11:26:28]] : A computing component is registered BracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:26:28]] : A computing component is registered functionFormulaCalculation2
+[INFO][Calculation Management][24-04-03:11:26:28]] : A function is registered f
+[INFO][Calculation Management][24-04-03:11:26:28]] : Get a computing component from the manager. => functionFormulaCalculation2
+[INFO][functionFormulaCalculation2][24-04-03:11:26:28]] : Use shared pool data. The identity of the data is: functionFormulaCalculation2(f(1+2)-3)
+[INFO][Calculation Management][24-04-03:11:26:28]] : Get a function component from the manager. => f
+[INFO][functionFormulaCalculation2][24-04-03:11:26:28]] : No Use shared pool: functionFormulaCalculation2(3.0! + 1)
+[INFO][Calculation Management][24-04-03:11:26:28]] : Get a computing component from the manager. => BracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:26:28]] : A computing component is registered fastSumOfIntervalsBrackets
+[INFO][fastSumOfIntervalsBrackets][24-04-03:11:26:28]] : Use shared pool data. The identity of the data is: fastSumOfIntervalsBrackets.1 + 2, 3
+[INFO][Calculation Management][24-04-03:11:27:03]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-04-03:11:27:03]] : + 	Start time Wed Apr 03 11:27:03 CST 2024
+[INFO][Calculation Management][24-04-03:11:27:03]] : + 	version: 1.34
+[INFO][Calculation Management][24-04-03:11:27:03]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-04-03:11:27:03]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-04-03:11:27:03]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-04-03:11:27:03]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-04-03:11:27:03]] : A computing component is registered BracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:27:03]] : A computing component is registered functionFormulaCalculation2
+[INFO][Calculation Management][24-04-03:11:27:03]] : A function is registered f
+[INFO][Calculation Management][24-04-03:11:27:03]] : Get a computing component from the manager. => functionFormulaCalculation2
+[INFO][functionFormulaCalculation2][24-04-03:11:27:03]] : Use shared pool data. The identity of the data is: functionFormulaCalculation2(f(1+2)-3)
+[INFO][Calculation Management][24-04-03:11:27:03]] : Get a function component from the manager. => f
+[INFO][functionFormulaCalculation2][24-04-03:11:27:03]] : No Use shared pool: functionFormulaCalculation2(3.0! + 1)
+[INFO][Calculation Management][24-04-03:11:27:03]] : Get a computing component from the manager. => BracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:27:03]] : A computing component is registered fastSumOfIntervalsBrackets
+[INFO][fastSumOfIntervalsBrackets][24-04-03:11:27:03]] : Use shared pool data. The identity of the data is: fastSumOfIntervalsBrackets.1 + 2, 30
+[INFO][Calculation Management][24-04-03:11:33:52]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-04-03:11:33:52]] : + 	Start time Wed Apr 03 11:33:51 CST 2024
+[INFO][Calculation Management][24-04-03:11:33:52]] : + 	version: 1.34
+[INFO][Calculation Management][24-04-03:11:33:52]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-04-03:11:33:52]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-04-03:11:33:52]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-04-03:11:33:52]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-04-03:11:33:52]] : A computing component is registered BracketsCalculation2
+[INFO][Calculation Management][24-04-03:11:33:52]] : A computing component is registered functionFormulaCalculation2
+[INFO][Calculation Management][24-04-03:11:33:52]] : A function is registered f
+[INFO][Calculation Management][24-04-03:11:33:52]] : Get a function component from the manager. => f
+[INFO][functionFormulaCalculation2][24-04-03:11:33:52]] : No Use shared pool: functionFormulaCalculation2(3.0! + 1)

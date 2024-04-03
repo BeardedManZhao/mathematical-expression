@@ -36,13 +36,108 @@ dependencies {
 }
 ```
 
+## Why choose mathematical expression
+
+Mathematical expression has advantages such as simplicity, speed, ease of use, and support for a wide range of
+languages. It has almost the same API usage as the C Java Python version.
+
+### Easy to use API
+
+Calling the library is very simple, and you can use the following code for calculation. Of course, if you don't need to
+check, you can also compress the calculation code below
+into  `System.out.println(Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2).calculation("(1+2)*3"));`
+Can effectively reduce code load!
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import exceptional.WrongFormat;
+
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        final Calculation instance = Mathematical_Expression.getInstance(
+                // Select the different computing components you want to use here
+                Mathematical_Expression.bracketsCalculation2
+        );
+        // If you ensure the correctness of the expression, you can skip checking
+        instance.check("(1+2)*3");
+        System.out.println(instance.calculation("(1+2)*3"));
+    }
+}
+```
+
+### A wide variety of computing components
+
+In mathematical expression, we provide various computing components, and you can choose different computing components
+according to your needs to achieve different functions while maintaining the same API calling method.
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.Functions;
+import exceptional.WrongFormat;
+
+// Prepare a mathematical function x factorial+1
+@Functions("f(x) = x! + 1")
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // Register and use the main annotated function
+        Mathematical_Expression.register_function(MAIN.class);
+        final Calculation instance = Mathematical_Expression.getInstance(
+                // Select the function calculation component here
+                Mathematical_Expression.functionFormulaCalculation2
+        );
+        // If you ensure the correctness of the expression, you can skip checking
+        instance.check("f(1 + 2) - 3");
+        System.out.println(instance.calculation("f(1 + 2) - 3"));
+
+        /*----------------------------------*/
+
+        // You can also use the quick calculation component to calculate the sum between intervals [1+2, 30]
+        final Calculation instance1 = Mathematical_Expression.getInstance(
+                // Select the quick sum calculation component here, and the API will be the same as above
+                Mathematical_Expression.fastSumOfIntervalsBrackets
+        );
+        instance1.check("1 + 2, 30");
+        System.out.println(instance1.calculation("1 + 2, 30"));
+    }
+}
+```
+
+### Ultra-high flexibility
+
+The functions required in any step of it, as well as any calculated object, can be individually obtained for the desired
+operation. For example, a mathematical function is a complex object, and after its compilation is successful, you can
+directly obtain its function object, which is not limited to the following
+Used in mathematical expression!
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+// Prepare a mathematical function x factorial+1
+@Functions("f(x) = x! + 1")
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // Register and use the main annotated function
+        Mathematical_Expression.register_function(MAIN.class);
+        // Extract f (x)=x+ We know that the name of the function object of 1 is f
+        final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+        // Calculate using f alone
+        final double run = f.run(3);
+        System.out.println(run);
+    }
+}
+```
+
 ## Framework
 
 ### Obtain and calculate the calculation components directly through the mathematical-expression library
 
 ```java
-package utils;
-
 import core.Mathematical_Expression;
 import core.calculation.number.NumberCalculation;
 import core.container.CalculationNumberResults;
@@ -103,8 +198,6 @@ public class MAIN {
 - API Usage Example
 
 ```java
-package utils;
-
 import core.calculation.number.FunctionFormulaCalculation;
 import core.calculation.number.PrefixExpressionOperation;
 import core.manager.CalculationManagement;

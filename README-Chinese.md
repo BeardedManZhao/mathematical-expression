@@ -32,6 +32,99 @@ dependencies {
 }
 ```
 
+## 为什么要选择 mathematical-expression
+
+mathematical-expression 具有简单，快速，易上手，支持的语言种类多 等优势，它具有 C Java python 版本的 API 使用方法几乎一致。
+
+### 易于使用的API
+
+调用库是很简单的，您可以使用如下代码进行计算，当然，如果您不需要进行检查，您还可以将下面的计算代码压缩为 `System.out.println(Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2).calculation("(1+2)*3"));`
+能够有效的减少代码量！
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import exceptional.WrongFormat;
+
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        final Calculation instance = Mathematical_Expression.getInstance(
+                // 在这里选择您要使用的不同计算组件即可
+                Mathematical_Expression.bracketsCalculation2
+        );
+        // 如果您确保表达式的无误，可以不检查
+        instance.check("(1+2)*3");
+        System.out.println(instance.calculation("(1+2)*3"));
+    }
+}
+```
+
+### 种类繁多的计算组件
+
+在mathematical-expression 中，我们提供了多种计算组件，您可以根据需要选择不同的计算组件，以实现不同的功能，同时还保持着相同的API调用方式。
+
+```java
+package utils;
+
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.Functions;
+import exceptional.WrongFormat;
+
+// 准备一个数学函数 x 的阶乘 + 1
+@Functions("f(x) = x! + 1")
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 将 MAIN 注解的函数注册 并进行使用
+        Mathematical_Expression.register_function(MAIN.class);
+        final Calculation instance = Mathematical_Expression.getInstance(
+                // 在这里选择函数计算组件即可
+                Mathematical_Expression.functionFormulaCalculation2
+        );
+        // 如果您确保表达式的无误，可以不检查
+        instance.check("f(1 + 2) - 3");
+        System.out.println(instance.calculation("f(1 + 2) - 3"));
+
+        /*----------------------------------*/
+
+        // 您还可以用快速计算组件计算区间 [1+2, 30] 之间的求和
+        final Calculation instance1 = Mathematical_Expression.getInstance(
+                // 在这里选择快速求和计算组件即可 API 和上面是一样的
+                Mathematical_Expression.fastSumOfIntervalsBrackets
+        );
+        instance1.check("1 + 2, 30");
+        System.out.println(instance1.calculation("1 + 2, 30"));
+    }
+}
+```
+
+### 超高的灵活度
+
+在其中的任何步骤所需要的函数，计算好的任何对象，都可以被单独获取到进行您想要的操作。例如数学函数是一种复杂的对象，其编译成功之后，您可以直接获取到它的函数对象，并不仅仅局限于在
+mathematical-expression 中使用！
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.function.Functions;
+import core.calculation.function.ManyToOneNumberFunction;
+import exceptional.WrongFormat;
+
+// 准备一个数学函数 x 的阶乘 + 1
+@Functions("f(x) = x! + 1")
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 将 MAIN 注解的函数注册 并进行使用
+        Mathematical_Expression.register_function(MAIN.class);
+        // 提取出 f(x) = x! + 1 的函数对象 我们知道这个函数的名字就是 f
+        final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+        // 单独使用 f 进行计算
+        final double run = f.run(3);
+        System.out.println(run);
+    }
+}
+```
+
 ## 框架架构
 
 ### 通过 mathematical-expression 库直接获取到计算组件并进行计算
@@ -163,8 +256,6 @@ core.calculation.number.PrefixExpressionOperation@41e737  core.calculation.numbe
   该组件支持的运算符有： a+b a-b a*b a/b a%b
 
 ```java
-package utils;
-
 import core.calculation.number.PrefixExpressionOperation;
 import core.container.CalculationNumberResults;
 import exceptional.WrongFormat;
