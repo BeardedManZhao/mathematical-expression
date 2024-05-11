@@ -91,7 +91,7 @@ public class MAIN {
         // 然后直接进行计算 您的表达式中完全是可以使用函数的哦~~~
         final CalculationResults calculation = instance.calculation("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
         // 直接打印就可以啦~
-        System.out.println(calculation.getResult());
+        System.out.println(calculation);
     }
 }
 ```
