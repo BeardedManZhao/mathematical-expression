@@ -27,4 +27,15 @@ public interface CalculationResults extends Serializable {
      * @return 计算结果的来源
      */
     String getCalculationSourceName();
+
+    /**
+     * 获取计算结果，计算结果的类型在不同的子类中是不同的，所以这里返回的是Object类型
+     * <p>
+     * Obtain the calculation result. The type of the calculation result varies among different subclasses, so the object type is returned here
+     *
+     * @return 计算结果
+     * <p>
+     * Calculation results
+     */
+    Object getResult();
 }

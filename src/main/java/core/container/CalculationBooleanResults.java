@@ -48,7 +48,7 @@ public class CalculationBooleanResults implements CalculationResults, Comparator
         return this.source;
     }
 
-    public boolean getResult() {
+    public Boolean getResult() {
         return this.result;
     }
 

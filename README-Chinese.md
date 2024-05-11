@@ -60,7 +60,43 @@ public class MAIN {
 }
 ```
 
-### 种类繁多的计算组件
+### 超强的功能性，拿捏诸多函数
+
+您不熟悉编程？很简单，您完全可以使用数学表达式进行函数的自定义，同时我们还准备了诸多的内置函数，它们统一在 `core.calculation.function.FunctionPackage`
+类中！！
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.calculation.function.FunctionPackage;
+import core.calculation.function.Functions;
+import core.container.CalculationResults;
+import exceptional.WrongFormat;
+
+// 准备一个数学函数 x 的阶乘 + 1
+@Functions("f(x) = x! + 1")
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 您可以将我们内置的函数进行导入，这样就可以使用一些内置函数了，如 sum
+        // 注册内置的函数库 - 数学库
+        Mathematical_Expression.register_function(FunctionPackage.MATH);
+        // 当然 您还可以使用自定义函数的方式 将您自己的函数 注册进去
+        Mathematical_Expression.register_function("fTwo(x, y) = x + y");
+        // 您也可以使用注解批量的 将 MAIN 注解的所有函数注册 并进行使用
+        Mathematical_Expression.register_function(MAIN.class);
+        // 在下面就可以开始进行计算了 首先是获取到计算组件
+        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+        // 然后进行一个简单的检查
+        instance.check("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
+        // 然后直接进行计算 您的表达式中完全是可以使用函数的哦~~~
+        final CalculationResults calculation = instance.calculation("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
+        // 直接打印就可以啦~
+        System.out.println(calculation.getResult());
+    }
+}
+```
+
+### 种类繁多地计算组件
 
 在mathematical-expression 中，我们提供了多种计算组件，您可以根据需要选择不同的计算组件，以实现不同的功能，同时还保持着相同的API调用方式。
 

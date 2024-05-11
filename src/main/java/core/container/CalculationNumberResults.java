@@ -43,7 +43,7 @@ public class CalculationNumberResults implements CalculationResults, Comparator<
         return this.source;
     }
 
-    public double getResult() {
+    public Double getResult() {
         return this.result;
     }
 
