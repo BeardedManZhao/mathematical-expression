@@ -27,6 +27,7 @@ public final class ConstantRegion {
     public final static char DIVISION_SIGN = '/';
     public final static char REMAINDER_SIGN = '%';
     public final static char FACTORIAL_SIGN = '!';
+    public final static char POW_SIGN = '^';
     public final static char COMMA = ',';
     public final static String GREATER_THAN_SIGN = ">";
     public final static String LESS_THAN_SIGN = "<";

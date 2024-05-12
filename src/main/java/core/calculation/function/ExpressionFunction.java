@@ -15,7 +15,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 表达式函数，通过表达式操作解析出来的函数对象
+ * 表达式函数，通过解析数学函数表达式操作解析出来的函数对象
+ * <p>
+ * Expression function, a function object parsed by parsing mathematical function expression operations
  *
  * @author zhao
  */

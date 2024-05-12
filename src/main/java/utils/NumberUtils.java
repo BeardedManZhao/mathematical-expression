@@ -71,6 +71,8 @@ public final class NumberUtils {
                 return an / bn;
             case ConstantRegion.REMAINDER_SIGN:
                 return an % bn;
+            case ConstantRegion.POW_SIGN:
+                return Math.pow(an, bn);
             default:
                 throw new AbnormalOperation("操作数计算异常，您的计算模式不存在，错误的计算模式 = [" + CalculationType + "]\n" +
                         "Operand calculation exception. Your calculation mode does not exist. Wrong calculation mode = [" + CalculationType + "]");
@@ -92,6 +94,7 @@ public final class NumberUtils {
                     case ConstantRegion.MULTIPLICATION_SIGN:
                     case ConstantRegion.DIVISION_SIGN:
                     case ConstantRegion.REMAINDER_SIGN:
+                    case ConstantRegion.POW_SIGN:
                         return true;
                 }
                 break;

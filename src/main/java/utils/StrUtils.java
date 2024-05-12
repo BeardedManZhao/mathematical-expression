@@ -86,6 +86,7 @@ public final class StrUtils {
             case ConstantRegion.MULTIPLICATION_SIGN:
             case ConstantRegion.DIVISION_SIGN:
             case ConstantRegion.REMAINDER_SIGN:
+            case ConstantRegion.POW_SIGN:
                 return true;
         }
         return false;
