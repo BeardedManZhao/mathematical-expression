@@ -25,7 +25,7 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>mathematical-expression</artifactId>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
     <packaging>jar</packaging>
     <name>mathematical-expression</name>
     <description>mathematical-expression-java</description>
@@ -55,6 +55,13 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.20.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.BeardedManZhao</groupId>
+            <artifactId>varFormatter</artifactId>
+            <version>1.0.4</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -2,6 +2,7 @@ package core.calculation.number;
 
 import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
+import core.container.LogResults;
 import core.manager.CalculationManagement;
 import core.manager.ConstantRegion;
 import exceptional.ExtractException;
@@ -106,6 +107,53 @@ public class BracketsCalculation2 extends BracketsCalculation {
         arrayList.add(result);
         return new CalculationNumberResults(arrayList.toArray(new Double[0]), result, this.Name);
     }
+
+    @Override
+    public LogResults explain(String Formula, boolean formatRequired) {
+        // 设置当前公式的名字
+        final String s = "f_" + Formula.hashCode();
+        // 设置前置语句
+        final LogResults logResults = new LogResults(s);
+        logResults.setPrefix("f_" + Formula.hashCode() + "(\"" + Formula + "\")");
+        return this.explain(Formula, formatRequired, logResults);
+    }
+
+    public LogResults explain(String Formula, boolean formatRequired, LogResults logResults) {
+        int length = Formula.length();
+        // 公式存储区
+        final StringBuilder stringBuilder = new StringBuilder(length + 16);
+        // 括号内数据的起始索引
+        int start = 0;
+        boolean setok = false;
+        // 括号内的括号均衡数量，为了确定是一对括号
+        int count = 0;
+        for (int i = 0; i < length; i++) {
+            char aChar = Formula.charAt(i);
+            if (aChar == ConstantRegion.LEFT_BRACKET) {
+                // 如果当前字符是一个左括号，那么说明括号开始了，这个时候需要将起始点记录
+                if (!setok) {
+                    setok = true;
+                    start = i + 1;
+                }
+                ++count;
+            } else if (aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
+                setok = false;
+                // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
+                final LogResults explain = this.explain(Formula.substring(start, i), formatRequired);
+                stringBuilder.append(explain.getResult());
+                logResults.put(explain);
+            } else if (!setok && aChar != ConstantRegion.EMPTY) {
+                // 如果不是一个括号就将字符提供给字符串缓冲区
+                stringBuilder.append(aChar);
+            }
+        }
+        // 将此字符串的结果计算出来
+        final LogResults explain = PREFIX_EXPRESSION_OPERATION.explain(stringBuilder.toString(), formatRequired);
+        logResults.put(explain);
+        logResults.setResult(explain.getResult());
+        return logResults;
+    }
+
 
     /**
      * 格式化一个公式 使得其可以被该计算组件进行运算，这里是将字符串格式化成为能够被括号解析组件计算的公式

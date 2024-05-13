@@ -1,5 +1,6 @@
 package core.manager;
 
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.34F;
+    public final static float VERSION = 1.35F;
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -55,4 +56,21 @@ public final class ConstantRegion {
     public final static String LOG_INFO_SHARED_POOL = "Use shared pool data. The identity of the data is: ";
     public final static String LOG_INFO_SHARED_POOL_NO_USE = "No Use shared pool: ";
 
+    /**
+     * 符号 到 符号名称 的映射字典 用于进行替换操作 不需要替换的在这里将不会包含~
+     */
+    public final static HashMap<Character, String> SIGN_NAME = new HashMap<>();
+
+    static {
+        // SIGN_NAME.put(PLUS_SIGN, "PLUS_SIGN");
+        // SIGN_NAME.put(MINUS_SIGN, "MINUS_SIGN");
+        // SIGN_NAME.put(MULTIPLICATION_SIGN, "MULTIPLICATION_SIGN");
+        // SIGN_NAME.put(DIVISION_SIGN, "DIVISION_SIGN");
+        // SIGN_NAME.put(REMAINDER_SIGN, "REMAINDER_SIGN");
+        SIGN_NAME.put(POW_SIGN, "pow");
+//         SIGN_NAME.put(FACTORIAL_SIGN, "FACTORIAL_SIGN");
+        SIGN_NAME.put(EMPTY, "");
+        SIGN_NAME.put(LEFT_BRACKET, "_LB");
+        SIGN_NAME.put(RIGHT_BRACKET, "RB_");
+    }
 }

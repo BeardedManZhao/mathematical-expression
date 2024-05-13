@@ -2,10 +2,12 @@ package core.calculation.number;
 
 import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
+import core.container.LogResults;
 import core.manager.CalculationManagement;
 import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import exceptional.WrongFormat;
+import top.lingyuzhao.varFormatter.utils.DataObj;
 import utils.NumberUtils;
 import utils.StrUtils;
 
@@ -197,5 +199,116 @@ public class PrefixExpressionOperation extends NumberCalculation {
         }
         // 返回结果
         return new CalculationNumberResults(temps, res, this.Name);
+    }
+
+    @Override
+    public LogResults explain(String Formula, boolean formatRequired) {
+        final String newFormula;
+        if (formatRequired) {
+            newFormula = formatStr(Formula);
+        } else {
+            newFormula = Formula;
+        }
+        // 设置当前公式的名字
+        final String s1 = "f_" + Formula.hashCode();
+        // 创建操作符栈
+        final Stack<Double> doubleStack = new Stack<>();
+        // 创建操作数栈
+        final Stack<Character> characterStack = new Stack<>();
+        // 开始格式化，将符号与操作数进行分类
+        int length = newFormula.length();
+        final StringBuilder stringBuilder = new StringBuilder(length);
+        // 准备日志记录
+        LogResults logResults = new LogResults(s1);
+        // 将当前公式的变量 做为前置语句
+        logResults.setPrefix(s1 + "(\"" + newFormula + "\")");
+        // 准备一个指针 指向日志记录的不同层级 在这里首先是日志的根节点
+        DataObj dataObj = new DataObj(s1 + "_优先");
+        logResults.put(dataObj);
+        // 创建标记点 标记上一个是否是操作符
+        boolean backIsOpt = true;
+        for (int i = 0; i < length; i++) {
+            char c = newFormula.charAt(i);
+            if (!backIsOpt && StrUtils.IsAnOperator(c)) {
+                backIsOpt = true;
+                // 如果上一个不是操作符，且当前是操作符，就先将上一个数值计算出来
+                double number = StrUtils.stringToDouble(stringBuilder.toString());
+                if (characterStack.isEmpty()) {
+                    // 如果栈为空 直接将运算符添加到栈顶
+                    characterStack.push(c);
+                    // 将数值添加到数值栈顶
+                    doubleStack.push(number);
+                } else {
+                    // 如果不为空就检查栈顶的与当前运算符的优先级
+                    if (!NumberUtils.PriorityComparison(characterStack.peek(), c)) {
+                        // 如果上一个优先级较大 就将上一个操作符取出
+                        char top = characterStack.pop();
+                        // 将上一个优先级高的值 与当下优先级较低的值进行运算，然后将当下的新数值和当下的操作符推到栈顶
+                        final Double pop = doubleStack.pop();
+                        final double calculation = NumberUtils.calculation(top, pop, number);
+                        doubleStack.push(calculation);
+                        characterStack.push(c);
+                        // 在这里进行标记，这里就是优先级较高的
+                        final String s = pop + " " + top + " " + number;
+                        final String s2 = "f_" + s.hashCode();
+                        final DataObj dataObj1 = new DataObj(s2 + "_计算");
+                        dataObj1.setPrefix(s2 + "(\"" + s + "\")");
+                        dataObj1.put(s2, calculation);
+                        dataObj.put(dataObj1);
+                        // 更新层级
+                        dataObj = dataObj1;
+                    } else {
+                        // 反之就将当前运算符提供到栈顶
+                        characterStack.push(c);
+                        doubleStack.push(number);
+                    }
+                }
+                // 清理所有的字符缓冲
+                stringBuilder.delete(0, stringBuilder.length());
+                continue;
+            }
+            if (StrUtils.IsANumber(c)) {
+                // 如果是数值的某一位，就将数值存储到变量中
+                stringBuilder.append(c);
+                backIsOpt = false;
+                continue;
+            }
+            switch (c) {
+                case ConstantRegion.FACTORIAL_SIGN:
+                case ConstantRegion.DECIMAL_POINT:
+                case ConstantRegion.MINUS_SIGN:
+                    // 如果是数值的某一位，就将数值存储到变量中
+                    stringBuilder.append(c);
+                    backIsOpt = false;
+            }
+        }
+        doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
+        double res = doubleStack.firstElement();
+        char back;
+        final int size = doubleStack.size();
+        // 开始计算
+        final DataObj dataObj2 = new DataObj(s1 + "_最终");
+        dataObj.put(dataObj2);
+        dataObj = dataObj2;
+        logResults.put(dataObj);
+        final int sizeD2 = size >> 1;
+        for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
+            // 更新操作符
+            back = characterStack.get(offset);
+            // 获取操作数并计算结果
+            final Double v = doubleStack.get(i);
+            final String s2 = res + " " + back + " " + v;
+            final String s3 = "f_" + s2.hashCode();
+            final DataObj dataObj1 = new DataObj(s3 + "_计算");
+            dataObj1.setPrefix(s3 + "(\"" + s2 + "\")");
+            dataObj.put(dataObj1);
+            res = NumberUtils.calculation(back, res, v);
+            dataObj1.put(s3, res);
+            dataObj = dataObj1;
+        }
+        dataObj.put("result", res);
+        logResults.setResult(res);
+        // 返回结果
+        return logResults;
     }
 }

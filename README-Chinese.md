@@ -19,7 +19,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.4</version>
+        <version>1.3.5</version>
     </dependency>
 </dependencies>
 ```
@@ -28,7 +28,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.4'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.5'
 }
 ```
 
@@ -171,6 +171,246 @@ public class MAIN {
         System.out.println(run);
     }
 }
+```
+
+### 详细的执行记录
+
+您在一些计算组件中，可以使用 `explain` 函数来进行表达式的计算，这个函数能够将计算组件的计算过程完整的绘制成为一个日志结果对象，日志结果对象可以被绘制成为一个图，下面是支持的组件以及使用示例。
+
+| 计算组件名称                                            | 是否支持 `explain` | 从何时开始支持 | 相关知识                   |
+|---------------------------------------------------|----------------|---------|------------------------|
+| core.calculation.number.PrefixExpressionOperation | yes            | v1.3.5  | [click this](#无括号表达式)  |
+| core.calculation.number.BracketsCalculation2      | yes            | v1.3.5  | [click this](#嵌套括号表达式) |
+
+#### 引入流程图代码生成库
+
+您只需要导入下面的依赖坐标就可以自动实现相关组件的导入。这个库将会帮助您将计算组件的计算过程绘制成一个流程图。
+
+```xml
+
+<dependency>
+    <groupId>io.github.BeardedManZhao</groupId>
+    <artifactId>varFormatter</artifactId>
+    <version>1.0.4</version>
+</dependency>
+```
+
+#### 开始进行生成
+
+导入了库之后，我们就可以像下面一样进行生成流程图。
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.container.LogResults;
+import exceptional.WrongFormat;
+import top.lingyuzhao.varFormatter.core.VarFormatter;
+
+public class MAIN {
+    public static void main(String[] args) throws WrongFormat {
+        // 获取到一个有括号计算组件 您可以根据需求更换组件
+        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+        // 然后进行一个简单的检查 这里我们要查询 1 + 2 ^ 4 - 2 * 3 + 2 的执行过程
+        final String s = "1 + 2 ^ (2 + (10 - 7)) * 3 + 2";
+        instance.check(s);
+        // 我们可以通过 explain 获取到执行过程 它会返回一个对象 这个对象中有一个 result 字段 这个字段就是计算出来的结果
+        final LogResults explain = instance.explain(s, true);
+        System.out.println("计算结果：" + explain.getResult());
+        // 事实上 LogResults 更大的作用是进行执行过程可视化 下面就是一个例子
+        // 设置输出图的时候不拼接名字，因为在这里有很多的变量 需要进行关联的！拼接名字就不好关联了
+        explain.setNameJoin(false);
+        // 通过我们引入的 VarFormatter 可以很方便地进行格式化 我们在这里格式化为 MERMAID 图 代码
+        System.out.println("graph LR");
+        System.out.println(VarFormatter.MERMAID.getFormatter(true).format(explain));
+    }
+}
+```
+
+程序运行之后的结果如下所示
+
+```
+E:\RunTime\jdk8\jdk-8u351\bin\java.exe "-javaagent:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\lib\idea_rt.jar=52509:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\bin" -Dfile.encoding=UTF-8 -classpath E:\RunTime\jdk8\jdk-8u351\jre\lib\charsets.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\deploy.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\access-bridge-64.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\cldrdata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\dnsns.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jaccess.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jfxrt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\localedata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\nashorn.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunec.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunjce_provider.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunmscapi.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunpkcs11.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\zipfs.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\javaws.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jce.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfr.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfxswt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jsse.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\management-agent.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\plugin.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\resources.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\rt.jar;G:\MyGithub\mathematical-expression\target\test-classes;G:\MyGithub\mathematical-expression\target\classes;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-slf4j-impl\2.20.0\log4j-slf4j-impl-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-api\2.20.0\log4j-api-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-core\2.20.0\log4j-core-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\io\github\BeardedManZhao\varFormatter\1.0.4\varFormatter-1.0.4.jar MAIN
+[INFO][Calculation Management][24-05-13:06]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-05-13:06]] : + 	Start time Mon May 13 18:20:27 CST 2024
+[INFO][Calculation Management][24-05-13:06]] : + 	version: 1.35
+[INFO][Calculation Management][24-05-13:06]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-05-13:06]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-05-13:06]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-05-13:06]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-05-13:06]] : A computing component is registered bracketsCalculation2
+计算结果：99.0
+graph LR
+f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
+f_-1523352178==Map>Map==>f_1563255009
+f_1563255009("2 + (10 - 7)")
+f_1563255009==Map>Map==>f_1448155011
+f_1448155011("10 - 7")
+f_1448155011==Map>Map==>f_1507337
+f_1507337("10-7+0")
+f_1507337==Map>Map==>f_1507337_优先
+
+f_1507337_优先==Map>Map==>f_1571371271_计算
+f_1571371271("10.0 - 7.0")
+f_1571371271_计算==Map>String/Number==>f_1571371271
+f_1571371271--Map>value-->f_1571371271v{"3.0"}
+f_1571371271_计算==Map>Map==>f_1507337_最终
+
+f_1507337_最终==Map>Map==>f_1481348562_计算
+f_1481348562("3.0 + 0.0")
+f_1481348562_计算==Map>String/Number==>f_1481348562
+f_1481348562--Map>value-->f_1481348562v{"3.0"}
+f_1481348562_计算==Map>String/Number==>result
+result--Map>value-->resultv{"3.0"}
+f_1507337==Map>Map==>f_1507337_最终
+
+f_1507337_最终==Map>Map==>f_1481348562_计算
+f_1481348562("3.0 + 0.0")
+f_1481348562_计算==Map>String/Number==>f_1481348562
+f_1481348562--Map>value-->f_1481348562v{"3.0"}
+f_1481348562_计算==Map>String/Number==>result
+result--Map>value-->resultv{"3.0"}
+f_1563255009==Map>Map==>f_47507548
+f_47507548("2+3.0+0")
+f_47507548==Map>Map==>f_47507548_优先
+
+f_47507548_优先==Map>Map==>f_-1006161388_计算
+f_-1006161388("2.0 + 3.0")
+f_-1006161388_计算==Map>String/Number==>f_-1006161388
+f_-1006161388--Map>value-->f_-1006161388v{"5.0"}
+f_-1006161388_计算==Map>Map==>f_47507548_最终
+
+f_47507548_最终==Map>Map==>f_-2133560364_计算
+f_-2133560364("5.0 + 0.0")
+f_-2133560364_计算==Map>String/Number==>f_-2133560364
+f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
+f_-2133560364_计算==Map>String/Number==>result
+result--Map>value-->resultv{"5.0"}
+f_47507548==Map>Map==>f_47507548_最终
+
+f_47507548_最终==Map>Map==>f_-2133560364_计算
+f_-2133560364("5.0 + 0.0")
+f_-2133560364_计算==Map>String/Number==>f_-2133560364
+f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
+f_-2133560364_计算==Map>String/Number==>result
+result--Map>value-->resultv{"5.0"}
+f_-1523352178==Map>Map==>f_-418786079
+f_-418786079("1+2^5.0*3+2+0")
+f_-418786079==Map>Map==>f_-418786079_优先
+
+f_-418786079_优先==Map>Map==>f_-959059895_计算
+f_-959059895("2.0 ^ 5.0")
+f_-959059895_计算==Map>String/Number==>f_-959059895
+f_-959059895--Map>value-->f_-959059895v{"32.0"}
+f_-959059895_计算==Map>Map==>f_1855628224_计算
+f_1855628224("32.0 * 3.0")
+f_1855628224_计算==Map>String/Number==>f_1855628224
+f_1855628224--Map>value-->f_1855628224v{"96.0"}
+f_1855628224_计算==Map>Map==>f_2037586494_计算
+f_2037586494("96.0 + 2.0")
+f_2037586494_计算==Map>String/Number==>f_2037586494
+f_2037586494--Map>value-->f_2037586494v{"98.0"}
+f_2037586494_计算==Map>Map==>f_-418786079_最终
+
+f_-418786079_最终==Map>Map==>f_-929530109_计算
+f_-929530109("1.0 + 98.0")
+f_-929530109_计算==Map>String/Number==>f_-929530109
+f_-929530109--Map>value-->f_-929530109v{"99.0"}
+f_-929530109_计算==Map>String/Number==>result
+result--Map>value-->resultv{"99.0"}
+f_-418786079==Map>Map==>f_-418786079_最终
+
+f_-418786079_最终==Map>Map==>f_-929530109_计算
+f_-929530109("1.0 + 98.0")
+f_-929530109_计算==Map>String/Number==>f_-929530109
+f_-929530109--Map>value-->f_-929530109v{"99.0"}
+f_-929530109_计算==Map>String/Number==>result
+result--Map>value-->resultv{"99.0"}
+
+
+进程已结束，退出代码为 0
+
+```
+
+程序运行之后的结果中有 `mermaid` 的图代码，我们在下面将其展示了出来 供大家观看！
+
+```mermaid
+graph LR
+    f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
+    f_-1523352178 == Map>Map ==> f_1563255009
+    f_1563255009("2 + (10 - 7)")
+    f_1563255009 == Map>Map ==> f_1448155011
+    f_1448155011("10 - 7")
+    f_1448155011 == Map>Map ==> f_1507337
+    f_1507337("10-7+0")
+    f_1507337 == Map>Map ==> f_1507337_优先
+    f_1507337_优先 == Map>Map ==> f_1571371271_计算
+    f_1571371271("10.0 - 7.0")
+    f_1571371271_计算 == Map>String/Number ==> f_1571371271
+    f_1571371271 -- Map>value --> f_1571371271v{"3.0"}
+    f_1571371271_计算 == Map>Map ==> f_1507337_最终
+    f_1507337_最终 == Map>Map ==> f_1481348562_计算
+    f_1481348562("3.0 + 0.0")
+    f_1481348562_计算 == Map>String/Number ==> f_1481348562
+    f_1481348562 -- Map>value --> f_1481348562v{"3.0"}
+    f_1481348562_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"3.0"}
+    f_1507337 == Map>Map ==> f_1507337_最终
+    f_1507337_最终 == Map>Map ==> f_1481348562_计算
+    f_1481348562("3.0 + 0.0")
+    f_1481348562_计算 == Map>String/Number ==> f_1481348562
+    f_1481348562 -- Map>value --> f_1481348562v{"3.0"}
+    f_1481348562_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"3.0"}
+    f_1563255009 == Map>Map ==> f_47507548
+    f_47507548("2+3.0+0")
+    f_47507548 == Map>Map ==> f_47507548_优先
+    f_47507548_优先 == Map>Map ==> f_-1006161388_计算
+    f_-1006161388("2.0 + 3.0")
+    f_-1006161388_计算 == Map>String/Number ==> f_-1006161388
+    f_-1006161388 -- Map>value --> f_-1006161388v{"5.0"}
+    f_-1006161388_计算 == Map>Map ==> f_47507548_最终
+    f_47507548_最终 == Map>Map ==> f_-2133560364_计算
+    f_-2133560364("5.0 + 0.0")
+    f_-2133560364_计算 == Map>String/Number ==> f_-2133560364
+    f_-2133560364 -- Map>value --> f_-2133560364v{"5.0"}
+    f_-2133560364_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"5.0"}
+    f_47507548 == Map>Map ==> f_47507548_最终
+    f_47507548_最终 == Map>Map ==> f_-2133560364_计算
+    f_-2133560364("5.0 + 0.0")
+    f_-2133560364_计算 == Map>String/Number ==> f_-2133560364
+    f_-2133560364 -- Map>value --> f_-2133560364v{"5.0"}
+    f_-2133560364_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"5.0"}
+    f_-1523352178 == Map>Map ==> f_-418786079
+    f_-418786079("1+2^5.0*3+2+0")
+    f_-418786079 == Map>Map ==> f_-418786079_优先
+    f_-418786079_优先 == Map>Map ==> f_-959059895_计算
+    f_-959059895("2.0 ^ 5.0")
+    f_-959059895_计算 == Map>String/Number ==> f_-959059895
+    f_-959059895 -- Map>value --> f_-959059895v{"32.0"}
+    f_-959059895_计算 == Map>Map ==> f_1855628224_计算
+    f_1855628224("32.0 * 3.0")
+    f_1855628224_计算 == Map>String/Number ==> f_1855628224
+    f_1855628224 -- Map>value --> f_1855628224v{"96.0"}
+    f_1855628224_计算 == Map>Map ==> f_2037586494_计算
+    f_2037586494("96.0 + 2.0")
+    f_2037586494_计算 == Map>String/Number ==> f_2037586494
+    f_2037586494 -- Map>value --> f_2037586494v{"98.0"}
+    f_2037586494_计算 == Map>Map ==> f_-418786079_最终
+    f_-418786079_最终 == Map>Map ==> f_-929530109_计算
+    f_-929530109("1.0 + 98.0")
+    f_-929530109_计算 == Map>String/Number ==> f_-929530109
+    f_-929530109 -- Map>value --> f_-929530109v{"99.0"}
+    f_-929530109_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"99.0"}
+    f_-418786079 == Map>Map ==> f_-418786079_最终
+    f_-418786079_最终 == Map>Map ==> f_-929530109_计算
+    f_-929530109("1.0 + 98.0")
+    f_-929530109_计算 == Map>String/Number ==> f_-929530109
+    f_-929530109 -- Map>value --> f_-929530109v{"99.0"}
+    f_-929530109_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"99.0"}
 ```
 
 ## 框架架构

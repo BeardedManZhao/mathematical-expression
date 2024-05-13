@@ -3,6 +3,7 @@ package utils;
 import core.manager.ConstantRegion;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 字符串工具类
@@ -154,6 +155,30 @@ public final class StrUtils {
         }
         arrayList.add(stringBuilder.toString().trim());
         return arrayList;
+    }
+
+    /**
+     * 替换字符串a中所有出现在字符集b中的字符为字符c。
+     *
+     * @param a          原始字符串
+     * @param replaceMap 替换字典，会按照字典来进行替换操作
+     * @return 新字符串，其中a中所有在b中存在的字符已被c替换
+     */
+    public static String replaceCharsInString(String a, HashMap<Character, String> replaceMap) {
+        // 创建一个字符集合，用于存储字符b中的字符
+        StringBuilder result = new StringBuilder();
+        for (char ch : a.toCharArray()) {
+            // 检查当前字符是否在字符集中
+            String c = replaceMap.get(ch);
+            if (c != null) {
+                // 如果存在，则替换为字符c
+                result.append(c);
+            } else {
+                // 否则，保留原字符
+                result.append(ch);
+            }
+        }
+        return result.toString();
     }
 }
 

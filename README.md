@@ -22,7 +22,7 @@ fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/i
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.4</version>
+        <version>1.3.5</version>
     </dependency>
 </dependencies>
 ```
@@ -32,7 +32,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.4'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.5'
 }
 ```
 
@@ -190,6 +190,267 @@ public class MAIN {
 }
 ```
 
+### Detailed execution records
+
+In some calculation components, you can use the 'explain' function to calculate expressions. This function can fully
+plot the calculation process of the calculation component as a log result object, which can be plotted as a graph. The
+following are the supported components and usage examples.
+
+| Calculation component name                        | Does it support `explain` | When did support start | Related knowledge                          |
+|---------------------------------------------------|---------------------------|------------------------|--------------------------------------------|
+| core.calculation.number.PrefixExpressionOperation | yes                       | v1.3.5                 | [click this](#NotBracketedExpression)      |
+| core.calculation.number.BracketsCalculation2      | yes                       | v1.3.5                 | [click this](#NestedParenthesisExpression) |
+
+#### Introducing a flowchart code generation library
+
+You only need to import the dependency coordinates below to automatically import the relevant components. This library
+will help you draw a flowchart of the calculation process of computational components.
+
+```xml
+        <dependency>
+            <groupId>io.github.BeardedManZhao</groupId>
+            <artifactId>varFormatter</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+```
+
+#### 开始进行生成
+
+After importing the library, we can generate a flowchart as shown below.
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.container.LogResults;
+import exceptional.WrongFormat;
+import top.lingyuzhao.varFormatter.core.VarFormatter;
+
+/**
+ * This is the main entry point for the application, demonstrating mathematical expression parsing and evaluation.
+ */
+public class MAIN {
+  public static void main(String[] args) throws WrongFormat {
+    // Obtain an instance of the calculation component, which supports parentheses handling.
+    final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+
+    // Define a sample mathematical expression to evaluate.
+    final String inputExpression = "1 + 2 ^ (2 + (10 - 7)) * 3 + 2";
+
+    // Check the input expression for correct formatting.
+    calculationInstance.check(inputExpression);
+
+    // Explain the execution process, which returns a log object containing the result.
+    final LogResults explanation = calculationInstance.explain(inputExpression, true);
+    System.out.println("计算结果: " + explanation.getResult());
+
+    // The LogResults object is primarily used for visualizing the execution flow.
+    // Disable name joining when outputting the visualization, as multiple variables need to be associated.
+    explanation.setNameJoin(false);
+
+    // Format the visualization using the VarFormatter in MERMAID syntax.
+    System.out.println("graph LR");
+    System.out.println(explanation.explain(VarFormatter.MERMAID));
+  }
+}
+```
+
+The result after running the program is as follows.
+
+```
+E:\RunTime\jdk8\jdk-8u351\bin\java.exe "-javaagent:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\lib\idea_rt.jar=52509:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\bin" -Dfile.encoding=UTF-8 -classpath E:\RunTime\jdk8\jdk-8u351\jre\lib\charsets.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\deploy.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\access-bridge-64.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\cldrdata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\dnsns.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jaccess.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jfxrt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\localedata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\nashorn.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunec.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunjce_provider.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunmscapi.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunpkcs11.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\zipfs.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\javaws.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jce.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfr.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfxswt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jsse.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\management-agent.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\plugin.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\resources.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\rt.jar;G:\MyGithub\mathematical-expression\target\test-classes;G:\MyGithub\mathematical-expression\target\classes;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-slf4j-impl\2.20.0\log4j-slf4j-impl-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-api\2.20.0\log4j-api-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-core\2.20.0\log4j-core-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\io\github\BeardedManZhao\varFormatter\1.0.4\varFormatter-1.0.4.jar MAIN
+[INFO][Calculation Management][24-05-13:06]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-05-13:06]] : + 	Start time Mon May 13 18:20:27 CST 2024
+[INFO][Calculation Management][24-05-13:06]] : + 	version: 1.35
+[INFO][Calculation Management][24-05-13:06]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-05-13:06]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-05-13:06]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-05-13:06]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-05-13:06]] : A computing component is registered bracketsCalculation2
+计算结果：99.0
+graph LR
+f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
+f_-1523352178==Map>Map==>f_1563255009
+f_1563255009("2 + (10 - 7)")
+f_1563255009==Map>Map==>f_1448155011
+f_1448155011("10 - 7")
+f_1448155011==Map>Map==>f_1507337
+f_1507337("10-7+0")
+f_1507337==Map>Map==>f_1507337_优先
+
+f_1507337_优先==Map>Map==>f_1571371271_计算
+f_1571371271("10.0 - 7.0")
+f_1571371271_计算==Map>String/Number==>f_1571371271
+f_1571371271--Map>value-->f_1571371271v{"3.0"}
+f_1571371271_计算==Map>Map==>f_1507337_最终
+
+f_1507337_最终==Map>Map==>f_1481348562_计算
+f_1481348562("3.0 + 0.0")
+f_1481348562_计算==Map>String/Number==>f_1481348562
+f_1481348562--Map>value-->f_1481348562v{"3.0"}
+f_1481348562_计算==Map>String/Number==>result
+result--Map>value-->resultv{"3.0"}
+f_1507337==Map>Map==>f_1507337_最终
+
+f_1507337_最终==Map>Map==>f_1481348562_计算
+f_1481348562("3.0 + 0.0")
+f_1481348562_计算==Map>String/Number==>f_1481348562
+f_1481348562--Map>value-->f_1481348562v{"3.0"}
+f_1481348562_计算==Map>String/Number==>result
+result--Map>value-->resultv{"3.0"}
+f_1563255009==Map>Map==>f_47507548
+f_47507548("2+3.0+0")
+f_47507548==Map>Map==>f_47507548_优先
+
+f_47507548_优先==Map>Map==>f_-1006161388_计算
+f_-1006161388("2.0 + 3.0")
+f_-1006161388_计算==Map>String/Number==>f_-1006161388
+f_-1006161388--Map>value-->f_-1006161388v{"5.0"}
+f_-1006161388_计算==Map>Map==>f_47507548_最终
+
+f_47507548_最终==Map>Map==>f_-2133560364_计算
+f_-2133560364("5.0 + 0.0")
+f_-2133560364_计算==Map>String/Number==>f_-2133560364
+f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
+f_-2133560364_计算==Map>String/Number==>result
+result--Map>value-->resultv{"5.0"}
+f_47507548==Map>Map==>f_47507548_最终
+
+f_47507548_最终==Map>Map==>f_-2133560364_计算
+f_-2133560364("5.0 + 0.0")
+f_-2133560364_计算==Map>String/Number==>f_-2133560364
+f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
+f_-2133560364_计算==Map>String/Number==>result
+result--Map>value-->resultv{"5.0"}
+f_-1523352178==Map>Map==>f_-418786079
+f_-418786079("1+2^5.0*3+2+0")
+f_-418786079==Map>Map==>f_-418786079_优先
+
+f_-418786079_优先==Map>Map==>f_-959059895_计算
+f_-959059895("2.0 ^ 5.0")
+f_-959059895_计算==Map>String/Number==>f_-959059895
+f_-959059895--Map>value-->f_-959059895v{"32.0"}
+f_-959059895_计算==Map>Map==>f_1855628224_计算
+f_1855628224("32.0 * 3.0")
+f_1855628224_计算==Map>String/Number==>f_1855628224
+f_1855628224--Map>value-->f_1855628224v{"96.0"}
+f_1855628224_计算==Map>Map==>f_2037586494_计算
+f_2037586494("96.0 + 2.0")
+f_2037586494_计算==Map>String/Number==>f_2037586494
+f_2037586494--Map>value-->f_2037586494v{"98.0"}
+f_2037586494_计算==Map>Map==>f_-418786079_最终
+
+f_-418786079_最终==Map>Map==>f_-929530109_计算
+f_-929530109("1.0 + 98.0")
+f_-929530109_计算==Map>String/Number==>f_-929530109
+f_-929530109--Map>value-->f_-929530109v{"99.0"}
+f_-929530109_计算==Map>String/Number==>result
+result--Map>value-->resultv{"99.0"}
+f_-418786079==Map>Map==>f_-418786079_最终
+
+f_-418786079_最终==Map>Map==>f_-929530109_计算
+f_-929530109("1.0 + 98.0")
+f_-929530109_计算==Map>String/Number==>f_-929530109
+f_-929530109--Map>value-->f_-929530109v{"99.0"}
+f_-929530109_计算==Map>String/Number==>result
+result--Map>value-->resultv{"99.0"}
+
+
+进程已结束，退出代码为 0
+
+```
+
+After the program runs, there is a graph code for 'mermaid' in the result, which we will display below for everyone to
+watch!
+
+```mermaid
+graph LR
+f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
+f_-1523352178==Map>Map==>f_1563255009
+f_1563255009("2 + (10 - 7)")
+f_1563255009==Map>Map==>f_1448155011
+f_1448155011("10 - 7")
+f_1448155011==Map>Map==>f_1507337
+f_1507337("10-7+0")
+f_1507337==Map>Map==>f_1507337_优先
+
+f_1507337_优先==Map>Map==>f_1571371271_计算
+f_1571371271("10.0 - 7.0")
+f_1571371271_计算==Map>String/Number==>f_1571371271
+f_1571371271--Map>value-->f_1571371271v{"3.0"}
+f_1571371271_计算==Map>Map==>f_1507337_最终
+
+f_1507337_最终==Map>Map==>f_1481348562_计算
+f_1481348562("3.0 + 0.0")
+f_1481348562_计算==Map>String/Number==>f_1481348562
+f_1481348562--Map>value-->f_1481348562v{"3.0"}
+f_1481348562_计算==Map>String/Number==>result
+result--Map>value-->resultv{"3.0"}
+f_1507337==Map>Map==>f_1507337_最终
+
+f_1507337_最终==Map>Map==>f_1481348562_计算
+f_1481348562("3.0 + 0.0")
+f_1481348562_计算==Map>String/Number==>f_1481348562
+f_1481348562--Map>value-->f_1481348562v{"3.0"}
+f_1481348562_计算==Map>String/Number==>result
+result--Map>value-->resultv{"3.0"}
+f_1563255009==Map>Map==>f_47507548
+f_47507548("2+3.0+0")
+f_47507548==Map>Map==>f_47507548_优先
+
+f_47507548_优先==Map>Map==>f_-1006161388_计算
+f_-1006161388("2.0 + 3.0")
+f_-1006161388_计算==Map>String/Number==>f_-1006161388
+f_-1006161388--Map>value-->f_-1006161388v{"5.0"}
+f_-1006161388_计算==Map>Map==>f_47507548_最终
+
+f_47507548_最终==Map>Map==>f_-2133560364_计算
+f_-2133560364("5.0 + 0.0")
+f_-2133560364_计算==Map>String/Number==>f_-2133560364
+f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
+f_-2133560364_计算==Map>String/Number==>result
+result--Map>value-->resultv{"5.0"}
+f_47507548==Map>Map==>f_47507548_最终
+
+f_47507548_最终==Map>Map==>f_-2133560364_计算
+f_-2133560364("5.0 + 0.0")
+f_-2133560364_计算==Map>String/Number==>f_-2133560364
+f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
+f_-2133560364_计算==Map>String/Number==>result
+result--Map>value-->resultv{"5.0"}
+f_-1523352178==Map>Map==>f_-418786079
+f_-418786079("1+2^5.0*3+2+0")
+f_-418786079==Map>Map==>f_-418786079_优先
+
+f_-418786079_优先==Map>Map==>f_-959059895_计算
+f_-959059895("2.0 ^ 5.0")
+f_-959059895_计算==Map>String/Number==>f_-959059895
+f_-959059895--Map>value-->f_-959059895v{"32.0"}
+f_-959059895_计算==Map>Map==>f_1855628224_计算
+f_1855628224("32.0 * 3.0")
+f_1855628224_计算==Map>String/Number==>f_1855628224
+f_1855628224--Map>value-->f_1855628224v{"96.0"}
+f_1855628224_计算==Map>Map==>f_2037586494_计算
+f_2037586494("96.0 + 2.0")
+f_2037586494_计算==Map>String/Number==>f_2037586494
+f_2037586494--Map>value-->f_2037586494v{"98.0"}
+f_2037586494_计算==Map>Map==>f_-418786079_最终
+
+f_-418786079_最终==Map>Map==>f_-929530109_计算
+f_-929530109("1.0 + 98.0")
+f_-929530109_计算==Map>String/Number==>f_-929530109
+f_-929530109--Map>value-->f_-929530109v{"99.0"}
+f_-929530109_计算==Map>String/Number==>result
+result--Map>value-->resultv{"99.0"}
+f_-418786079==Map>Map==>f_-418786079_最终
+
+f_-418786079_最终==Map>Map==>f_-929530109_计算
+f_-929530109("1.0 + 98.0")
+f_-929530109_计算==Map>String/Number==>f_-929530109
+f_-929530109--Map>value-->f_-929530109v{"99.0"}
+f_-929530109_计算==Map>String/Number==>result
+result--Map>value-->resultv{"99.0"}
+```
+
 ## Framework
 
 ### Obtain and calculate the calculation components directly through the mathematical-expression library
@@ -230,9 +491,10 @@ public class MAIN {
 }
 ```
 
-- 运行结果
+- Running results
 
-  通过导入包可以获取到各个计算组件的模块对象，能够有效的减少代码导包代码。
+  By importing packages, the module objects of each computing component can be obtained, which can effectively reduce
+  the amount of code imported into the package.
 
 ```
 计算层数：1
@@ -312,7 +574,7 @@ core.calculation.number.PrefixExpressionOperation@41e737  core.calculation.numbe
 
 ## Calculation component introduce
 
-### Bracketed expression
+### NotBracketedExpression
 
 - Full class name：core.calculation.number.PrefixExpressionOperation
 - introduce
@@ -363,7 +625,7 @@ public class MAIN {
 计算来源：p
 ```
 
-### Nested parenthesis expression
+### NestedParenthesisExpression
 
 - Full class name：core.calculation.number.BracketsCalculation2
 - introduce：

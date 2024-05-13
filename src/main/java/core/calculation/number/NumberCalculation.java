@@ -58,7 +58,6 @@ public abstract class NumberCalculation implements Calculation {
         return calculation(Formula, true);
     }
 
-
     /**
      * 检查公式格式是否正确，如果不正确就会抛出一个异常
      * <p>

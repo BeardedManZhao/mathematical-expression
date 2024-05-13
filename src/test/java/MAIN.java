@@ -1,20 +1,33 @@
 import core.Mathematical_Expression;
 import core.calculation.Calculation;
-import core.calculation.function.FunctionPackage;
-import core.container.CalculationResults;
+import core.container.LogResults;
 import exceptional.WrongFormat;
+import top.lingyuzhao.varFormatter.core.VarFormatter;
 
+/**
+ * This is the main entry point for the application, demonstrating mathematical expression parsing and evaluation.
+ */
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
-        // 获取到一个无括号计算组件 您可以根据需求更换组件
-        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.prefixExpressionOperation);
-        // 导入数学包
-        Mathematical_Expression.register_function(FunctionPackage.MATH);
-        // 然后进行一个简单的检查 这里我们要计算 1 + 2 * 2 * 2 * 2 + 2
-        instance.check("1 + 2 ^ 4 + 2");
-        // 然后直接进行计算 您的表达式中完全是可以使用函数的哦~~~
-        final CalculationResults calculation = instance.calculation("1 + 2 ^ 4 + 2");
-        // 直接打印就可以啦~
-        System.out.println(calculation);
+        // Obtain an instance of the calculation component, which supports parentheses handling.
+        final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+
+        // Define a sample mathematical expression to evaluate.
+        final String inputExpression = "1 + 2 ^ (2 + (10 - 7)) * 3 + 2";
+
+        // Check the input expression for correct formatting.
+        calculationInstance.check(inputExpression);
+
+        // Explain the execution process, which returns a log object containing the result.
+        final LogResults explanation = calculationInstance.explain(inputExpression, true);
+        System.out.println("计算结果: " + explanation.getResult());
+
+        // The LogResults object is primarily used for visualizing the execution flow.
+        // Disable name joining when outputting the visualization, as multiple variables need to be associated.
+        explanation.setNameJoin(false);
+
+        // Format the visualization using the VarFormatter in MERMAID syntax.
+        System.out.println("graph LR");
+        System.out.println(explanation.explain(VarFormatter.MERMAID));
     }
 }

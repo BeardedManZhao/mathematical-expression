@@ -1,6 +1,7 @@
 package core.calculation;
 
 import core.container.CalculationResults;
+import core.container.LogResults;
 import exceptional.WrongFormat;
 
 /**
@@ -26,6 +27,25 @@ public interface Calculation {
      * @return 计算组件的名称
      */
     String getName();
+
+    /**
+     * 获取计算过程的信息
+     * <p>
+     * Obtain information about the calculation process
+     *
+     * @param Formula        被计算的表达式，要求返回值是一个数值。
+     *                       <p>
+     *                       The returned value of the evaluated expression is required to be a numeric value.
+     * @param formatRequired 是否需要被格式化，用于确保公式格式正确。
+     *                       <p>
+     *                       Whether it needs to be formatted to ensure that the formula format is correct.
+     * @return 当前计算组件在计算一个表达式的时候，其计算过程的统计信息对象。
+     * <p>
+     * The statistical information object of the current calculation component's calculation process when calculating an expression.
+     */
+    default LogResults explain(String Formula, boolean formatRequired) {
+        throw new UnsupportedOperationException("The current computing component cannot be used for " + this.getName() + ".explain(" + Formula + "), as it does not have the ability to perform process analysis~");
+    }
 
     /**
      * 检查公式格式是否正确，如果不正确就会抛出一个异常
