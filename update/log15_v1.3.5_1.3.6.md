@@ -4,12 +4,13 @@
 
 ==Java==
 
+- 对于所有计算结果的 `getDoubles` 操作进行了移除，这有助于提升性能，且此功能比较鸡肋，因为我们在 Java 版本中提供了 `explain` 来解释计算过程！
 - `Mathematical_Expression.cumulativeCalculation` 组件支持了 `explain`;
 - 为整个项目添加了一个设置模块，允许用户设置一些参数！
 - 为所有的数值解析操作添加了缓存功能，并将缓存设置项目集成到配置模块中，减少重复的数值解析。
 - 为所有的计算操作添加了针对 `BigDecimal` 的支持，它允许用户以大精度的计算模式来执行计算，这将会减少计算结果的误差。
 - 为 `CalculationNumberResults` 添加了 `getBigDecimalResult` 的支持。
--
+
 
 ```java
 import core.Mathematical_Expression;
