@@ -1,7 +1,9 @@
 package utils;
 
+import core.Mathematical_Expression;
 import core.manager.ConstantRegion;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,6 +36,12 @@ public final class StrUtils {
      * @return 字符串转换的浮点数值
      */
     public static double stringToDouble(String s) {
+        if (Mathematical_Expression.Options.isUseCache()) {
+            final Number cacheCalculation = Mathematical_Expression.Options.getCacheCalculation(s.hashCode());
+            if (cacheCalculation != null) {
+                return cacheCalculation.doubleValue();
+            }
+        }
         final int lastIndex = s.length() - 1;
         if (s.charAt(lastIndex) == ConstantRegion.FACTORIAL_SIGN) {
             // 代表要进行阶乘计算
@@ -44,6 +52,36 @@ public final class StrUtils {
             return NumberUtils.factorial(v);
         }
         return Double.parseDouble(s);
+    }
+
+    /**
+     * 将一个字符串转换为浮点数值
+     *
+     * @param s 需要被转换的字符串
+     * @return 字符串转换的浮点数值
+     */
+    public static BigDecimal stringToBigDecimal(String s) {
+        if (Mathematical_Expression.Options.isUseCache()) {
+            final Number cacheCalculation = Mathematical_Expression.Options.getCacheCalculation(s.hashCode());
+            if (cacheCalculation instanceof BigDecimal) {
+                return (BigDecimal) cacheCalculation;
+            }
+        }
+        final int lastIndex = s.length() - 1;
+        if (s.charAt(lastIndex) == ConstantRegion.FACTORIAL_SIGN) {
+            // 代表要进行阶乘计算
+            final BigDecimal v = new BigDecimal(s.substring(0, lastIndex));
+            final double v1 = v.doubleValue();
+            if (v1 < 0) {
+                throw new UnsupportedOperationException("负数不支持计算阶乘:" + v);
+            }
+            return BigDecimal.valueOf(NumberUtils.factorial(v1));
+        }
+        final BigDecimal bigDecimal = new BigDecimal(s);
+        if (Mathematical_Expression.Options.isUseCache()) {
+            Mathematical_Expression.Options.cacheCalculation(s.hashCode(), bigDecimal);
+        }
+        return bigDecimal;
     }
 
     /**
@@ -59,19 +97,6 @@ public final class StrUtils {
             throw new RuntimeException("您在进行字符与数值之间的转换时，由于字符的不正确导致无法成功转换，错误字符：" + c +
                     "\nWhen you are converting characters to numeric values, the conversion cannot be successful due to incorrect characters. Error characters:" + c);
         }
-    }
-
-    /**
-     * 计算一个带有两个操作数 一个操作符的计算公式的结果
-     *
-     * @param a               第一个操作数
-     * @param b               第二个操作数
-     * @param CalculationType 计算模式
-     * @return 计算结果
-     */
-    public static double calculation(String a, String b, char CalculationType) {
-        // 将a 与 b 转换成为数值，进行运算
-        return NumberUtils.calculation(CalculationType, StrUtils.stringToDouble(a), StrUtils.stringToDouble(b));
     }
 
     /**

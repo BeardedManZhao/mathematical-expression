@@ -7,9 +7,6 @@ import core.manager.CalculationManagement;
 import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * 将一个带有嵌套括号的表达式数值结果计算，能够识别嵌套括号的就按优先级，是括号表达式计算的实现类
  * <p>
@@ -81,7 +78,6 @@ public class BracketsCalculation2 extends BracketsCalculation {
         // 括号内的括号均衡数量，为了确定是一对括号
         int count = 0;
         // 计算结果临时存储
-        final ArrayList<Double> arrayList = new ArrayList<>(length);
         for (int i = 0; i < length; i++) {
             char aChar = Formula.charAt(i);
             if (aChar == ConstantRegion.LEFT_BRACKET) {
@@ -96,16 +92,13 @@ public class BracketsCalculation2 extends BracketsCalculation {
                 // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
                 CalculationNumberResults calculation = this.calculation(Formula.substring(start, i), formatRequired);
                 stringBuilder.append(calculation.getResult());
-                arrayList.addAll(Arrays.asList(calculation.getDoubles()));
             } else if (!setok && aChar != ConstantRegion.EMPTY) {
                 // 如果不是一个括号就将字符提供给字符串缓冲区
                 stringBuilder.append(aChar);
             }
         }
         // 将此字符串的结果计算出来
-        double result = PREFIX_EXPRESSION_OPERATION.calculation(stringBuilder.toString(), formatRequired).getResult();
-        arrayList.add(result);
-        return new CalculationNumberResults(arrayList.toArray(new Double[0]), result, this.Name);
+        return PREFIX_EXPRESSION_OPERATION.calculation(stringBuilder.toString(), formatRequired);
     }
 
     @Override

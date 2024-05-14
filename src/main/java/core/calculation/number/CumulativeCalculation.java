@@ -2,6 +2,7 @@ package core.calculation.number;
 
 import core.calculation.Calculation;
 import core.container.CalculationNumberResults;
+import core.container.LogResults;
 import core.manager.CalculationManagement;
 import core.manager.ConstantRegion;
 import exceptional.ExtractException;
@@ -131,5 +132,10 @@ public class CumulativeCalculation extends BracketsCalculation2 {
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
         return super.calculation(formatRequired ? formatStr(Formula) : Formula, false);
+    }
+
+    @Override
+    public LogResults explain(String Formula, boolean formatRequired) {
+        return super.explain(formatRequired ? formatStr(Formula) : Formula, false);
     }
 }

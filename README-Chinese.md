@@ -19,7 +19,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.5</version>
+        <version>1.3.6</version>
     </dependency>
 </dependencies>
 ```
@@ -28,7 +28,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.5'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.6'
 }
 ```
 
@@ -108,6 +108,48 @@ public class MAIN {
 | 阶乘运算符  | `n!`         | 1.3.2 | 将操作数进行阶乘运算   |
 | 幂运算符   | `n ^ n`      | 1.3.5 | 将操作数进行幂运算    | 
 
+您还可以通过调整设置实现带有精度的计算操作以及缓存操作等！
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.container.CalculationResults;
+
+import java.math.BigDecimal;
+
+/**
+ * This is the main entry point for the application, demonstrating mathematical expression parsing and evaluation.
+ */
+public class MAIN {
+    public static void main(String[] args) {
+        // Obtain an instance of the calculation component, which supports parentheses handling.
+        final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+        // Define a sample mathematical expression to evaluate.
+        final String inputExpression = "0.3 * 3";
+        // Enable caching to improve performance.
+        Mathematical_Expression.Options.setUseCache(true);
+
+        // Enable BigDecimal for more accurate results.
+        Mathematical_Expression.Options.setUseBigDecimal(true);
+        // Evaluate the expression and print the result.
+        System.out.println(calculationInstance.calculation(inputExpression));
+
+        // Disable BigDecimal for faster performance.
+        Mathematical_Expression.Options.setUseBigDecimal(false);
+        // Evaluate the expression and print the result.
+        final CalculationResults calculation = calculationInstance.calculation(inputExpression);
+        System.out.println(calculation);
+
+        // Can extract different numerical objects
+        System.out.println("Can extract different numerical objects!");
+        final double result = (double) calculation.getResult();
+        final BigDecimal bigDecimalResult = calculation.getBigDecimalResult();
+        System.out.println(result);
+        System.out.println(bigDecimalResult);
+    }
+}
+```
+
 ### 种类繁多地计算组件
 
 在mathematical-expression 中，我们提供了多种计算组件，您可以根据需要选择不同的计算组件，以实现不同的功能，同时还保持着相同的API调用方式。
@@ -181,6 +223,7 @@ public class MAIN {
 |---------------------------------------------------|----------------|---------|------------------------|
 | core.calculation.number.PrefixExpressionOperation | yes            | v1.3.5  | [click this](#无括号表达式)  |
 | core.calculation.number.BracketsCalculation2      | yes            | v1.3.5  | [click this](#嵌套括号表达式) |
+| core.calculation.number.CumulativeCalculation     | yes            | v1.3.6  | [click this](#区间累加表达式) |
 
 #### 引入流程图代码生成库
 

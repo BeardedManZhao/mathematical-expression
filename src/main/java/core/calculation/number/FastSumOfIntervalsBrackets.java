@@ -206,7 +206,7 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
      */
     public CalculationNumberResults calculation(CalculationNumberResults start, CalculationNumberResults end) {
         return new CalculationNumberResults(
-                NumberUtils.merge(start.getDoubles(), end.getDoubles()),
+                start.getResultLayers() + end.getResultLayers(),
                 this.step == 1 ?
                         NumberUtils.sumOfRange(start.getResult(), end.getResult()) :
                         NumberUtils.sumOfRange(start.getResult(), end.getResult(), step),

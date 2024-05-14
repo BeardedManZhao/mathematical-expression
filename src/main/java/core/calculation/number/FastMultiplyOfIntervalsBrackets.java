@@ -59,7 +59,7 @@ public class FastMultiplyOfIntervalsBrackets extends FastSumOfIntervalsBrackets 
     @Override
     public CalculationNumberResults calculation(CalculationNumberResults start, CalculationNumberResults end) {
         return new CalculationNumberResults(
-                NumberUtils.merge(start.getDoubles(), end.getDoubles()),
+                end.getResultLayers() + start.getResultLayers(),
                 NumberUtils.MultiplyOfRange(start.getResult(), end.getResult(), step),
                 this.Name
         );

@@ -291,7 +291,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             FunctionParameterExtraction(Formula, start, end, names);
             LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL_NO_USE + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         }
-        final ArrayList<Double> tempDouble = new ArrayList<>();
+        int l = 0;
         // 开始计算，首先迭代所有函数的公式与函数的名字，计算出来函数的结果
         while (!start.isEmpty()) {
             int pop1 = start.pop();
@@ -309,7 +309,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
 
             for (String s : StrUtils.splitByChar(subFormula, ConstantRegion.COMMA)) {
                 double result = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s).getResult();
-                tempDouble.add(result);
+                l++;
                 results.add(result);
             }
 
@@ -320,10 +320,8 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(resultArray)));
         }
         CalculationNumberResults calculation = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
-        tempDouble.add(calculation.getResult());
-        final Double[] doubles = tempDouble.toArray(new Double[0]);
         if (this.StartSharedPool) {
-            calculation = new CalculationNumberResults(doubles, calculation.getResult(), this.Name);
+            calculation = new CalculationNumberResults(l + calculation.getResultLayers(), calculation.getResult(), this.Name);
             this.ShareResultsHashMap.put(Formula, calculation);
         }
         return calculation;

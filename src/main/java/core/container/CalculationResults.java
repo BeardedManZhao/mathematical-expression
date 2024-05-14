@@ -3,6 +3,7 @@ package core.container;
 import top.lingyuzhao.varFormatter.core.VarFormatter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 计算结果接口，其中一般用来存储有关计算结果的数据，结果数据不一定是一个数值，具体的操作请查阅子类实现
@@ -40,6 +41,19 @@ public interface CalculationResults extends Serializable {
      * Calculation results
      */
     Object getResult();
+
+    /**
+     * 获取计算结果，计算结果的类型在不同的子类中是不同的，所以这里返回的是Object类型
+     * <p>
+     * Obtain the calculation result. The type of the calculation result varies among different subclasses, so the object type is returned here
+     *
+     * @return 计算结果
+     * <p>
+     * Calculation results
+     */
+    default BigDecimal getBigDecimalResult() {
+        throw new UnsupportedOperationException("This function is not supported getBigDecimalResult!!!");
+    }
 
     /**
      * @param varFormatter 当您需要将计算出来的 日志流程图 的字符串获取到的时候，您可以使用此函数来进行格式化操作，您可以在这里指定您的格式化规则。

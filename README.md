@@ -22,7 +22,7 @@ fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/i
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.5</version>
+        <version>1.3.6</version>
     </dependency>
 </dependencies>
 ```
@@ -32,7 +32,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.5'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.6'
 }
 ```
 
@@ -112,7 +112,8 @@ public class MAIN {
 }
 ```
 
-计算符号的支持不够多？不用担心，此库支持的运算符种类繁多，您可以在这里看到所有计算符.
+Not enough support for calculating symbols? Don't worry, this library supports a wide variety of operators, and you can
+see all the operators here!
 
 | Symbol Name             | Symbolic syntax (n represents operands) | Supported versions | Symbolic significance                       |
 |-------------------------|-----------------------------------------|--------------------|---------------------------------------------|
@@ -122,7 +123,49 @@ public class MAIN {
 | Division operator       | `n / n`                                 | 1.0.0              | Dividing two operands                       |
 | Remainder operator      | `n % n`                                 | 1.0.0              | Perform remainder operation on two operands |
 | Factorial operator      | `n!`                                    | 1.3.2              | Performing factorial operations on operands |
-| Power operator          | `n ^ n`                                 | 1.3.5              | Exponentiating operands                     | 
+| Power operator          | `n ^ n`                                 | 1.3.5              | Exponentiation operands                     | 
+
+You can also achieve calculation operations with precision and caching operations by adjusting settings!
+
+```java
+import core.Mathematical_Expression;
+import core.calculation.Calculation;
+import core.container.CalculationResults;
+
+import java.math.BigDecimal;
+
+/**
+ * This is the main entry point for the application, demonstrating mathematical expression parsing and evaluation.
+ */
+public class MAIN {
+    public static void main(String[] args) {
+        // Obtain an instance of the calculation component, which supports parentheses handling.
+        final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+        // Define a sample mathematical expression to evaluate.
+        final String inputExpression = "0.3 * 3";
+        // Enable caching to improve performance.
+        Mathematical_Expression.Options.setUseCache(true);
+
+        // Enable BigDecimal for more accurate results.
+        Mathematical_Expression.Options.setUseBigDecimal(true);
+        // Evaluate the expression and print the result.
+        System.out.println(calculationInstance.calculation(inputExpression));
+
+        // Disable BigDecimal for faster performance.
+        Mathematical_Expression.Options.setUseBigDecimal(false);
+        // Evaluate the expression and print the result.
+        final CalculationResults calculation = calculationInstance.calculation(inputExpression);
+        System.out.println(calculation);
+
+        // Can extract different numerical objects
+        System.out.println("Can extract different numerical objects!");
+        final double result = (double) calculation.getResult();
+        final BigDecimal bigDecimalResult = calculation.getBigDecimalResult();
+        System.out.println(result);
+        System.out.println(bigDecimalResult);
+    }
+}
+```
 
 ### A wide variety of computing components
 
@@ -196,10 +239,11 @@ In some calculation components, you can use the 'explain' function to calculate 
 plot the calculation process of the calculation component as a log result object, which can be plotted as a graph. The
 following are the supported components and usage examples.
 
-| Calculation component name                        | Does it support `explain` | When did support start | Related knowledge                          |
-|---------------------------------------------------|---------------------------|------------------------|--------------------------------------------|
-| core.calculation.number.PrefixExpressionOperation | yes                       | v1.3.5                 | [click this](#NotBracketedExpression)      |
-| core.calculation.number.BracketsCalculation2      | yes                       | v1.3.5                 | [click this](#NestedParenthesisExpression) |
+| Calculation component name                        | Does it support `explain` | When did support start | Related knowledge                             |
+|---------------------------------------------------|---------------------------|------------------------|-----------------------------------------------|
+| core.calculation.number.PrefixExpressionOperation | yes                       | v1.3.5                 | [click this](#NotBracketedExpression)         |
+| core.calculation.number.BracketsCalculation2      | yes                       | v1.3.5                 | [click this](#NestedParenthesisExpression)    |
+| core.calculation.number.CumulativeCalculation     | yes                       | v1.3.6                 | [click this](#IntervalAccumulationExpression) |
 
 #### Introducing a flowchart code generation library
 
@@ -207,11 +251,12 @@ You only need to import the dependency coordinates below to automatically import
 will help you draw a flowchart of the calculation process of computational components.
 
 ```xml
-        <dependency>
-            <groupId>io.github.BeardedManZhao</groupId>
-            <artifactId>varFormatter</artifactId>
-            <version>1.0.4</version>
-        </dependency>
+
+<dependency>
+    <groupId>io.github.BeardedManZhao</groupId>
+    <artifactId>varFormatter</artifactId>
+    <version>1.0.4</version>
+</dependency>
 ```
 
 #### 开始进行生成
@@ -229,28 +274,28 @@ import top.lingyuzhao.varFormatter.core.VarFormatter;
  * This is the main entry point for the application, demonstrating mathematical expression parsing and evaluation.
  */
 public class MAIN {
-  public static void main(String[] args) throws WrongFormat {
-    // Obtain an instance of the calculation component, which supports parentheses handling.
-    final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+    public static void main(String[] args) throws WrongFormat {
+        // Obtain an instance of the calculation component, which supports parentheses handling.
+        final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
 
-    // Define a sample mathematical expression to evaluate.
-    final String inputExpression = "1 + 2 ^ (2 + (10 - 7)) * 3 + 2";
+        // Define a sample mathematical expression to evaluate.
+        final String inputExpression = "1 + 2 ^ (2 + (10 - 7)) * 3 + 2";
 
-    // Check the input expression for correct formatting.
-    calculationInstance.check(inputExpression);
+        // Check the input expression for correct formatting.
+        calculationInstance.check(inputExpression);
 
-    // Explain the execution process, which returns a log object containing the result.
-    final LogResults explanation = calculationInstance.explain(inputExpression, true);
-    System.out.println("计算结果: " + explanation.getResult());
+        // Explain the execution process, which returns a log object containing the result.
+        final LogResults explanation = calculationInstance.explain(inputExpression, true);
+        System.out.println("计算结果: " + explanation.getResult());
 
-    // The LogResults object is primarily used for visualizing the execution flow.
-    // Disable name joining when outputting the visualization, as multiple variables need to be associated.
-    explanation.setNameJoin(false);
+        // The LogResults object is primarily used for visualizing the execution flow.
+        // Disable name joining when outputting the visualization, as multiple variables need to be associated.
+        explanation.setNameJoin(false);
 
-    // Format the visualization using the VarFormatter in MERMAID syntax.
-    System.out.println("graph LR");
-    System.out.println(explanation.explain(VarFormatter.MERMAID));
-  }
+        // Format the visualization using the VarFormatter in MERMAID syntax.
+        System.out.println("graph LR");
+        System.out.println(explanation.explain(VarFormatter.MERMAID));
+    }
 }
 ```
 
@@ -364,91 +409,82 @@ watch!
 
 ```mermaid
 graph LR
-f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
-f_-1523352178==Map>Map==>f_1563255009
-f_1563255009("2 + (10 - 7)")
-f_1563255009==Map>Map==>f_1448155011
-f_1448155011("10 - 7")
-f_1448155011==Map>Map==>f_1507337
-f_1507337("10-7+0")
-f_1507337==Map>Map==>f_1507337_优先
-
-f_1507337_优先==Map>Map==>f_1571371271_计算
-f_1571371271("10.0 - 7.0")
-f_1571371271_计算==Map>String/Number==>f_1571371271
-f_1571371271--Map>value-->f_1571371271v{"3.0"}
-f_1571371271_计算==Map>Map==>f_1507337_最终
-
-f_1507337_最终==Map>Map==>f_1481348562_计算
-f_1481348562("3.0 + 0.0")
-f_1481348562_计算==Map>String/Number==>f_1481348562
-f_1481348562--Map>value-->f_1481348562v{"3.0"}
-f_1481348562_计算==Map>String/Number==>result
-result--Map>value-->resultv{"3.0"}
-f_1507337==Map>Map==>f_1507337_最终
-
-f_1507337_最终==Map>Map==>f_1481348562_计算
-f_1481348562("3.0 + 0.0")
-f_1481348562_计算==Map>String/Number==>f_1481348562
-f_1481348562--Map>value-->f_1481348562v{"3.0"}
-f_1481348562_计算==Map>String/Number==>result
-result--Map>value-->resultv{"3.0"}
-f_1563255009==Map>Map==>f_47507548
-f_47507548("2+3.0+0")
-f_47507548==Map>Map==>f_47507548_优先
-
-f_47507548_优先==Map>Map==>f_-1006161388_计算
-f_-1006161388("2.0 + 3.0")
-f_-1006161388_计算==Map>String/Number==>f_-1006161388
-f_-1006161388--Map>value-->f_-1006161388v{"5.0"}
-f_-1006161388_计算==Map>Map==>f_47507548_最终
-
-f_47507548_最终==Map>Map==>f_-2133560364_计算
-f_-2133560364("5.0 + 0.0")
-f_-2133560364_计算==Map>String/Number==>f_-2133560364
-f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
-f_-2133560364_计算==Map>String/Number==>result
-result--Map>value-->resultv{"5.0"}
-f_47507548==Map>Map==>f_47507548_最终
-
-f_47507548_最终==Map>Map==>f_-2133560364_计算
-f_-2133560364("5.0 + 0.0")
-f_-2133560364_计算==Map>String/Number==>f_-2133560364
-f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
-f_-2133560364_计算==Map>String/Number==>result
-result--Map>value-->resultv{"5.0"}
-f_-1523352178==Map>Map==>f_-418786079
-f_-418786079("1+2^5.0*3+2+0")
-f_-418786079==Map>Map==>f_-418786079_优先
-
-f_-418786079_优先==Map>Map==>f_-959059895_计算
-f_-959059895("2.0 ^ 5.0")
-f_-959059895_计算==Map>String/Number==>f_-959059895
-f_-959059895--Map>value-->f_-959059895v{"32.0"}
-f_-959059895_计算==Map>Map==>f_1855628224_计算
-f_1855628224("32.0 * 3.0")
-f_1855628224_计算==Map>String/Number==>f_1855628224
-f_1855628224--Map>value-->f_1855628224v{"96.0"}
-f_1855628224_计算==Map>Map==>f_2037586494_计算
-f_2037586494("96.0 + 2.0")
-f_2037586494_计算==Map>String/Number==>f_2037586494
-f_2037586494--Map>value-->f_2037586494v{"98.0"}
-f_2037586494_计算==Map>Map==>f_-418786079_最终
-
-f_-418786079_最终==Map>Map==>f_-929530109_计算
-f_-929530109("1.0 + 98.0")
-f_-929530109_计算==Map>String/Number==>f_-929530109
-f_-929530109--Map>value-->f_-929530109v{"99.0"}
-f_-929530109_计算==Map>String/Number==>result
-result--Map>value-->resultv{"99.0"}
-f_-418786079==Map>Map==>f_-418786079_最终
-
-f_-418786079_最终==Map>Map==>f_-929530109_计算
-f_-929530109("1.0 + 98.0")
-f_-929530109_计算==Map>String/Number==>f_-929530109
-f_-929530109--Map>value-->f_-929530109v{"99.0"}
-f_-929530109_计算==Map>String/Number==>result
-result--Map>value-->resultv{"99.0"}
+    f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
+    f_-1523352178 == Map>Map ==> f_1563255009
+    f_1563255009("2 + (10 - 7)")
+    f_1563255009 == Map>Map ==> f_1448155011
+    f_1448155011("10 - 7")
+    f_1448155011 == Map>Map ==> f_1507337
+    f_1507337("10-7+0")
+    f_1507337 == Map>Map ==> f_1507337_优先
+    f_1507337_优先 == Map>Map ==> f_1571371271_计算
+    f_1571371271("10.0 - 7.0")
+    f_1571371271_计算 == Map>String/Number ==> f_1571371271
+    f_1571371271 -- Map>value --> f_1571371271v{"3.0"}
+    f_1571371271_计算 == Map>Map ==> f_1507337_最终
+    f_1507337_最终 == Map>Map ==> f_1481348562_计算
+    f_1481348562("3.0 + 0.0")
+    f_1481348562_计算 == Map>String/Number ==> f_1481348562
+    f_1481348562 -- Map>value --> f_1481348562v{"3.0"}
+    f_1481348562_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"3.0"}
+    f_1507337 == Map>Map ==> f_1507337_最终
+    f_1507337_最终 == Map>Map ==> f_1481348562_计算
+    f_1481348562("3.0 + 0.0")
+    f_1481348562_计算 == Map>String/Number ==> f_1481348562
+    f_1481348562 -- Map>value --> f_1481348562v{"3.0"}
+    f_1481348562_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"3.0"}
+    f_1563255009 == Map>Map ==> f_47507548
+    f_47507548("2+3.0+0")
+    f_47507548 == Map>Map ==> f_47507548_优先
+    f_47507548_优先 == Map>Map ==> f_-1006161388_计算
+    f_-1006161388("2.0 + 3.0")
+    f_-1006161388_计算 == Map>String/Number ==> f_-1006161388
+    f_-1006161388 -- Map>value --> f_-1006161388v{"5.0"}
+    f_-1006161388_计算 == Map>Map ==> f_47507548_最终
+    f_47507548_最终 == Map>Map ==> f_-2133560364_计算
+    f_-2133560364("5.0 + 0.0")
+    f_-2133560364_计算 == Map>String/Number ==> f_-2133560364
+    f_-2133560364 -- Map>value --> f_-2133560364v{"5.0"}
+    f_-2133560364_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"5.0"}
+    f_47507548 == Map>Map ==> f_47507548_最终
+    f_47507548_最终 == Map>Map ==> f_-2133560364_计算
+    f_-2133560364("5.0 + 0.0")
+    f_-2133560364_计算 == Map>String/Number ==> f_-2133560364
+    f_-2133560364 -- Map>value --> f_-2133560364v{"5.0"}
+    f_-2133560364_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"5.0"}
+    f_-1523352178 == Map>Map ==> f_-418786079
+    f_-418786079("1+2^5.0*3+2+0")
+    f_-418786079 == Map>Map ==> f_-418786079_优先
+    f_-418786079_优先 == Map>Map ==> f_-959059895_计算
+    f_-959059895("2.0 ^ 5.0")
+    f_-959059895_计算 == Map>String/Number ==> f_-959059895
+    f_-959059895 -- Map>value --> f_-959059895v{"32.0"}
+    f_-959059895_计算 == Map>Map ==> f_1855628224_计算
+    f_1855628224("32.0 * 3.0")
+    f_1855628224_计算 == Map>String/Number ==> f_1855628224
+    f_1855628224 -- Map>value --> f_1855628224v{"96.0"}
+    f_1855628224_计算 == Map>Map ==> f_2037586494_计算
+    f_2037586494("96.0 + 2.0")
+    f_2037586494_计算 == Map>String/Number ==> f_2037586494
+    f_2037586494 -- Map>value --> f_2037586494v{"98.0"}
+    f_2037586494_计算 == Map>Map ==> f_-418786079_最终
+    f_-418786079_最终 == Map>Map ==> f_-929530109_计算
+    f_-929530109("1.0 + 98.0")
+    f_-929530109_计算 == Map>String/Number ==> f_-929530109
+    f_-929530109 -- Map>value --> f_-929530109v{"99.0"}
+    f_-929530109_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"99.0"}
+    f_-418786079 == Map>Map ==> f_-418786079_最终
+    f_-418786079_最终 == Map>Map ==> f_-929530109_计算
+    f_-929530109("1.0 + 98.0")
+    f_-929530109_计算 == Map>String/Number ==> f_-929530109
+    f_-929530109 -- Map>value --> f_-929530109v{"99.0"}
+    f_-929530109_计算 == Map>String/Number ==> result
+    result -- Map>value --> resultv{"99.0"}
 ```
 
 ## Framework
@@ -745,7 +781,7 @@ public class MAIN {
 计算层数：4	计算结果：true	计算来源：Bool
 ```
 
-### Interval accumulation expression
+### IntervalAccumulationExpression
 
 - Full class name：core.calculation.number.CumulativeCalculation
 - introduce

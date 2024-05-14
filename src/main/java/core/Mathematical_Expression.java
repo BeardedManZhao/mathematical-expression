@@ -1,13 +1,16 @@
 package core;
 
 import core.calculation.Calculation;
+import core.calculation.bool.BooleanCalculation2;
 import core.calculation.function.*;
+import core.calculation.number.*;
 import core.manager.CalculationManagement;
 import exceptional.WrongFormat;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,45 +27,45 @@ public enum Mathematical_Expression {
     bracketsCalculation2 {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.number.BracketsCalculation2.getInstance(calculationName);
+            return BracketsCalculation2.getInstance(calculationName);
         }
     }, cumulativeCalculation {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.number.CumulativeCalculation.getInstance(calculationName);
+            return CumulativeCalculation.getInstance(calculationName);
         }
     },
     fastMultiplyOfIntervalsBrackets {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.number.FastMultiplyOfIntervalsBrackets.getInstance(calculationName);
+            return FastMultiplyOfIntervalsBrackets.getInstance(calculationName);
         }
     }, fastSumOfIntervalsBrackets {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.number.FastSumOfIntervalsBrackets.getInstance(calculationName);
+            return FastSumOfIntervalsBrackets.getInstance(calculationName);
         }
     },
     functionFormulaCalculation {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.number.FunctionFormulaCalculation.getInstance(calculationName);
+            return FunctionFormulaCalculation.getInstance(calculationName);
         }
     }, functionFormulaCalculation2 {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.number.FunctionFormulaCalculation2.getInstance(calculationName);
+            return FunctionFormulaCalculation2.getInstance(calculationName);
         }
     },
     prefixExpressionOperation {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.number.PrefixExpressionOperation.getInstance(calculationName);
+            return PrefixExpressionOperation.getInstance(calculationName);
         }
     }, booleanCalculation2 {
         @Override
         public Calculation getInstance(String calculationName) {
-            return core.calculation.bool.BooleanCalculation2.getInstance(calculationName);
+            return BooleanCalculation2.getInstance(calculationName);
         }
     };
 
@@ -334,4 +337,82 @@ public enum Mathematical_Expression {
      * @return 计算组件对象
      */
     public abstract Calculation getInstance(String calculationName);
+
+    /**
+     * 运算组件的设置模块，通过此类，您可以对于运算的逻辑等操作进行一些设置~
+     * <p>
+     * The setting module for calculation components, through which you can make some settings for the logic and other operations of calculations~
+     */
+    public final static class Options {
+        private final static HashMap<Integer, Number> HASH_MAP = new HashMap<>();
+        private static boolean useBigDecimal = false;
+        private static boolean useCache = false;
+
+        /**
+         * 手动添加一个 hash 的缓存，此函数请勿随意调用，因为随意调用，会带来 hash 冲突
+         *
+         * @param hashCode hash
+         * @param number   数值
+         */
+        public static void cacheCalculation(int hashCode, Number number) {
+            HASH_MAP.put(hashCode, number);
+        }
+
+        /**
+         * 手动获取一个 hash 的缓存
+         *
+         * @param hashCode hash
+         * @return 提前缓存好的结果
+         */
+        public static Number getCacheCalculation(int hashCode) {
+            return HASH_MAP.get(hashCode);
+        }
+
+        /**
+         * 调用此函数将会返回一个布尔对象，用来描述当前计算组件是否要使用 BigDecimal 进行计算，这将能够有效避免精度问题。
+         * <p>
+         * Calling this function will return a Boolean object that describes whether the current calculation component needs to use BigDecimal for calculation, which can effectively avoid accuracy issues.
+         *
+         * @return 如果当前的运算模式是BigDecimal，则返回true。反之则返回false。
+         * If the current operation mode is BigDecimal, return true. Otherwise, return false.
+         */
+        public static boolean isUseBigDecimal() {
+            return useBigDecimal;
+        }
+
+        /**
+         * 设置是否使用 BigDecimal 进行计算。
+         * 调用此函数将会返回一个布尔对象，用来描述当前计算组件是否要使用 BigDecimal 进行计算，这将能够有效避免精度问题。
+         * <p>
+         * Calling this function will return a Boolean object that describes whether the current calculation component needs to use BigDecimal for calculation, which can effectively avoid accuracy issues.
+         *
+         * @param useBigDecimal 如果您需要使用 BigDecimal 进行计算，请将此参数设置为 true。
+         *                      <p>
+         *                      If you need to use BigDecimal for calculation, set this parameter to true.
+         */
+        public static void setUseBigDecimal(boolean useBigDecimal) {
+            Options.useBigDecimal = useBigDecimal;
+        }
+
+        /**
+         * @return 是否开启计算数值的缓存功能，开启之后，所有的计算结果将会被缓存，这将会有效减少计算量，但是也会造成一定的内存占用。
+         * <p>
+         * Do you want to enable the caching function for calculating numerical values? Once enabled, all calculation results will be cached, which will effectively reduce computational complexity but also cause some memory usage.
+         */
+        public static Boolean isUseCache() {
+            return useCache;
+        }
+
+        /**
+         * @param useCache 是否开启计算数值的缓存功能，开启之后，所有的计算结果将会被缓存，这将会有效减少计算量，但是也会造成一定的内存占用。
+         *                 <p>
+         *                 Do you want to enable the caching function for calculating numerical values? Once enabled, all calculation results will be cached, which will effectively reduce computational complexity but also cause some memory usage.
+         */
+        public static void setUseCache(boolean useCache) {
+            if (!useCache) {
+                HASH_MAP.clear();
+            }
+            Options.useCache = useCache;
+        }
+    }
 }
