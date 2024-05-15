@@ -1,21 +1,18 @@
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.container.LogResults;
-import exceptional.WrongFormat;
-import top.lingyuzhao.varFormatter.core.VarFormatter;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 
 public class MAIN {
-
-    public static void main(String[] args) throws WrongFormat {
-        // 将 f 函数注册进来
-        Mathematical_Expression.register_function("f(x) = x * x");
-        Mathematical_Expression.register_function("ff(x) = x + 1");
-        // 准备要计算的表达式
-        String data = "1 + f(20) + (ff(10 - 2) + f(20 - 2 * 3))";
-        // 获取计算器
-        Calculation calculation = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-        // 将计算过程绘制出来
-        final LogResults explain = calculation.explain(data, true);
-        System.out.println(explain.explain(VarFormatter.MERMAID));
+    public static void main(String[] args) {
+        // 获取到一个有括号计算组件 您可以根据需求更换组件
+        final Calculation instance = Mathematical_Expression.getInstance(
+                Mathematical_Expression.bracketsCalculation2
+        );
+        // 然后进行一个简单的检查 这里我们要查询 0.3 * 3 的执行过程
+        final String s = "0.3 * 3";
+        // 在这里的计算会精度损失
+        System.out.println(instance.calculation(s));
+        // 启用精度模式
+        Mathematical_Expression.Options.setUseBigDecimal(true);
+        System.out.println(instance.calculation(s));
     }
 }

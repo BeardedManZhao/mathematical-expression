@@ -37,7 +37,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.7</version>
+        <version>1.4.0</version>
     </dependency>
 </dependencies>
 ```
@@ -47,7 +47,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.7'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.0'
 }
 ```
 
@@ -69,9 +69,9 @@ into  `System.out.println(Mathematical_Expression.getInstance(Mathematical_Expre
 Can effectively reduce code load!
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
 
@@ -90,18 +90,19 @@ public class MAIN {
 ### Superb functionality, capable of handling numerous functions
 
 Are you unfamiliar with programming? It's simple, you can completely customize functions using mathematical expressions,
-and we also have many built-in functions that are unified in ` core.calculation.function.FunctionPackage`
+and we also have many built-in functions that are unified
+in ` function.io.github.beardedManZhao.mathematicalExpression.core.calculationFunctionPackage`
 In class!!
 
 ```java
 // Import necessary classes and packages for mathematical calculations and functions
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.FunctionPackage;
-import core.calculation.function.Functions;
-import core.container.CalculationResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import function.io.github.beardedManZhao.mathematicalExpression.core.calculationFunctionPackage;
+import function.io.github.beardedManZhao.mathematicalExpression.core.calculationFunctions;
+import io.github.beardedManZhao.mathematicalExpression.core.containerCalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 // Define a class 'MAIN' with a function that calculates the factorial of x plus 1
 @Functions("f(x) = x! + 1")
@@ -148,9 +149,9 @@ see all the operators here!
 You can also achieve calculation operations with precision and caching operations by adjusting settings!
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.container.CalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
 
 import java.math.BigDecimal;
 
@@ -193,10 +194,10 @@ In mathematical expression, we provide various computing components, and you can
 according to your needs to achieve different functions while maintaining the same API calling method.
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.Functions;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 // Prepare a mathematical function x factorial+1
 @Functions("f(x) = x! + 1")
@@ -233,10 +234,10 @@ directly obtain its function object, which is not limited to the following
 Used in mathematical expression!
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 // Prepare a mathematical function x factorial+1
 @Functions("f(x) = x! + 1")
@@ -259,11 +260,11 @@ In some calculation components, you can use the 'explain' function to calculate 
 plot the calculation process of the calculation component as a log result object, which can be plotted as a graph. The
 following are the supported components and usage examples.
 
-| Calculation component name                        | Does it support `explain` | When did support start | Related knowledge                             |
-|---------------------------------------------------|---------------------------|------------------------|-----------------------------------------------|
-| core.calculation.number.PrefixExpressionOperation | yes                       | v1.3.5                 | [click this](#NotBracketedExpression)         |
-| core.calculation.number.BracketsCalculation2      | yes                       | v1.3.5                 | [click this](#NestedParenthesisExpression)    |
-| core.calculation.number.CumulativeCalculation     | yes                       | v1.3.6                 | [click this](#IntervalAccumulationExpression) |
+| Calculation component name                                                                 | Does it support `explain` | When did support start | Related knowledge                             |
+|--------------------------------------------------------------------------------------------|---------------------------|------------------------|-----------------------------------------------|
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.PrefixExpressionOperation | yes                       | v1.3.5                 | [click this](#NotBracketedExpression)         |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.BracketsCalculation2      | yes                       | v1.3.5                 | [click this](#NestedParenthesisExpression)    |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.CumulativeCalculation     | yes                       | v1.3.6                 | [click this](#IntervalAccumulationExpression) |
 
 #### Introducing a flowchart code generation library
 
@@ -284,10 +285,10 @@ will help you draw a flowchart of the calculation process of computational compo
 After importing the library, we can generate a flowchart as shown below.
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.container.LogResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 import top.lingyuzhao.varFormatter.core.VarFormatter;
 
 /**
@@ -322,16 +323,15 @@ public class MAIN {
 The result after running the program is as follows.
 
 ```
-E:\RunTime\jdk8\jdk-8u351\bin\java.exe "-javaagent:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\lib\idea_rt.jar=52509:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\bin" -Dfile.encoding=UTF-8 -classpath E:\RunTime\jdk8\jdk-8u351\jre\lib\charsets.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\deploy.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\access-bridge-64.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\cldrdata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\dnsns.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jaccess.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jfxrt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\localedata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\nashorn.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunec.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunjce_provider.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunmscapi.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunpkcs11.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\zipfs.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\javaws.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jce.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfr.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfxswt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jsse.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\management-agent.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\plugin.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\resources.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\rt.jar;G:\MyGithub\mathematical-expression\target\test-classes;G:\MyGithub\mathematical-expression\target\classes;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-slf4j-impl\2.20.0\log4j-slf4j-impl-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-api\2.20.0\log4j-api-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-core\2.20.0\log4j-core-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\io\github\BeardedManZhao\varFormatter\1.0.4\varFormatter-1.0.4.jar MAIN
-[INFO][Calculation Management][24-05-13:06]] : +============================== Welcome to [mathematical expression] ==============================+
-[INFO][Calculation Management][24-05-13:06]] : + 	Start time Mon May 13 18:20:27 CST 2024
-[INFO][Calculation Management][24-05-13:06]] : + 	version: 1.35
-[INFO][Calculation Management][24-05-13:06]] : + 	Calculation component manager initialized successfully
-[INFO][Calculation Management][24-05-13:06]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
-[INFO][Calculation Management][24-05-13:06]] : +--------------------------------------------------------------------------------------------------+
-[INFO][Calculation Management][24-05-13:06]] : A computing component is registered PrefixExpressionOperation
-[INFO][Calculation Management][24-05-13:06]] : A computing component is registered bracketsCalculation2
-计算结果：99.0
+[INFO][Calculation Management][24-05-15:11]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-05-15:11]] : + 	Start time Wed May 15 11:28:38 CST 2024
+[INFO][Calculation Management][24-05-15:11]] : + 	version: 1.37
+[INFO][Calculation Management][24-05-15:11]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-05-15:11]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-05-15:11]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-05-15:11]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-05-15:11]] : A computing component is registered bracketsCalculation2
+计算结果: 99.0
 graph LR
 f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
 f_-1523352178==Map>Map==>f_1563255009
@@ -418,10 +418,6 @@ f_-929530109_计算==Map>String/Number==>f_-929530109
 f_-929530109--Map>value-->f_-929530109v{"99.0"}
 f_-929530109_计算==Map>String/Number==>result
 result--Map>value-->resultv{"99.0"}
-
-
-进程已结束，退出代码为 0
-
 ```
 
 After the program runs, there is a graph code for 'mermaid' in the result, which we will display below for everyone to
@@ -512,26 +508,26 @@ graph LR
 ### Obtain and calculate the calculation components directly through the mathematical-expression library
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.number.NumberCalculation;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
         // Build two expressions to be evaluated
         String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
         // Obtain the calculation component for calculating the expression without parentheses through the library
-        NumberCalculation prefixExpressionOperation = Mathematical_Expression.getInstance(
+        Calculation prefixExpressionOperation = Mathematical_Expression.getInstance(
                 Mathematical_Expression.prefixExpressionOperation, "prefixExpressionOperation"
         );
         // Obtain the calculation component for calculating bracketed expressions through the library
-        NumberCalculation bracketsCalculation2 = Mathematical_Expression.getInstance(
+        Calculation bracketsCalculation2 = Mathematical_Expression.getInstance(
                 Mathematical_Expression.bracketsCalculation2, "bracketsCalculation2"
         );
         // Pass the first formula to the calculation component of an expression without parentheses
         prefixExpressionOperation.check(s1);
-        CalculationNumberResults calculation1 = prefixExpressionOperation.calculation(s1);
+        CalculationResults calculation1 = prefixExpressionOperation.calculation(s1);
         // Print the calculation result of the first expression
         System.out.println("计算层数：" + calculation1.getResultLayers() + "\n计算结果：" + calculation1.getResult() +
                 "\n计算来源：" + calculation1.getCalculationSourceName());
@@ -539,7 +535,7 @@ public class MAIN {
 
         // Pass the second formula to the calculation component of the parenthesis expression
         bracketsCalculation2.check(s2);
-        CalculationNumberResults calculation2 = bracketsCalculation2.calculation(s2);
+        CalculationResults calculation2 = bracketsCalculation2.calculation(s2);
         // Print the calculation result of the second expression
         System.out.println("计算层数：" + calculation2.getResultLayers() + "\n计算结果：" + calculation2.getResult() +
                 "\n计算来源：" + calculation2.getCalculationSourceName());
@@ -563,7 +559,7 @@ public class MAIN {
 
 ### Calculation Manager
 
-- Full class name：core.manager.CalculationManagement
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.CalculationManagement`
 - introduce：
 
   The manager is a component designed to use both singletons and dynamic objects. The existence of the manager enables
@@ -573,10 +569,9 @@ public class MAIN {
 - API Usage Example
 
 ```java
-import core.calculation.number.FunctionFormulaCalculation;
-import core.calculation.number.PrefixExpressionOperation;
-import core.manager.CalculationManagement;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 
 public class MAIN {
     public static void main(String[] args) {
@@ -607,32 +602,28 @@ public class MAIN {
   the manager, but the components with different names are different.
 
 ```
-[INFO][Calculation Management][22-11-14:11]] : +============================== Welcome to [mathematical expression] ==============================+
-[INFO][Calculation Management][22-11-14:11]] : + 	Start time Mon Nov 14 11:45:13 CST 2022
-[INFO][Calculation Management][22-11-14:11]] : + 	Calculation component manager initialized successfully
-[INFO][Calculation Management][22-11-14:11]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
-[INFO][Calculation Management][22-11-14:11]] : +--------------------------------------------------------------------------------------------------+
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered a
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered PrefixExpressionOperation
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered BracketsCalculation2
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered b
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered a1
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered a
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered b
-[INFO][Calculation Management][22-11-14:11]] : A computing component is registered a1
-[INFO][Calculation Management][22-11-14:11]] : Get the [a] component from the manager
-[INFO][Calculation Management][22-11-14:11]] : Get the [b] component from the manager
-[INFO][Calculation Management][22-11-14:11]] : Get the [a1] component from the manager
-core.calculation.number.PrefixExpressionOperation@8ad73b  core.calculation.number.PrefixExpressionOperation@8ad73b
-core.calculation.number.FunctionFormulaCalculation@762604  core.calculation.number.FunctionFormulaCalculation@762604
-core.calculation.number.PrefixExpressionOperation@41e737  core.calculation.number.PrefixExpressionOperation@41e737
+[INFO][Calculation Management][24-05-15:11]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][Calculation Management][24-05-15:11]] : + 	Start time Wed May 15 11:29:32 CST 2024
+[INFO][Calculation Management][24-05-15:11]] : + 	version: 1.37
+[INFO][Calculation Management][24-05-15:11]] : + 	Calculation component manager initialized successfully
+[INFO][Calculation Management][24-05-15:11]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
+[INFO][Calculation Management][24-05-15:11]] : +--------------------------------------------------------------------------------------------------+
+[INFO][Calculation Management][24-05-15:11]] : A computing component is registered prefixExpressionOperation
+[INFO][Calculation Management][24-05-15:11]] : A computing component is registered PrefixExpressionOperation
+[INFO][Calculation Management][24-05-15:11]] : A computing component is registered bracketsCalculation2
+计算层数：1
+计算结果：23.0
+计算来源：prefixExpressionOperation
+计算层数：1
+计算结果：15.0
+计算来源：PrefixExpressionOperation
 ```
 
 ## Calculation component introduce
 
 ### NotBracketedExpression
 
-- Full class name：core.calculation.number.PrefixExpressionOperation
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationPrefixExpressionOperation`
 - introduce
 
   This component is designed for a mathematical expression without parentheses, but with operations such as addition,
@@ -645,11 +636,9 @@ core.calculation.number.PrefixExpressionOperation@41e737  core.calculation.numbe
   The operators supported by this component are： a+b a-b a*b a/b a%b
 
 ```java
-package utils;
-
-import core.calculation.number.PrefixExpressionOperation;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
@@ -683,7 +672,7 @@ public class MAIN {
 
 ### NestedParenthesisExpression
 
-- Full class name：core.calculation.number.BracketsCalculation2
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationBracketsCalculation2`
 - introduce：
 
   Nested parenthesis expression parsing component, which can parse and calculate the results of mathematical expressions
@@ -696,11 +685,9 @@ public class MAIN {
   The operators supported by this component are： a+b a-b a*b a/b a%b ( )
 
 ```java
-package utils;
-
-import core.calculation.number.BracketsCalculation2;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
@@ -735,7 +722,7 @@ public class MAIN {
 
 ### Mathematical comparison expression
 
-- Full class name：core.calculation.bool.BooleanCalculation2
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationBooleanCalculation2`
 - introduce
 
   A component that uses the comparison operator to determine whether two parenthesis expressions are mutually valid. The
@@ -746,30 +733,29 @@ public class MAIN {
   The operators supported by this component are shown in the API
 
 ```java
-package utils;
 
-import core.calculation.bool.BooleanCalculation2;
-import core.container.CalculationBooleanResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.bool.BooleanCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationBooleanResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws WrongFormat {
         // 获取一个计算数学比较表达式的组件
         BooleanCalculation2 booleanCalculation2 = BooleanCalculation2.getInstance("Bool");
         // 创建3个表达式
         String s1 = "1 + 2 + 4 * (10 - 3)";
         String s2 = "2 + 30 + (2 * 3) - 1";
         String s3 = "1 + 3 * 10";
-        extracted(booleanCalculation2, s1 + " > " + s2);// false	
-        extracted(booleanCalculation2, s1 + " < " + s2);// true	
-        extracted(booleanCalculation2, s1 + " = " + s3);// true	
-        extracted(booleanCalculation2, s1 + " == " + s3);// true	
-        extracted(booleanCalculation2, s1 + " != " + s3);// false	
-        extracted(booleanCalculation2, s1 + " <> " + s3);// false	
-        extracted(booleanCalculation2, s1 + " <= " + s3);// true	
-        extracted(booleanCalculation2, s1 + " >= " + s3);// true	
-        extracted(booleanCalculation2, s1 + " != " + s2);// true	
-        extracted(booleanCalculation2, s1 + " <> " + s2);// true	
+        extracted(booleanCalculation2, s1 + " > " + s2);// false
+        extracted(booleanCalculation2, s1 + " < " + s2);// true
+        extracted(booleanCalculation2, s1 + " = " + s3);// true
+        extracted(booleanCalculation2, s1 + " == " + s3);// true
+        extracted(booleanCalculation2, s1 + " != " + s3);// false
+        extracted(booleanCalculation2, s1 + " <> " + s3);// false
+        extracted(booleanCalculation2, s1 + " <= " + s3);// true
+        extracted(booleanCalculation2, s1 + " >= " + s3);// true
+        extracted(booleanCalculation2, s1 + " != " + s2);// true
+        extracted(booleanCalculation2, s1 + " <> " + s2);// true
     }
 
     private static void extracted(BooleanCalculation2 booleanCalculation2, String s) throws WrongFormat {
@@ -803,7 +789,7 @@ public class MAIN {
 
 ### IntervalAccumulationExpression
 
-- Full class name：core.calculation.number.CumulativeCalculation
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationCumulativeCalculation`
 - introduce
 
   In mathematical expressions, there is often such a formula. The content of the formula is shown in the following
@@ -820,11 +806,10 @@ public class MAIN {
   mathematical formula.
 
 ```java
-package utils;
 
-import core.calculation.number.CumulativeCalculation;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.CumulativeCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
@@ -853,7 +838,7 @@ public class MAIN {
 
 ### Function operation expression
 
-- Full class name：core.calculation.number.FunctionFormulaCalculation
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationFunctionFormulaCalculation`
 - introduce
 
   The framework also supports the operation of some functions. You can use the above classes to write mathematical
@@ -862,13 +847,12 @@ public class MAIN {
 - API Usage Example
 
 ```java
-package utils;
 
-import core.calculation.function.ManyToOneNumberFunction;
-import core.calculation.number.FunctionFormulaCalculation;
-import core.container.CalculationNumberResults;
-import core.manager.CalculationManagement;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
@@ -913,7 +897,7 @@ public class MAIN {
 
 ### Multi parameter function operation expression
 
-- Full class name: core.calculation.number.FunctionFormulaCalculation2
+- Full class name: `io.github.beardedManZhao.mathematicalExpression.core.calculationFunctionFormulaCalculation2`
 - 介绍
 
   For some expression calculations that use functions in expressions, the above class can be used for operations. It is
@@ -924,17 +908,16 @@ public class MAIN {
   function expression with one parameter. In this component, you can use many real parameters for function operations,
   such as sum (1,2,3)
 
-  This type of function is a multiparameter function. Next, let's look at the API usage example, in which the
-  calculation and results of the multiparameter function expression are shown.
+  This type of function is a multi parameter function. Next, let's look at the API usage example, in which the
+  calculation and results of the multi parameter function expression are shown.
 
 ```java
-package utils;
 
-import core.calculation.function.ManyToOneNumberFunction;
-import core.calculation.number.FunctionFormulaCalculation2;
-import core.container.CalculationNumberResults;
-import core.manager.CalculationManagement;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
@@ -953,7 +936,7 @@ public class MAIN {
         CalculationManagement.register(manyToOneNumberFunction);
         // Get the new version of function calculation component
         FunctionFormulaCalculation2 functionFormulaCalculation2 = FunctionFormulaCalculation2.getInstance("zhao");
-        // Build the formula we need to calculate 
+        // Build the formula we need to calculate
         // TODO The function sum parameter in this expression is not only one, but also a multi parameter function
         String s = "2 * (200 - sum(1 + 10.1, 2, 3)) + sum(10, 20)";
         // Enabling the shared pool can speed up the calculation. The more complex the calculation formula is, the more significant the effect of the shared pool is
@@ -985,11 +968,10 @@ expression is' function name (parameter 1, parameter 2, parameter 3)=function lo
 This registered function can also be directly used in mathematical expressions!
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.manager.ConstantRegion;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
@@ -1004,7 +986,7 @@ public class MAIN {
 
 ### Fast interval sum calculation component (based on parenthesis expression)
 
-- Full class name：core.calculation.number.FastSumOfIntervalsBrackets
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationFastSumOfIntervalsBrackets`
 - introduce
 
   The new product of version 1.15, the interval fast sum component, is a fast component that sums all elements of an
@@ -1015,17 +997,16 @@ public class MAIN {
   last time, which can speed up computing. The specific API calls are shown below.
 
 ```java
-package utils;
 
-import core.calculation.number.FastSumOfIntervalsBrackets;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastSumOfIntervalsBrackets;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
         // Get the quick sum calculation component of the interval
         FastSumOfIntervalsBrackets fast = FastSumOfIntervalsBrackets.getInstance("fast");
-        // Build an expression to be calculated. 
+        // Build an expression to be calculated.
         // The following expression represents that the result of adding 11=(1+10) to 13=(20 - (5+2)) should be 36
         String s = "1 + 10, 20 - (5 + 2)";
         // Check the expression. The shared pool has been enabled by default since version 1.2! No need to set manually
@@ -1055,7 +1036,7 @@ public class MAIN {
 
 ### Fast interval cumulative calculation component (based on parenthesis expression)
 
-- Full class name：core.calculation.number.FastMultiplyOfIntervalsBrackets
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationFastMultiplyOfIntervalsBrackets`
 - Introduction
 
   A new product of version 1.1.5, the interval fast accumulation component, is a fast component that accumulates all
@@ -1066,17 +1047,16 @@ public class MAIN {
   last time, which can speed up computing. The specific API calls are shown below.
 
 ```java
-package utils;
 
-import core.calculation.number.FastMultiplyOfIntervalsBrackets;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastMultiplyOfIntervalsBrackets;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
         // Get the quick Multiply calculation component of the interval
         FastMultiplyOfIntervalsBrackets fast = FastMultiplyOfIntervalsBrackets.getInstance("fast");
-        // Build an expression to be calculated. 
+        // Build an expression to be calculated.
         // The following expression indicates that the result of multiplying 11=(1+10) by 13=(20 - (5+2)) should be 143
         // The result should be 11 * 13=143
         String s = "1 + 10, 20 - (5 + 2)";
@@ -1110,12 +1090,10 @@ public class MAIN {
 ### Registration and calculation of mathematical functions
 
 ```java
-package top.lingyuzhao;
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.FunctionPackage;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
 
@@ -1142,13 +1120,11 @@ CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
 ### Registering anonymous implemented functions for computation
 
 ```java
-package top.lingyuzhao;
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.FunctionPackage;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
 
@@ -1180,12 +1156,12 @@ CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
 ### Annotation based implementation of function registration and calculation
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.Functions;
-import exceptional.WrongFormat;
+
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 @Functions({
         // 这里是需要被注册的两个函数 在这里标记一下
@@ -1223,14 +1199,11 @@ files. We can directly perform serialization operations to save them. Below, we 
 #### Extracting Function Objects for Individual Computation
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
-
-import java.io.IOException;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 @Functions({
         // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
@@ -1264,13 +1237,12 @@ Note that if your saved function uses other functions, e.g., `ff(x) = f(x) + 1`,
 file as well. The following demonstrates how to save a single function:
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -1301,13 +1273,13 @@ public class MAIN {
 In fact, you can also save multiple function objects to a single file, which helps resolve function dependency issues!
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -1346,9 +1318,9 @@ into the library or use them directly!!!
 ```java
 package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import function.io.github.beardedManZhao.mathematicalExpression.core.calculationExpressionFunction;
+import function.io.github.beardedManZhao.mathematicalExpression.core.calculationManyToOneNumberFunction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -1377,9 +1349,9 @@ Deserialization also supports loading multiple function objects. Here's an examp
 ```java
 package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import function.io.github.beardedManZhao.mathematicalExpression.core.calculationExpressionFunction;
+import function.io.github.beardedManZhao.mathematicalExpression.core.calculationManyToOneNumberFunction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -1412,12 +1384,11 @@ Starting from version 1.3.4, you can directly serialize/register functions using
 Mathematical_Expression class, which simplifies the code. Here's an example:
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1449,11 +1420,10 @@ Next, we can manually read the file into memory and use it, demonstrating the de
 Mathematical_Expression.
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.FileInputStream;
 import java.io.IOException;

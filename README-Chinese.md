@@ -7,10 +7,12 @@
 > ✅【一般】 **_PS 请尽量使用 1.3.1 版本以及以上的版本，这将有助于您使用更加稳定的版本，修复了 1.2.x
 中[所有已知的bug](https://github.com/BeardedManZhao/mathematical-expression/issues)_**
 
-> ⚠️【重要】 1.3.7 版本和 1.4.0 版本的内容完全一致，唯一的区别就是包模块的变更，**请注意，我们将在 1.4.0 版本以及之后的所有版本中
+> ⚠️【重要】 1.3.7 版本和 1.4.0 版本的内容几乎一致，主要的区别就是包模块的变更，**请注意，我们将在 1.4.0 版本以及之后的所有版本中
 重构包名为 `io.github.beardedManZhao.mathematicalExpression` 这是为了避免在 Java 的诸多依赖中，包名出现冲突的情况~**
 >
-> 为了避免小伙伴们担心由于包更新导致的兼容性问题，因此我们提供了 1.3.7 版本，您可以继续使用旧包名，但是我们强烈建议您使用新版本，因为新版本的包名已经更新为 `io.github.beardedManZhao.mathematicalExpression`
+> 为了避免小伙伴们担心由于包更新导致的兼容性问题，因此我们提供了 1.3.7
+>
+版本，您可以继续使用旧包名，但是我们强烈建议您使用新版本，因为新版本的包名已经更新为 `io.github.beardedManZhao.mathematicalExpression`
 > ，若您对于修改包名称和更新有什么问题或建议，请及时联系我们！！
 
 ## 介绍
@@ -27,7 +29,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-        <version>1.3.7</version>
+        <version>1.4.0</version>
     </dependency>
 </dependencies>
 ```
@@ -36,7 +38,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.3.7'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.0'
 }
 ```
 
@@ -54,57 +56,58 @@ mathematical-expression 具有简单，快速，易上手，支持的语言种�
 能够有效减少代码量！
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
-        final Calculation instance = Mathematical_Expression.getInstance(
-                // 在这里选择您要使用的不同计算组件即可
-                Mathematical_Expression.bracketsCalculation2
-        );
-        // 如果您确保表达式的无误，可以不检查
-        instance.check("(1+2)*3");
-        System.out.println(instance.calculation("(1+2)*3"));
-    }
+  public static void main(String[] args) throws WrongFormat {
+    final Calculation instance = Mathematical_Expression.getInstance(
+            // 在这里选择您要使用的不同计算组件即可
+            Mathematical_Expression.bracketsCalculation2
+    );
+    // 如果您确保表达式的无误，可以不检查
+    instance.check("(1+2)*3");
+    System.out.println(instance.calculation("(1+2)*3"));
+  }
 }
 ```
 
 ### 超强的功能性，拿捏诸多函数 和 计算符
 
-您不熟悉编程？很简单，您完全可以使用数学表达式进行函数的自定义，同时我们还准备了诸多的内置函数，它们统一在 `core.calculation.function.FunctionPackage`
+您不熟悉编程？很简单，您完全可以使用数学表达式进行函数的自定义，同时我们还准备了诸多的内置函数，它们统一在 `function.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionPackage`
 类中！！
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.FunctionPackage;
-import core.calculation.function.Functions;
-import core.container.CalculationResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 // 准备一个数学函数 x 的阶乘 + 1
 @Functions("f(x) = x! + 1")
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 您可以将我们内置的函数进行导入，这样就可以使用一些内置函数了，如 sum
-        // 注册内置的函数库 - 数学库
-        Mathematical_Expression.register_function(FunctionPackage.MATH);
-        // 当然 您还可以使用自定义函数的方式 将您自己的函数 注册进去
-        Mathematical_Expression.register_function("fTwo(x, y) = x + y");
-        // 您也可以使用注解批量的 将 MAIN 注解的所有函数注册 并进行使用
-        Mathematical_Expression.register_function(MAIN.class);
-        // 在下面就可以开始进行计算了 首先是获取到计算组件
-        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-        // 然后进行一个简单的检查
-        instance.check("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
-        // 然后直接进行计算 您的表达式中完全是可以使用函数的哦~~~
-        final CalculationResults calculation = instance.calculation("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
-        // 直接打印就可以啦~
-        System.out.println(calculation);
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 您可以将我们内置的函数进行导入，这样就可以使用一些内置函数了，如 sum
+    // 注册内置的函数库 - 数学库
+    Mathematical_Expression.register_function(FunctionPackage.MATH);
+    // 当然 您还可以使用自定义函数的方式 将您自己的函数 注册进去
+    Mathematical_Expression.register_function("fTwo(x, y) = x + y");
+    // 您也可以使用注解批量的 将 MAIN 注解的所有函数注册 并进行使用
+    Mathematical_Expression.register_function(MAIN.class);
+    // 在下面就可以开始进行计算了 首先是获取到计算组件
+    final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+    // 然后进行一个简单的检查
+    instance.check("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
+    // 然后直接进行计算 您的表达式中完全是可以使用函数的哦~~~
+    final CalculationResults calculation = instance.calculation("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
+    // 直接打印就可以啦~
+    System.out.println(calculation);
+  }
 }
 ```
 
@@ -123,9 +126,9 @@ public class MAIN {
 您还可以通过调整设置实现带有精度的计算操作以及缓存操作等！
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.container.CalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
 
 import java.math.BigDecimal;
 
@@ -133,32 +136,32 @@ import java.math.BigDecimal;
  * This is the main entry point for the application, demonstrating mathematical expression parsing and evaluation.
  */
 public class MAIN {
-    public static void main(String[] args) {
-        // Obtain an instance of the calculation component, which supports parentheses handling.
-        final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
-        // Define a sample mathematical expression to evaluate.
-        final String inputExpression = "0.3 * 3";
-        // Enable caching to improve performance.
-        Mathematical_Expression.Options.setUseCache(true);
+  public static void main(String[] args) {
+    // Obtain an instance of the calculation component, which supports parentheses handling.
+    final Calculation calculationInstance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+    // Define a sample mathematical expression to evaluate.
+    final String inputExpression = "0.3 * 3";
+    // Enable caching to improve performance.
+    Mathematical_Expression.Options.setUseCache(true);
 
-        // Enable BigDecimal for more accurate results.
-        Mathematical_Expression.Options.setUseBigDecimal(true);
-        // Evaluate the expression and print the result.
-        System.out.println(calculationInstance.calculation(inputExpression));
+    // Enable BigDecimal for more accurate results.
+    Mathematical_Expression.Options.setUseBigDecimal(true);
+    // Evaluate the expression and print the result.
+    System.out.println(calculationInstance.calculation(inputExpression));
 
-        // Disable BigDecimal for faster performance.
-        Mathematical_Expression.Options.setUseBigDecimal(false);
-        // Evaluate the expression and print the result.
-        final CalculationResults calculation = calculationInstance.calculation(inputExpression);
-        System.out.println(calculation);
+    // Disable BigDecimal for faster performance.
+    Mathematical_Expression.Options.setUseBigDecimal(false);
+    // Evaluate the expression and print the result.
+    final CalculationResults calculation = calculationInstance.calculation(inputExpression);
+    System.out.println(calculation);
 
-        // Can extract different numerical objects
-        System.out.println("Can extract different numerical objects!");
-        final double result = (double) calculation.getResult();
-        final BigDecimal bigDecimalResult = calculation.getBigDecimalResult();
-        System.out.println(result);
-        System.out.println(bigDecimalResult);
-    }
+    // Can extract different numerical objects
+    System.out.println("Can extract different numerical objects!");
+    final double result = (double) calculation.getResult();
+    final BigDecimal bigDecimalResult = calculation.getBigDecimalResult();
+    System.out.println(result);
+    System.out.println(bigDecimalResult);
+  }
 }
 ```
 
@@ -167,37 +170,36 @@ public class MAIN {
 在mathematical-expression 中，我们提供了多种计算组件，您可以根据需要选择不同的计算组件，以实现不同的功能，同时还保持着相同的API调用方式。
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.Functions;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 // 准备一个数学函数 x 的阶乘 + 1
 @Functions("f(x) = x! + 1")
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 将 MAIN 注解的函数注册 并进行使用
-        Mathematical_Expression.register_function(MAIN.class);
-        final Calculation instance = Mathematical_Expression.getInstance(
-                // 在这里选择函数计算组件即可
-                Mathematical_Expression.functionFormulaCalculation2
-        );
-        // 如果您确保表达式的无误，可以不检查
-        instance.check("f(1 + 2) - 3");
-        System.out.println(instance.calculation("f(1 + 2) - 3"));
+  public static void main(String[] args) throws WrongFormat {
+    // 将 MAIN 注解的函数注册 并进行使用
+    Mathematical_Expression.register_function(MAIN.class);
+    final Calculation instance = Mathematical_Expression.getInstance(
+            // 在这里选择函数计算组件即可
+            Mathematical_Expression.functionFormulaCalculation2
+    );
+    // 如果您确保表达式的无误，可以不检查
+    instance.check("f(1 + 2) - 3");
+    System.out.println(instance.calculation("f(1 + 2) - 3"));
 
-        /*----------------------------------*/
+    /*----------------------------------*/
 
-        // 您还可以用快速计算组件计算区间 [1+2, 30] 之间的求和
-        final Calculation instance1 = Mathematical_Expression.getInstance(
-                // 在这里选择快速求和计算组件即可 API 和上面是一样的
-                Mathematical_Expression.fastSumOfIntervalsBrackets
-        );
-        instance1.check("1 + 2, 30");
-        System.out.println(instance1.calculation("1 + 2, 30"));
-    }
+    // 您还可以用快速计算组件计算区间 [1+2, 30] 之间的求和
+    final Calculation instance1 = Mathematical_Expression.getInstance(
+            // 在这里选择快速求和计算组件即可 API 和上面是一样的
+            Mathematical_Expression.fastSumOfIntervalsBrackets
+    );
+    instance1.check("1 + 2, 30");
+    System.out.println(instance1.calculation("1 + 2, 30"));
+  }
 }
 ```
 
@@ -207,23 +209,23 @@ public class MAIN {
 mathematical-expression 中使用！
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 // 准备一个数学函数 x 的阶乘 + 1
 @Functions("f(x) = x! + 1")
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 将 MAIN 注解的函数注册 并进行使用
-        Mathematical_Expression.register_function(MAIN.class);
-        // 提取出 f(x) = x! + 1 的函数对象 我们知道这个函数的名字就是 f
-        final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
-        // 单独使用 f 进行计算
-        final double run = f.run(3);
-        System.out.println(run);
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 将 MAIN 注解的函数注册 并进行使用
+    Mathematical_Expression.register_function(MAIN.class);
+    // 提取出 f(x) = x! + 1 的函数对象 我们知道这个函数的名字就是 f
+    final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+    // 单独使用 f 进行计算
+    final double run = f.run(3);
+    System.out.println(run);
+  }
 }
 ```
 
@@ -231,11 +233,11 @@ public class MAIN {
 
 您在一些计算组件中，可以使用 `explain` 函数来进行表达式的计算，这个函数能够将计算组件的计算过程完整的绘制成为一个日志结果对象，日志结果对象可以被绘制成为一个图，下面是支持的组件以及使用示例。
 
-| 计算组件名称                                            | 是否支持 `explain` | 从何时开始支持 | 相关知识                   |
-|---------------------------------------------------|----------------|---------|------------------------|
-| core.calculation.number.PrefixExpressionOperation | yes            | v1.3.5  | [click this](#无括号表达式)  |
-| core.calculation.number.BracketsCalculation2      | yes            | v1.3.5  | [click this](#嵌套括号表达式) |
-| core.calculation.number.CumulativeCalculation     | yes            | v1.3.6  | [click this](#区间累加表达式) |
+| 计算组件名称                                                                                     | 是否支持 `explain` | 从何时开始支持 | 相关知识                   |
+|--------------------------------------------------------------------------------------------|----------------|---------|------------------------|
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.PrefixExpressionOperation | yes            | v1.3.5  | [click this](#无括号表达式)  |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.BracketsCalculation2      | yes            | v1.3.5  | [click this](#嵌套括号表达式) |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.CumulativeCalculation     | yes            | v1.3.6  | [click this](#区间累加表达式) |
 
 #### 引入流程图代码生成库
 
@@ -255,29 +257,30 @@ public class MAIN {
 导入了库之后，我们就可以像下面一样进行生成流程图。
 
 ```java
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.container.LogResults;
-import exceptional.WrongFormat;
+
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 import top.lingyuzhao.varFormatter.core.VarFormatter;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 获取到一个有括号计算组件 您可以根据需求更换组件
-        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
-        // 然后进行一个简单的检查 这里我们要查询 1 + 2 ^ 4 - 2 * 3 + 2 的执行过程
-        final String s = "1 + 2 ^ (2 + (10 - 7)) * 3 + 2";
-        instance.check(s);
-        // 我们可以通过 explain 获取到执行过程 它会返回一个对象 这个对象中有一个 result 字段 这个字段就是计算出来的结果
-        final LogResults explain = instance.explain(s, true);
-        System.out.println("计算结果：" + explain.getResult());
-        // 事实上 LogResults 更大的作用是进行执行过程可视化 下面就是一个例子
-        // 设置输出图的时候不拼接名字，因为在这里有很多的变量 需要进行关联的！拼接名字就不好关联了
-        explain.setNameJoin(false);
-        // 通过我们引入的 VarFormatter 可以很方便地进行格式化 我们在这里格式化为 MERMAID 图 代码
-        System.out.println("graph LR");
-        System.out.println(VarFormatter.MERMAID.getFormatter(true).format(explain));
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 获取到一个有括号计算组件 您可以根据需求更换组件
+    final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+    // 然后进行一个简单的检查 这里我们要查询 1 + 2 ^ 4 - 2 * 3 + 2 的执行过程
+    final String s = "1 + 2 ^ (2 + (10 - 7)) * 3 + 2";
+    instance.check(s);
+    // 我们可以通过 explain 获取到执行过程 它会返回一个对象 这个对象中有一个 result 字段 这个字段就是计算出来的结果
+    final LogResults explain = instance.explain(s, true);
+    System.out.println("计算结果：" + explain.getResult());
+    // 事实上 LogResults 更大的作用是进行执行过程可视化 下面就是一个例子
+    // 设置输出图的时候不拼接名字，因为在这里有很多的变量 需要进行关联的！拼接名字就不好关联了
+    explain.setNameJoin(false);
+    // 通过我们引入的 VarFormatter 可以很方便地进行格式化 我们在这里格式化为 MERMAID 图 代码
+    System.out.println("graph LR");
+    System.out.println(VarFormatter.MERMAID.getFormatter(true).format(explain));
+  }
 }
 ```
 
@@ -473,40 +476,39 @@ graph LR
 ### 通过 mathematical-expression 库直接获取到计算组件并进行计算
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.number.NumberCalculation;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 构建需要计算的两种表达式
-        String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
-        // 通过库获取到计算无括号表达式的计算组件
-        NumberCalculation prefixExpressionOperation = Mathematical_Expression.getInstance(
-                Mathematical_Expression.prefixExpressionOperation, "prefixExpressionOperation"
-        );
-        // 通过库获取到计算有括号表达式的计算组件
-        NumberCalculation bracketsCalculation2 = Mathematical_Expression.getInstance(
-                Mathematical_Expression.bracketsCalculation2, "bracketsCalculation2"
-        );
-        // 将第一个公式传递给无括号表达式的计算组件
-        prefixExpressionOperation.check(s1);
-        CalculationNumberResults calculation1 = prefixExpressionOperation.calculation(s1);
-        // 打印出第一个表达式的计算结果
-        System.out.println("计算层数：" + calculation1.getResultLayers() + "\n计算结果：" + calculation1.getResult() +
-                "\n计算来源：" + calculation1.getCalculationSourceName());
+  public static void main(String[] args) throws WrongFormat {
+    // 构建需要计算的两种表达式
+    String s1 = "1 + 20 - 2 + 4", s2 = "1 + 20 - (2 + 4)";
+    // 通过库获取到计算无括号表达式的计算组件
+    Calculation prefixExpressionOperation = Mathematical_Expression.getInstance(
+            Mathematical_Expression.prefixExpressionOperation, "prefixExpressionOperation"
+    );
+    // 通过库获取到计算有括号表达式的计算组件
+    Calculation bracketsCalculation2 = Mathematical_Expression.getInstance(
+            Mathematical_Expression.bracketsCalculation2, "bracketsCalculation2"
+    );
+    // 将第一个公式传递给无括号表达式的计算组件
+    prefixExpressionOperation.check(s1);
+    CalculationResults calculation1 = prefixExpressionOperation.calculation(s1);
+    // 打印出第一个表达式的计算结果
+    System.out.println("计算层数：" + calculation1.getResultLayers() + "\n计算结果：" + calculation1.getResult() +
+            "\n计算来源：" + calculation1.getCalculationSourceName());
 
 
-        // 将第二个公式传递给无括号表达式的计算组件
-        bracketsCalculation2.check(s2);
-        CalculationNumberResults calculation2 = bracketsCalculation2.calculation(s2);
-        // 打印出第二个表达式的计算结果
-        System.out.println("计算层数：" + calculation2.getResultLayers() + "\n计算结果：" + calculation2.getResult() +
-                "\n计算来源：" + calculation2.getCalculationSourceName());
-    }
+    // 将第二个公式传递给无括号表达式的计算组件
+    bracketsCalculation2.check(s2);
+    CalculationResults calculation2 = bracketsCalculation2.calculation(s2);
+    // 打印出第二个表达式的计算结果
+    System.out.println("计算层数：" + calculation2.getResultLayers() + "\n计算结果：" + calculation2.getResult() +
+            "\n计算来源：" + calculation2.getCalculationSourceName());
+  }
 }
 ```
 
@@ -525,38 +527,35 @@ public class MAIN {
 
 ### 计算管理者
 
-- 类组件：core.manager.CalculationManagement
+- 类组件：manager.io.github.beardedManZhao.mathematicalExpression.core.CalculationManagement
 - 介绍：
 
   管理者是一个为了同时使用单例与动态对象而设计的一个组件，管理者的存在可以使得每一个组件能够被名字所获取到，相同名字的组件，在内存中的存储地址也是一样的，避免了冗余组件的调用，同时针对需要使用到动态成员的组件，也可以通过一个新名字获取到一个新组件。
 - API使用示例
 
 ```java
-package utils;
-
-import core.calculation.number.FunctionFormulaCalculation;
-import core.calculation.number.PrefixExpressionOperation;
-import core.manager.CalculationManagement;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 
 public class MAIN {
-    public static void main(String[] args) {
-        // 实例化三个计算组件
-        // TODO getInstance会自动从管理者中获取，如果没有获取到，就会创建并注册然后再返回数据 这个方法即可以创建也可以访问管理者
-        PrefixExpressionOperation a = PrefixExpressionOperation.getInstance("a");
-        FunctionFormulaCalculation b = FunctionFormulaCalculation.getInstance("b");
-        PrefixExpressionOperation a1 = PrefixExpressionOperation.getInstance("a1");
-        // 注册一个名为“a”的无括号解析组件
-        CalculationManagement.register(a);
-        // 注册一个名为“b”的函数解析组件
-        CalculationManagement.register(b);
-        // 注册一个名为“a1”的无括号解析组件
-        CalculationManagement.register(a1);
-        // 打印我们示例化的 与 从管理者获取到的组件的内存数据是否一致
-        System.err.println(a + "  " + CalculationManagement.getCalculationByName("a"));
-        System.err.println(b + "  " + CalculationManagement.getCalculationByName("b"));
-        System.err.println(a1 + "  " + CalculationManagement.getCalculationByName("a1"));
-    }
+  public static void main(String[] args) {
+    // 实例化三个计算组件
+    // TODO getInstance会自动从管理者中获取，如果没有获取到，就会创建并注册然后再返回数据 这个方法即可以创建也可以访问管理者
+    PrefixExpressionOperation a = PrefixExpressionOperation.getInstance("a");
+    FunctionFormulaCalculation b = FunctionFormulaCalculation.getInstance("b");
+    PrefixExpressionOperation a1 = PrefixExpressionOperation.getInstance("a1");
+    // 注册一个名为“a”的无括号解析组件
+    CalculationManagement.register(a);
+    // 注册一个名为“b”的函数解析组件
+    CalculationManagement.register(b);
+    // 注册一个名为“a1”的无括号解析组件
+    CalculationManagement.register(a1);
+    // 打印我们示例化的 与 从管理者获取到的组件的内存数据是否一致
+    System.err.println(a + "  " + CalculationManagement.getCalculationByName("a"));
+    System.err.println(b + "  " + CalculationManagement.getCalculationByName("b"));
+    System.err.println(a1 + "  " + CalculationManagement.getCalculationByName("a1"));
+  }
 }
 ```
 
@@ -581,16 +580,16 @@ public class MAIN {
 [INFO][Calculation Management][22-11-14:11]] : Get the [a] component from the manager
 [INFO][Calculation Management][22-11-14:11]] : Get the [b] component from the manager
 [INFO][Calculation Management][22-11-14:11]] : Get the [a1] component from the manager
-core.calculation.number.PrefixExpressionOperation@8ad73b  core.calculation.number.PrefixExpressionOperation@8ad73b
-core.calculation.number.FunctionFormulaCalculation@762604  core.calculation.number.FunctionFormulaCalculation@762604
-core.calculation.number.PrefixExpressionOperation@41e737  core.calculation.number.PrefixExpressionOperation@41e737
+number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation@8ad73b  number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation@8ad73b
+number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation@762604  number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation@762604
+number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation@41e737  number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation@41e737
 ```
 
 ## 计算组件介绍
 
 ### 无括号表达式
 
-- 类组件：core.calculation.number.PrefixExpressionOperation
+- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation
 - 介绍
 
   针对一个没有括号，但是有加减乘除以及取余等运算操作的数学表达式而设计的组件，该组件可以实现带有优先级计算的功能，其中通过前缀表达式解析计算，将操作数与操作符一同存储到栈，在存储的同时配有计算优先级比较，如果当下的优先级较小，就先将上一个操作数与操作符与当前操作数进行运算，形成一个新的数值，然后再入栈。
@@ -599,26 +598,27 @@ core.calculation.number.PrefixExpressionOperation@41e737  core.calculation.numbe
   该组件支持的运算符有： a+b a-b a*b a/b a%b
 
 ```java
-import core.calculation.number.PrefixExpressionOperation;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 获取一个计算无括号表达式的函数
-        PrefixExpressionOperation prefixExpressionOperation = PrefixExpressionOperation.getInstance("p");
-        // 创建一个表达式
-        String s = "1 + 2 + 4 * 10 - 3";
-        // 检查表达式是否有错误
-        prefixExpressionOperation.check(s);
-        // 开始计算结果
-        CalculationNumberResults calculation = prefixExpressionOperation.calculation(s);
-        // 打印结果数值
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\n计算结果：" + calculation.getResult() +
-                        "\n计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 获取一个计算无括号表达式的函数
+    PrefixExpressionOperation prefixExpressionOperation = PrefixExpressionOperation.getInstance("p");
+    // 创建一个表达式
+    String s = "1 + 2 + 4 * 10 - 3";
+    // 检查表达式是否有错误
+    prefixExpressionOperation.check(s);
+    // 开始计算结果
+    CalculationNumberResults calculation = prefixExpressionOperation.calculation(s);
+    // 打印结果数值
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\n计算结果：" + calculation.getResult() +
+                    "\n计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -634,37 +634,35 @@ public class MAIN {
 
 ### 嵌套括号表达式
 
-- 类组件：core.calculation.number.BracketsCalculation2
+- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.BracketsCalculation2
 - 介绍：
 
-  嵌套括号表达式解析组件，能够针对带有多个括号的数学表达式进行解析与结果计算，针对嵌套括号进行优先级的解析与计算，该组件依赖于“core.calculation.number.PrefixExpressionOperation”，在该组件中采用递归进行括号的解析，然后将最内层面的表达式提供给“core.calculation.number.PrefixExpressionOperation”进行计算。
+  嵌套括号表达式解析组件，能够针对带有多个括号的数学表达式进行解析与结果计算，针对嵌套括号进行优先级的解析与计算，该组件依赖于“number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation”，在该组件中采用递归进行括号的解析，然后将最内层面的表达式提供给“number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation”进行计算。
 - API使用示例
 
   该组件支持的运算符有： a+b a-b a*b a/b a%b ( )
 
 ```java
-package utils;
-
-import core.calculation.number.BracketsCalculation2;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 获取一个计算无括号表达式的函数
-        BracketsCalculation2 bracketsCalculation = BracketsCalculation2.getInstance("BracketsCalculation");
-        // 创建一个表达式
-        String s = "1 + 2 + 4 * (10 - 3)";
-        // 检查表达式是否有错误
-        bracketsCalculation.check(s);
-        // 开始计算结果
-        CalculationNumberResults calculation = bracketsCalculation.calculation(s);
-        // 打印结果数值
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\n计算结果：" + calculation.getResult() +
-                        "\n计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 获取一个计算无括号表达式的函数
+    BracketsCalculation2 bracketsCalculation = BracketsCalculation2.getInstance("BracketsCalculation");
+    // 创建一个表达式
+    String s = "1 + 2 + 4 * (10 - 3)";
+    // 检查表达式是否有错误
+    bracketsCalculation.check(s);
+    // 开始计算结果
+    CalculationNumberResults calculation = bracketsCalculation.calculation(s);
+    // 打印结果数值
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\n计算结果：" + calculation.getResult() +
+                    "\n计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -680,52 +678,51 @@ public class MAIN {
 
 ### 数学比较表达式
 
-- 类组件：core.calculation.bool.BooleanCalculation2
+- 类组件：bool.calculation.io.github.beardedManZhao.mathematicalExpression.core.BooleanCalculation2
 - 介绍
 
-  使用比较运算符两个括号表达式是否相互成立的一个组件，返回值是一个布尔类型的结果对象，该组件能够比较两个数值的大小等，也可以比较两个表达式之间的大小等关系，依赖于组件“core.calculation.bool.BooleanCalculation2”
+  使用比较运算符两个括号表达式是否相互成立的一个组件，返回值是一个布尔类型的结果对象，该组件能够比较两个数值的大小等，也可以比较两个表达式之间的大小等关系，依赖于组件“bool.calculation.io.github.beardedManZhao.mathematicalExpression.core.BooleanCalculation2”
 - API使用示例
 
   该组件支持的运算符如API中演示
 
 ```java
-package utils;
 
-import core.calculation.bool.BooleanCalculation2;
-import core.container.CalculationBooleanResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.bool.BooleanCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationBooleanResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 获取一个计算数学比较表达式的组件
-        BooleanCalculation2 booleanCalculation2 = BooleanCalculation2.getInstance("Bool");
-        // 创建3个表达式
-        String s1 = "1 + 2 + 4 * (10 - 3)";
-        String s2 = "2 + 30 + (2 * 3) - 1";
-        String s3 = "1 + 3 * 10";
-        extracted(booleanCalculation2, s1 + " > " + s2);// false	
-        extracted(booleanCalculation2, s1 + " < " + s2);// true	
-        extracted(booleanCalculation2, s1 + " = " + s3);// true	
-        extracted(booleanCalculation2, s1 + " == " + s3);// true	
-        extracted(booleanCalculation2, s1 + " != " + s3);// false	
-        extracted(booleanCalculation2, s1 + " <> " + s3);// false	
-        extracted(booleanCalculation2, s1 + " <= " + s3);// true	
-        extracted(booleanCalculation2, s1 + " >= " + s3);// true	
-        extracted(booleanCalculation2, s1 + " != " + s2);// true	
-        extracted(booleanCalculation2, s1 + " <> " + s2);// true	
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 获取一个计算数学比较表达式的组件
+    BooleanCalculation2 booleanCalculation2 = BooleanCalculation2.getInstance("Bool");
+    // 创建3个表达式
+    String s1 = "1 + 2 + 4 * (10 - 3)";
+    String s2 = "2 + 30 + (2 * 3) - 1";
+    String s3 = "1 + 3 * 10";
+    extracted(booleanCalculation2, s1 + " > " + s2);// false	
+    extracted(booleanCalculation2, s1 + " < " + s2);// true	
+    extracted(booleanCalculation2, s1 + " = " + s3);// true	
+    extracted(booleanCalculation2, s1 + " == " + s3);// true	
+    extracted(booleanCalculation2, s1 + " != " + s3);// false	
+    extracted(booleanCalculation2, s1 + " <> " + s3);// false	
+    extracted(booleanCalculation2, s1 + " <= " + s3);// true	
+    extracted(booleanCalculation2, s1 + " >= " + s3);// true	
+    extracted(booleanCalculation2, s1 + " != " + s2);// true	
+    extracted(booleanCalculation2, s1 + " <> " + s2);// true	
+  }
 
-    private static void extracted(BooleanCalculation2 booleanCalculation2, String s) throws WrongFormat {
-        // 检查表达式是否有错误
-        booleanCalculation2.check(s);
-        // 开始计算结果
-        CalculationBooleanResults calculation = booleanCalculation2.calculation(s);
-        // 打印结果数值
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
-                        "\t计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  private static void extracted(BooleanCalculation2 booleanCalculation2, String s) throws WrongFormat {
+    // 检查表达式是否有错误
+    booleanCalculation2.check(s);
+    // 开始计算结果
+    CalculationBooleanResults calculation = booleanCalculation2.calculation(s);
+    // 打印结果数值
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                    "\t计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -746,7 +743,7 @@ public class MAIN {
 
 ### 区间累加表达式
 
-- 类组件：core.calculation.number.CumulativeCalculation
+- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.CumulativeCalculation
 - 介绍
 
   在数学表达式中，往往有这样的一种公式，公式内容如下图所示，可以看到需要进行累加的数列操作，那么在这种公式的需求下，您可以通过上面的类组件去达到您所需要的目的。
@@ -756,28 +753,27 @@ public class MAIN {
   语法层面于其他组件几乎一致，数学表达式的撰写于组件的计算示例就如下面所示，在这里展示的就是一个累加数学公式的计算。
 
 ```java
-package utils;
 
-import core.calculation.number.CumulativeCalculation;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.CumulativeCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 获取一个计算累加数学表达式的组件
-        CumulativeCalculation cumulativeCalculation = CumulativeCalculation.getInstance("zhao");
-        // 构建一个数学表达式，这里的"n[1,10,1]"就类似数学中的累加符号，n会在这个区间内不断增加，每增加一次都会被带入公式中计算一次
-        // 其中[1,10,1]中的最后一个1 代表增加步长，能够实现区间内不同等差值的累加
-        String s = "n[1,10,1] 2 * (n + 1)";
-        // 检查数学表达式
-        cumulativeCalculation.check(s);
-        // 计算结果
-        CalculationNumberResults calculation = cumulativeCalculation.calculation(s);
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
-                        "\t计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 获取一个计算累加数学表达式的组件
+    CumulativeCalculation cumulativeCalculation = CumulativeCalculation.getInstance("zhao");
+    // 构建一个数学表达式，这里的"n[1,10,1]"就类似数学中的累加符号，n会在这个区间内不断增加，每增加一次都会被带入公式中计算一次
+    // 其中[1,10,1]中的最后一个1 代表增加步长，能够实现区间内不同等差值的累加
+    String s = "n[1,10,1] 2 * (n + 1)";
+    // 检查数学表达式
+    cumulativeCalculation.check(s);
+    // 计算结果
+    CalculationNumberResults calculation = cumulativeCalculation.calculation(s);
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                    "\t计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -789,52 +785,51 @@ public class MAIN {
 
 ### 函数运算表达式
 
-- 类组件：core.calculation.number.FunctionFormulaCalculation
+- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation
 - 介绍
 
   针对一些函数的操作，在该框架中也有支持，可以使用上面的类进行这中需要函数的数学表达式的书写，需要注意的是，一切在表达式中使用到的函数都需要在“CalculationManagement”中进行逻辑注册，使得计算的时候可以访问到函数
 - API使用示例
 
 ```java
-package utils;
 
-import core.calculation.function.ManyToOneNumberFunction;
-import core.calculation.number.FunctionFormulaCalculation;
-import core.container.CalculationNumberResults;
-import core.manager.CalculationManagement;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 实例化一个函数 名为DoubleValue 用于将一个数值乘2
-        ManyToOneNumberFunction myFunction = new ManyToOneNumberFunction("DoubleValue") {
-            /**
-             * 函数的运行逻辑实现
-             *
-             * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
-             * @return 这里是数据经过函数转换之后的数据
-             */
-            @Override
-            public double run(double... numbers) {
-                // 在这里的参数中，第一个参数就是被FunctionFormulaCalculation所传入的参数
-                return numbers[0] * 2;
-            }
-        };
-        // 将函数注册到管理者中
-        CalculationManagement.register(myFunction);
-        // 获取一个计算累加数学表达式的组件
-        FunctionFormulaCalculation functionFormulaCalculation = FunctionFormulaCalculation.getInstance("zhao");
-        // 构建一个数学表达式，表达式中使用到了函数 DoubleValue
-        String s = "2 * DoubleValue(2 + 3) + 1";
-        // 检查数学表达式
-        functionFormulaCalculation.check(s);
-        // 计算结果
-        CalculationNumberResults calculation = functionFormulaCalculation.calculation(s);
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
-                        "\t计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 实例化一个函数 名为DoubleValue 用于将一个数值乘2
+    ManyToOneNumberFunction myFunction = new ManyToOneNumberFunction("DoubleValue") {
+      /**
+       * 函数的运行逻辑实现
+       *
+       * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
+       * @return 这里是数据经过函数转换之后的数据
+       */
+      @Override
+      public double run(double... numbers) {
+        // 在这里的参数中，第一个参数就是被FunctionFormulaCalculation所传入的参数
+        return numbers[0] * 2;
+      }
+    };
+    // 将函数注册到管理者中
+    CalculationManagement.register(myFunction);
+    // 获取一个计算累加数学表达式的组件
+    FunctionFormulaCalculation functionFormulaCalculation = FunctionFormulaCalculation.getInstance("zhao");
+    // 构建一个数学表达式，表达式中使用到了函数 DoubleValue
+    String s = "2 * DoubleValue(2 + 3) + 1";
+    // 检查数学表达式
+    functionFormulaCalculation.check(s);
+    // 计算结果
+    CalculationNumberResults calculation = functionFormulaCalculation.calculation(s);
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                    "\t计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -847,60 +842,59 @@ public class MAIN {
 
 ### 多参函数运算表达式
 
-- 类组件：core.calculation.number.FunctionFormulaCalculation2
+- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation2
 - 介绍
 
-  针对一些在表达式中使用了函数的表达式计算，可以使用上面的类进行操作，它是“core.calculation.number.FunctionFormulaCalculation”类的升级版，从1.1版本开始出现，同时也是它的一个子类拓展实现。
+  针对一些在表达式中使用了函数的表达式计算，可以使用上面的类进行操作，它是“number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation”类的升级版，从1.1版本开始出现，同时也是它的一个子类拓展实现。
 
   相较于父类，本组件弥补了父类只能解析带有一个参数函数表达式的不足，在该组件中，可以使用很多的实参进行函数的运算，例如sum(
   1,2,3)
   这类函数，就是一个多参函数，接下来请看API的使用示例，在此示例中，展示了多惨函数表达式的计算与结果。
 
 ```java
-package utils;
 
-import core.calculation.function.ManyToOneNumberFunction;
-import core.calculation.number.FunctionFormulaCalculation2;
-import core.container.CalculationNumberResults;
-import core.manager.CalculationManagement;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 实现一个sum函数
-        ManyToOneNumberFunction manyToOneNumberFunction = new ManyToOneNumberFunction("sum") {
-            /**
-             * 函数的运行逻辑实现
-             *
-             * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
-             * @return 这里是数据经过函数转换之后的数据
-             */
-            @Override
-            public double run(double... numbers) {
-                double res = 0;
-                for (double number : numbers) {
-                    res += number;
-                }
-                return res;
-            }
-        };
-        // 将该函数注册到管理者
-        CalculationManagement.register(manyToOneNumberFunction);
-        // 获取到新版本的函数计算组件
-        FunctionFormulaCalculation2 functionFormulaCalculation2 = FunctionFormulaCalculation2.getInstance("zhao");
-        // 构建我们需要计算的公式 TODO 在这个表达式中的函数sum形参，不只有1个，是多参的函数
-        String s = "2 * (200 - sum(1 + 10.1, 2, 3)) + sum(10, 20)";
-        // 启用共享池，能够加快计算的速度，计算的公式越复杂，该共享池的效果越显著
-        functionFormulaCalculation2.setStartSharedPool(true);
-        // 开始检查公式是否有错误
-        functionFormulaCalculation2.check(s);
-        // 获取到计算结果
-        CalculationNumberResults calculation = functionFormulaCalculation2.calculation(s);
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
-                        "\t计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 实现一个sum函数
+    ManyToOneNumberFunction manyToOneNumberFunction = new ManyToOneNumberFunction("sum") {
+      /**
+       * 函数的运行逻辑实现
+       *
+       * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
+       * @return 这里是数据经过函数转换之后的数据
+       */
+      @Override
+      public double run(double... numbers) {
+        double res = 0;
+        for (double number : numbers) {
+          res += number;
+        }
+        return res;
+      }
+    };
+    // 将该函数注册到管理者
+    CalculationManagement.register(manyToOneNumberFunction);
+    // 获取到新版本的函数计算组件
+    FunctionFormulaCalculation2 functionFormulaCalculation2 = FunctionFormulaCalculation2.getInstance("zhao");
+    // 构建我们需要计算的公式 TODO 在这个表达式中的函数sum形参，不只有1个，是多参的函数
+    String s = "2 * (200 - sum(1 + 10.1, 2, 3)) + sum(10, 20)";
+    // 启用共享池，能够加快计算的速度，计算的公式越复杂，该共享池的效果越显著
+    functionFormulaCalculation2.setStartSharedPool(true);
+    // 开始检查公式是否有错误
+    functionFormulaCalculation2.check(s);
+    // 获取到计算结果
+    CalculationNumberResults calculation = functionFormulaCalculation2.calculation(s);
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                    "\t计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -918,20 +912,19 @@ public class MAIN {
 这样注册的函数 也是可以直接在数学表达式中使用的！
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.manager.ConstantRegion;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        System.out.println(ConstantRegion.VERSION);
-        // 开始进行注册 TODO 我们在这里注册了一个叫做 mySum 的函数 它接收两个参数 输出的是两个参数的求和结果
-        if (Mathematical_Expression.register_function("mySum(a, b) = a + b")) {
-            System.out.println("函数注册成功!");
-        }
+  public static void main(String[] args) throws WrongFormat {
+    System.out.println(ConstantRegion.VERSION);
+    // 开始进行注册 TODO 我们在这里注册了一个叫做 mySum 的函数 它接收两个参数 输出的是两个参数的求和结果
+    if (Mathematical_Expression.register_function("mySum(a, b) = a + b")) {
+      System.out.println("函数注册成功!");
     }
+  }
 }
 ```
 
@@ -943,31 +936,30 @@ public class MAIN {
   该组件实现了共享池计算功能，将检查，计算，以及上一次结果记录实现，能够加快计算速度，具体API调用如下所示。
 
 ```java
-package utils;
 
-import core.calculation.number.FastSumOfIntervalsBrackets;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastSumOfIntervalsBrackets;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 获取到区间求和快计算组件
-        FastSumOfIntervalsBrackets fast = FastSumOfIntervalsBrackets.getInstance("fast");
-        // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 加到 13 = (20-(5+2)) 默认等差为2 结果应为 24
-        String s = "1 + 10, 20 - (5 + 2)";
-        // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
-        // fast.setStartSharedPool(true);
-        fast.check(s);
-        // 从1.2版本之后，累加组件支持设置步长参数，1.2.1版本中开始正式支持步长区间的求和
-        fast.step = 2;
-        // 开始计算
-        CalculationNumberResults calculation = fast.calculation(s);
-        // 打印计算结果
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
-                        "\t计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 获取到区间求和快计算组件
+    FastSumOfIntervalsBrackets fast = FastSumOfIntervalsBrackets.getInstance("fast");
+    // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 加到 13 = (20-(5+2)) 默认等差为2 结果应为 24
+    String s = "1 + 10, 20 - (5 + 2)";
+    // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
+    // fast.setStartSharedPool(true);
+    fast.check(s);
+    // 从1.2版本之后，累加组件支持设置步长参数，1.2.1版本中开始正式支持步长区间的求和
+    fast.step = 2;
+    // 开始计算
+    CalculationNumberResults calculation = fast.calculation(s);
+    // 打印计算结果
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                    "\t计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -979,41 +971,40 @@ public class MAIN {
 
 ### 快速区间累乘计算组件（基于括号表达式）
 
-- 类组件：core.calculation.number.FastMultiplyOfIntervalsBrackets
+- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FastMultiplyOfIntervalsBrackets
 - 介绍 1.2版本的新产物，区间快速累乘组件，是针对一个等差为n的区间进行所有元素累乘的快速组件，它将一个区间在逻辑上模拟成为一个数学数列，并通过求和公式进行快速的累乘。
 
   该组件实现了共享池计算功能，将检查，计算，以及上一次结果记录实现，能够加快计算速度，具体API调用如下所示。
 
 ```java
-package utils;
 
-import core.calculation.number.FastMultiplyOfIntervalsBrackets;
-import core.container.CalculationNumberResults;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastMultiplyOfIntervalsBrackets;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 /**
  * 测试用类
  */
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // 获取到区间求和快计算组件
-        FastMultiplyOfIntervalsBrackets fast = FastMultiplyOfIntervalsBrackets.getInstance("fast");
-        // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 乘到 13 = (20-(5+2)) 默认等差为2
-        // 结果应为 11 * 13 = 143
-        String s = "1 + 10, 20 - (5 + 2)";
-        // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
-        // fast.setStartSharedPool(true);
-        fast.check(s);
-        // 从1.2版本之后，累加组件支持设置步长参数，1.2.1版本中开始正式支持步长区间的求和
-        fast.step = 2;
-        // 开始计算
-        CalculationNumberResults calculation = fast.calculation(s);
-        // 打印计算结果
-        System.out.println(
-                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
-                        "\t计算来源：" + calculation.getCalculationSourceName()
-        );
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 获取到区间求和快计算组件
+    FastMultiplyOfIntervalsBrackets fast = FastMultiplyOfIntervalsBrackets.getInstance("fast");
+    // 构建一个需要计算的表达式 下面的表达式代表 从 11 = (1+10) 乘到 13 = (20-(5+2)) 默认等差为2
+    // 结果应为 11 * 13 = 143
+    String s = "1 + 10, 20 - (5 + 2)";
+    // 检查表达式，共享池从1.2版本后，已经是默认启用的状态了！不需要手动设置了
+    // fast.setStartSharedPool(true);
+    fast.check(s);
+    // 从1.2版本之后，累加组件支持设置步长参数，1.2.1版本中开始正式支持步长区间的求和
+    fast.step = 2;
+    // 开始计算
+    CalculationNumberResults calculation = fast.calculation(s);
+    // 打印计算结果
+    System.out.println(
+            "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                    "\t计算来源：" + calculation.getCalculationSourceName()
+    );
+  }
 }
 ```
 
@@ -1030,26 +1021,24 @@ public class MAIN {
 ### 数学方式的函数注册与计算
 
 ```java
-package top.lingyuzhao;
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.FunctionPackage;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
-        // 将 f 函数注册进来
-        Mathematical_Expression.register_function("f(x) = x * x");
-        // 准备要计算的表达式
-        final String data = "1 + f(20) + 3";
-        // 获取到计算组件
-        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-        // 检查与计算
-        instance.check(data);
-        System.out.println(instance.calculation(data));
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 将 f 函数注册进来
+    Mathematical_Expression.register_function("f(x) = x * x");
+    // 准备要计算的表达式
+    final String data = "1 + f(20) + 3";
+    // 获取到计算组件
+    final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+    // 检查与计算
+    instance.check(data);
+    System.out.println(instance.calculation(data));
+  }
 }
 ```
 
@@ -1062,32 +1051,31 @@ CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
 ### 匿名实现的函数注册与计算
 
 ```java
-package top.lingyuzhao;
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.FunctionPackage;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
-        // 将 f 函数注册进来
-        Mathematical_Expression.register_function(new ManyToOneNumberFunction("f") {
-            @Override
-            public double run(double... numbers) {
-                return numbers[0] * numbers[0];
-            }
-        });
-        // 准备要计算的表达式
-        final String data = "1 + f(20) + 3";
-        // 获取到计算组件
-        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-        // 检查与计算
-        instance.check(data);
-        System.out.println(instance.calculation(data));
-    }
+  public static void main(String[] args) throws WrongFormat {
+    // 将 f 函数注册进来
+    Mathematical_Expression.register_function(new ManyToOneNumberFunction("f") {
+      @Override
+      public double run(double... numbers) {
+        return numbers[0] * numbers[0];
+      }
+    });
+    // 准备要计算的表达式
+    final String data = "1 + f(20) + 3";
+    // 获取到计算组件
+    final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+    // 检查与计算
+    instance.check(data);
+    System.out.println(instance.calculation(data));
+  }
 }
 ```
 
@@ -1100,12 +1088,12 @@ CalculationNumberResults{result=404.0, source='BracketsCalculation2'}
 ### 注解方式实现函数的注册与计算
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.Calculation;
-import core.calculation.function.Functions;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 @Functions({
         // 这里是需要被注册的两个函数 在这里标记一下
@@ -1114,18 +1102,18 @@ import exceptional.WrongFormat;
 })
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
-        // 将 MAIN 类中标记的所有函数注册
-        if (Mathematical_Expression.register_function(MAIN.class)) {
-            // 构建需要计算的表达式
-            final String string = "1 + ff(1 + 2) * 2";
-            // 获取到函数计算组件
-            Calculation calculation = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-            // 开始进行计算
-            calculation.check(string);
-            System.out.println(calculation.calculation(string));
-        }
+  public static void main(String[] args) throws WrongFormat {
+    // 将 MAIN 类中标记的所有函数注册
+    if (Mathematical_Expression.register_function(MAIN.class)) {
+      // 构建需要计算的表达式
+      final String string = "1 + ff(1 + 2) * 2";
+      // 获取到函数计算组件
+      Calculation calculation = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
+      // 开始进行计算
+      calculation.check(string);
+      System.out.println(calculation.calculation(string));
     }
+  }
 }
 ```
 
@@ -1142,14 +1130,11 @@ CalculationNumberResults{result=21.0, source='functionFormulaCalculation2'}
 #### 提取出函数对象 单独计算
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
-
-import java.io.IOException;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 @Functions({
         // 这里是需要被注册的两个函数 在这里标记一下 分别是 f 和 ff 两个函数
@@ -1158,16 +1143,16 @@ import java.io.IOException;
 })
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
-        // 将 MAIN 类中标记的所有函数注册
-        if (Mathematical_Expression.register_function(MAIN.class)) {
-            // 获取到 ff 函数
-            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
-            // 计算出结果
-            final double run = ff.run(1024);
-            System.out.println(run);
-        }
+  public static void main(String[] args) throws WrongFormat {
+    // 将 MAIN 类中标记的所有函数注册
+    if (Mathematical_Expression.register_function(MAIN.class)) {
+      // 获取到 ff 函数
+      final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+      // 计算出结果
+      final double run = ff.run(1024);
+      System.out.println(run);
     }
+  }
 }
 ```
 
@@ -1183,13 +1168,12 @@ public class MAIN {
 也保存到文件中，在下面展示的是保存一个函数的代码。
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -1202,31 +1186,30 @@ import java.nio.file.Paths;
 })
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat, IOException {
-        // 将 MAIN 类中标记的所有函数注册
-        if (Mathematical_Expression.register_function(MAIN.class)) {
-            // 获取到 ff 函数
-            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("f");
-            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
-            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
-                // 将 ff 保存到数据流中
-                ((ExpressionFunction) ff).saveTo(objectOutput);
-            }
-        }
+  public static void main(String[] args) throws WrongFormat, IOException {
+    // 将 MAIN 类中标记的所有函数注册
+    if (Mathematical_Expression.register_function(MAIN.class)) {
+      // 获取到 ff 函数
+      final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("f");
+      // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+      try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+        // 将 ff 保存到数据流中
+        ((ExpressionFunction) ff).saveTo(objectOutput);
+      }
     }
+  }
 }
 ```
 
 事实上，您还可以一次保存多个函数对象到一个文件中，这将会有助于帮助您解决函数依赖问题！
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -1240,20 +1223,20 @@ import java.nio.file.Paths;
 })
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat, IOException {
-        // 将 MAIN 类中标记的所有函数注册
-        if (Mathematical_Expression.register_function(MAIN.class)) {
-            // 获取到 ff 函数 以及 f 函数
-            final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
-            final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
-            // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
-            try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
-                // 将 ff 和 f 保存到数据流中
-                ((ExpressionFunction) ff).saveTo(objectOutput);
-                ((ExpressionFunction) f).saveTo(objectOutput);
-            }
-        }
+  public static void main(String[] args) throws WrongFormat, IOException {
+    // 将 MAIN 类中标记的所有函数注册
+    if (Mathematical_Expression.register_function(MAIN.class)) {
+      // 获取到 ff 函数 以及 f 函数
+      final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+      final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+      // 保存到文件 TODO ExpressionFunction 的函数是可以被保存到文件中的
+      try (final ObjectOutputStream objectOutput = new ObjectOutputStream(Files.newOutputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+        // 将 ff 和 f 保存到数据流中
+        ((ExpressionFunction) ff).saveTo(objectOutput);
+        ((ExpressionFunction) f).saveTo(objectOutput);
+      }
     }
+  }
 }
 ```
 
@@ -1262,11 +1245,11 @@ public class MAIN {
 函数可以被序列化，当然也可以被反序列化，反序列化之后您可以将其注册到库中，也可以直接使用它！！！
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.ManyToOneNumberFunction;
+
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -1275,29 +1258,28 @@ import java.nio.file.Paths;
 
 public class MAIN {
 
-    public static void main(String[] args) throws IOException {
-        ManyToOneNumberFunction function;
-        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
-            // 在这里读取到函数对象
-            function = ExpressionFunction.readFrom(objectInputStream);
-        }
-        // 把函数注册回 Mathematical_Expression
-        Mathematical_Expression.register_function(function);
-        // 也可以直接使用它
-        final double run = function.run(1024);
-        System.out.println(run);
+  public static void main(String[] args) throws IOException, ClassNotFoundException {
+    ManyToOneNumberFunction function;
+    try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+      // 在这里读取到函数对象
+      function = ExpressionFunction.readFrom(objectInputStream);
     }
+    // 把函数注册回 Mathematical_Expression
+    Mathematical_Expression.register_function(function);
+    // 也可以直接使用它
+    final double run = function.run(1024);
+    System.out.println(run);
+  }
 }
 ```
 
 当然，反序列化也支持多个函数对象的加载，下面是一个示例
 
 ```java
-package utils;
 
-import core.Mathematical_Expression;
-import core.calculation.function.ExpressionFunction;
-import core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -1306,21 +1288,21 @@ import java.nio.file.Paths;
 
 public class MAIN {
 
-    public static void main(String[] args) throws IOException {
-        ManyToOneNumberFunction ff, f;
-        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
-            // 在这里读取到函数对象（要注意这里和保存时的顺序一致哦！！）
-            // 如果要是不确定顺序，可以读取直接读取出来注册到库里 库会自动将函数的名称解析出来
-            ff = ExpressionFunction.readFrom(objectInputStream);
-            f = ExpressionFunction.readFrom(objectInputStream);
-        }
-        // 把函数注册回 Mathematical_Expression
-        Mathematical_Expression.register_function(ff);
-        Mathematical_Expression.register_function(f);
-        // 也可以直接使用它
-        final double run = ff.run(1024);
-        System.out.println(run);
+  public static void main(String[] args) throws IOException, ClassNotFoundException {
+    ManyToOneNumberFunction ff, f;
+    try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get("C:\\Users\\zhao\\Desktop\\fsdownload\\f.me")))) {
+      // 在这里读取到函数对象（要注意这里和保存时的顺序一致哦！！）
+      // 如果要是不确定顺序，可以读取直接读取出来注册到库里 库会自动将函数的名称解析出来
+      ff = ExpressionFunction.readFrom(objectInputStream);
+      f = ExpressionFunction.readFrom(objectInputStream);
     }
+    // 把函数注册回 Mathematical_Expression
+    Mathematical_Expression.register_function(ff);
+    Mathematical_Expression.register_function(f);
+    // 也可以直接使用它
+    final double run = ff.run(1024);
+    System.out.println(run);
+  }
 }
 ```
 
@@ -1331,12 +1313,10 @@ public class MAIN {
 首先我们可以在这里将函数注册到库中！然后使用 Mathematical_Expression 来演示函数的序列化操作。
 
 ```java
-package utils;
-
-import core.Mathematical_Expression;
-import core.calculation.function.Functions;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1349,29 +1329,27 @@ import java.io.IOException;
 })
 public class MAIN {
 
-    public static void main(String[] args) throws IOException, WrongFormat {
-        // 将函数注册一下
-        Mathematical_Expression.register_function(MAIN.class);
-        // 获取到 几个函数 的对象
-        ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
-        ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
-        ManyToOneNumberFunction fff = Mathematical_Expression.getFunction("fff");
-        // 直接将这几个函数输出到文件中
-        try (final FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\zhao\\Desktop\\fsdownload\\f.ME")) {
-            Mathematical_Expression.saveFunction(fileOutputStream, f, ff, fff);
-        }
+  public static void main(String[] args) throws IOException, WrongFormat {
+    // 将函数注册一下
+    Mathematical_Expression.register_function(MAIN.class);
+    // 获取到 几个函数 的对象
+    ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+    ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+    ManyToOneNumberFunction fff = Mathematical_Expression.getFunction("fff");
+    // 直接将这几个函数输出到文件中
+    try (final FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\zhao\\Desktop\\fsdownload\\f.ME")) {
+      Mathematical_Expression.saveFunction(fileOutputStream, f, ff, fff);
     }
+  }
 }
 ```
 
 接下来我们可以直接手动将文件读取到内存中并使用，在这里我们将演示 Mathematical_Expression 反序列化操作！
 
 ```java
-package utils;
-
-import core.Mathematical_Expression;
-import core.calculation.function.ManyToOneNumberFunction;
-import exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -1379,23 +1357,23 @@ import java.util.Map;
 
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat, IOException {
-        // 将函数注册一下
-        try (final FileInputStream fileInputStream = new FileInputStream("C:\\Users\\zhao\\Desktop\\fsdownload\\f.ME")) {
-            // 直接在这里使用数据流来进行反序列化操作，这个数据流对应的文件包含的函数都会开始尝试注册
-            final Map.Entry<Integer, Integer> integerIntegerEntry = Mathematical_Expression.register_function(fileInputStream);
-            // 注册完毕之后在这里就可以查看到结果
-            System.out.println("注册成功的数量：" + integerIntegerEntry.getKey());
-            System.out.println("注册失败的数量：" + integerIntegerEntry.getValue());
-        }
-        // 然后我们就可以开始使用了 在这里的数据流中 包含的三个函数分别是 f ff fff
-        final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
-        final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
-        final ManyToOneNumberFunction fff = Mathematical_Expression.getFunction("fff");
-        System.out.println(f.run(10));
-        System.out.println(ff.run(10));
-        System.out.println(fff.run(10));
+  public static void main(String[] args) throws WrongFormat, IOException {
+    // 将函数注册一下
+    try (final FileInputStream fileInputStream = new FileInputStream("C:\\Users\\zhao\\Desktop\\fsdownload\\f.ME")) {
+      // 直接在这里使用数据流来进行反序列化操作，这个数据流对应的文件包含的函数都会开始尝试注册
+      final Map.Entry<Integer, Integer> integerIntegerEntry = Mathematical_Expression.register_function(fileInputStream);
+      // 注册完毕之后在这里就可以查看到结果
+      System.out.println("注册成功的数量：" + integerIntegerEntry.getKey());
+      System.out.println("注册失败的数量：" + integerIntegerEntry.getValue());
     }
+    // 然后我们就可以开始使用了 在这里的数据流中 包含的三个函数分别是 f ff fff
+    final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+    final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+    final ManyToOneNumberFunction fff = Mathematical_Expression.getFunction("fff");
+    System.out.println(f.run(10));
+    System.out.println(ff.run(10));
+    System.out.println(fff.run(10));
+  }
 }
 ```
 
