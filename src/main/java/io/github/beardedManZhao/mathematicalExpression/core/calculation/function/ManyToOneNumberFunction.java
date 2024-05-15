@@ -49,7 +49,7 @@ public abstract class ManyToOneNumberFunction implements Function, Serializable 
      *
      * @param newName 函数被修改之后的新的名称！
      */
-    public final void setName(String newName) {
+    protected final void setName(String newName) {
         this.Name = newName;
     }
 

@@ -1,36 +1,28 @@
-// Import necessary classes and packages for mathematical calculations and functions
-
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
-import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
-// Define a class 'MAIN' with a function that calculates the factorial of x plus 1
-@Functions("f(x) = x! + 1")
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Map;
+
 public class MAIN {
-    public static void main(String[] args) throws WrongFormat {
-        // Import built-in functions like 'sum' for use
-        // Register the math function library
-        Mathematical_Expression.register_function(FunctionPackage.MATH);
 
-        // Alternatively, register custom functions, e.g., a function adding two numbers
-        Mathematical_Expression.register_function("fTwo(x, y) = x + y");
-
-        // Register all annotated functions in the 'MAIN' class for use
-        Mathematical_Expression.register_function(MAIN.class);
-
-        // Initialize the calculation component
-        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-
-        // Perform a simple check on the expression
-        instance.check("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
-
-        // Calculate the expression, which can include functions
-        final CalculationResults calculation = instance.calculation("1 + sum(1,2,3,4) + f(3) * fTwo(1, 2)");
-
-        // Print the result
-        System.out.println(calculation.getResult());
+    public static void main(String[] args) throws WrongFormat, IOException {
+        // 将函数注册一下
+        try (final FileInputStream fileInputStream = new FileInputStream("C:\\Users\\zhao\\Desktop\\fsdownload\\f.ME")) {
+            // 直接在这里使用数据流来进行反序列化操作，这个数据流对应的文件包含的函数都会开始尝试注册
+            final Map.Entry<Integer, Integer> integerIntegerEntry = Mathematical_Expression.register_function(fileInputStream);
+            // 注册完毕之后在这里就可以查看到结果
+            System.out.println("注册成功的数量：" + integerIntegerEntry.getKey());
+            System.out.println("注册失败的数量：" + integerIntegerEntry.getValue());
+        }
+        // 然后我们就可以开始使用了 在这里的数据流中 包含的三个函数分别是 f ff fff
+        final ManyToOneNumberFunction f = Mathematical_Expression.getFunction("f");
+        final ManyToOneNumberFunction ff = Mathematical_Expression.getFunction("ff");
+        final ManyToOneNumberFunction fff = Mathematical_Expression.getFunction("fff");
+        System.out.println(f.run(10));
+        System.out.println(ff.run(10));
+        System.out.println(fff.run(10));
     }
 }

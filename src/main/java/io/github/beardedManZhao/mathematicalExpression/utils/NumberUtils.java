@@ -9,16 +9,6 @@ import io.github.beardedManZhao.mathematicalExpression.exceptional.AbnormalOpera
 public final class NumberUtils {
 
     /**
-     * 将一个数值的十倍计算出来
-     *
-     * @param number 需要被计算的数值
-     * @return 数值的十倍数值
-     */
-    public static int tenfold(int number) {
-        return (number << 3) + (number << 1);
-    }
-
-    /**
      * 将一个数值的 1/10 倍计算出来
      *
      * @param number 需要被计算的数值
@@ -28,17 +18,6 @@ public final class NumberUtils {
     @Deprecated
     public static int divideByTen(int number) {
         return (number >> 1) / 5;
-    }
-
-    /**
-     * 将一个数值乘以10的n次方
-     *
-     * @param number 需要被做乘法的数值
-     * @param n      次方数量
-     * @return number * 10的n次方
-     */
-    public static double PowerOfTen(int number, int n) {
-        return number * Math.pow(10, n);
     }
 
     /**
@@ -197,57 +176,12 @@ public final class NumberUtils {
         if (start == end) {
             return start;
         }
-        int res = 1;
+        double res = 1;
         end = end - (end - start) % step;
         while (start <= end) {
             res *= start;
             start += step;
         }
         return res;
-    }
-
-    /**
-     * 将两个double数组进行合并
-     *
-     * @param ts1 数组1
-     * @param ts2 数组2
-     * @return 合并两个数组后的新数组
-     */
-    public static Double[] merge(Double[] ts1, Double[] ts2) {
-        Double[] doubles = new Double[ts1.length + ts2.length];
-        if (ts1.length == 0) {
-            System.arraycopy(ts2, 0, doubles, 0, ts2.length);
-            return doubles;
-        } else if (ts2.length == 0) {
-            System.arraycopy(ts1, 0, doubles, 0, ts1.length);
-            return doubles;
-        }
-        // 构建双指针进行数据插入
-        int P1 = 0;
-        int P2 = 0;
-        int NP2 = P2 + ts1.length;
-        boolean P1BP2 = ts1.length > ts2.length;
-        if (P1BP2) {
-            // 如果第一个数组较长，这里就以第二个数组为迭代基准
-            while (P2 < ts2.length) {
-                // 将P2的数据插入到新数组中的指定位置
-                doubles[NP2++] = ts2[P2++];
-                // 将P1的数据插入到新数组中的指定位置
-                doubles[P1] = ts1[P1++];
-            }
-            // 然后将剩余的一数组数据添加到结果数组
-            while (P1 < ts1.length) doubles[P1] = ts1[P1++];
-        } else {
-            // 如果第二个数组较长，这里就以第一个数组为迭代基准
-            while (P1 < ts1.length) {
-                // 将P2的数据插入到新数组中的指定位置
-                doubles[NP2++] = ts2[P2++];
-                // 将P1的数据插入到新数组中的指定位置
-                doubles[P1] = ts1[P1++];
-            }
-            // 然后将剩余的二数组数据添加到结果数组
-            while (P2 < ts2.length) doubles[NP2++] = ts2[P2++];
-        }
-        return doubles;
     }
 }
