@@ -1,3 +1,15 @@
+# 1.3.6 -> 1.3.7 版本更新日志
+
+### 更新时间：2024年05月15日 【稳定版本发布】
+
+==Java==
+
+- `Mathematical_Expression.functionFormulaCalculation2` 组件支持了 `explain`;
+
+- ⚠️ 请注意，我们将在 1.4.0 版本以及之后的所有版本中 重构包名为 `io.github.beardedManZhao.mathematicalExpression` 这是为了避免在
+  Java 的诸多依赖中，包名出现冲突的情况~
+
+```java
 import core.Mathematical_Expression;
 import core.calculation.Calculation;
 import core.container.LogResults;
@@ -19,3 +31,4 @@ public class MAIN {
         System.out.println(explain.explain(VarFormatter.MERMAID));
     }
 }
+```

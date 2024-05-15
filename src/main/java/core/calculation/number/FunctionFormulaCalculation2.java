@@ -5,10 +5,12 @@ import core.calculation.Calculation;
 import core.calculation.SharedCalculation;
 import core.calculation.function.ManyToOneNumberFunction;
 import core.container.CalculationNumberResults;
+import core.container.LogResults;
 import core.manager.CalculationManagement;
 import core.manager.ConstantRegion;
 import exceptional.ExtractException;
 import exceptional.WrongFormat;
+import top.lingyuzhao.varFormatter.utils.DataObj;
 import utils.StrUtils;
 
 import java.io.Serializable;
@@ -325,5 +327,68 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             this.ShareResultsHashMap.put(Formula, calculation);
         }
         return calculation;
+    }
+
+    @Override
+    public LogResults explain(String Formula, boolean formatRequired) {
+        if (formatRequired) {
+            Formula = StrUtils.removeEmpty(Formula);
+        }
+        Stack<Integer> start;
+        Stack<Integer> end;
+        Stack<String> names;
+        StringBuilder stringBuilder = new StringBuilder(Formula);
+        // 开始进行函数计算，首先判断是否启用了共享池 以及身份是否正确，确保两个公式是同一个
+        start = new Stack<>();
+        end = new Stack<>();
+        names = new Stack<>();
+        FunctionParameterExtraction(Formula, start, end, names);
+        // 启用标记
+        final LogResults logResults = new LogResults("start");
+        logResults.setNameJoin(false);
+        logResults.setPrefix("start(\"" + Formula + "\")");
+        // 开始计算，首先迭代所有函数的公式与函数的名字，计算出来函数的结果
+        while (!start.isEmpty()) {
+            int pop1 = start.pop();
+            int pop2 = end.pop();
+            String pop = names.pop();
+            // 通过函数名字获取函数对象
+            final ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(pop);
+            // 通过函数索引获取实参
+            // 提前计算substring，避免重复计算
+            String subFormula = Formula.substring(pop1, pop2);
+            final String s1 = functionByName.getName() + ConstantRegion.LEFT_BRACKET;
+            DataObj dataObj = (DataObj) logResults.get(pop);
+            if (dataObj == null) {
+                dataObj = new DataObj(pop);
+                logResults.put(pop, dataObj);
+            }
+            // 使用ArrayList收集结果，以便于添加和转换为数组
+            ArrayList<Double> results = new ArrayList<>();
+
+            StringBuilder stringBuilder1 = new StringBuilder();
+
+            for (String s : StrUtils.splitByChar(subFormula, ConstantRegion.COMMA)) {
+                double result = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.calculation(s).getResult();
+                results.add(result);
+                stringBuilder1.append(result).append(',');
+            }
+
+            // 将ArrayList转换为double[]数组，这一步在内部已经优化过
+            double[] resultArray = results.stream().mapToDouble(Double::doubleValue).toArray();
+
+            // 最后替换字符串内容 functionByName
+            final String s = String.valueOf(functionByName.run(resultArray));
+            stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, s);
+            final String s2 = pop + pop1 + '_' + pop2;
+            final DataObj dataObj1 = new DataObj(s2);
+            dataObj1.setPrefix(s2 + "(\"" + s1 + subFormula + ConstantRegion.RIGHT_BRACKET + "\")\n" + s2 + "_r(\"" + s1 + stringBuilder1 + ConstantRegion.RIGHT_BRACKET + "\")");
+            dataObj1.put(s2 + "_r", s);
+            dataObj.put(dataObj1);
+        }
+        final LogResults explain = FunctionFormulaCalculation.BRACKETS_CALCULATION_2.explain(stringBuilder.toString(), false);
+        logResults.put(explain);
+        logResults.setResult(explain.getResult());
+        return logResults;
     }
 }
