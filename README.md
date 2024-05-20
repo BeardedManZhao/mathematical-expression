@@ -8,7 +8,10 @@
 *_PS, please try to use version 1.3.1 and above as much as possible. This will help you use a more stable version and
 fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/issues) in 1.2.x_**
 
-> ⚠️【important】 The content of versions 1.3.7 and 1.4.0 is completely consistent, with the only difference being the
+> ⚠️【important】 The content of
+> versions [1.3.7](https://github.com/BeardedManZhao/mathematical-expression/tree/b8a6dc7a05b8cf2c4b2de57389d520cd03e78ff0)
+> and [1.4.0](https://github.com/BeardedManZhao/mathematical-expression.git) is completely consistent, with the only
+> difference being the
 > change in the package module. ** Please note that we will refactor the package name
 > to `io.github.beardedManZhao.mathematicalExpression` in versions 1.4.0 and all subsequent versions to avoid
 > conflicting
