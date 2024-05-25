@@ -2,8 +2,10 @@ package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
 import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.PrefixExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
@@ -24,7 +26,7 @@ import java.util.regex.Pattern;
  *
  * @author zhao
  */
-public final class PrefixExpressionOperation extends NumberCalculation {
+public final class PrefixExpressionOperation extends NumberCalculation implements CompileCalculation {
 
     /**
      * 正负号，用于将所有的 +- 替换成为 -
@@ -136,31 +138,13 @@ public final class PrefixExpressionOperation extends NumberCalculation {
         return SIGN_PATTERN.matcher(string).replaceAll(ConstantRegion.MINUS_SIGN_STR) + ConstantRegion.PLUS_SIGN + '0';
     }
 
-    /**
-     * 计算一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
-     * <p>
-     * Compute a mathematical expression and store the calculation details and results in the numerical result set.
-     *
-     * @param Formula        被计算的表达式，要求返回值是一个数值。
-     *                       <p>
-     *                       The returned value of the evaluated expression is required to be a numeric value.
-     * @param formatRequired 是否需要被格式化，用于确保公式格式正确。
-     *                       <p>
-     *                       Whether it needs to be formatted to ensure that the formula format is correct.
-     * @return 数值结果集对象，其中保存着每一步的操作数据，以及最终结果数值
-     * <p>
-     * Numerical result set object, which stores the operation data of each step and the final result value
-     */
     @Override
-    public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
+    public PrefixExpression compile(String Formula, boolean formatRequired) {
         final String newFormula;
         if (formatRequired) {
             newFormula = formatStr(Formula);
         } else {
             newFormula = Formula;
-        }
-        if (Mathematical_Expression.Options.isUseBigDecimal()) {
-            return this.calculationBigDecimal(newFormula);
         }
         // 创建操作符栈
         final Stack<Double> doubleStack = new Stack<>();
@@ -203,34 +187,17 @@ public final class PrefixExpressionOperation extends NumberCalculation {
             backIsOpt = isBackIsOpt(stringBuilder, backIsOpt, c);
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
-        double res = doubleStack.firstElement();
-        char back;
-        final int size = doubleStack.size();
-        // 开始计算
-        final int sizeD2 = size >> 1;
-        for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
-            // 更新操作符
-            back = characterStack.get(offset);
-            // 获取操作数并计算结果
-            res = NumberUtils.calculation(back, res, doubleStack.get(i));
-        }
-        // 返回结果
-        return new CalculationNumberResults(size - 1, res, this.Name);
+        return new PrefixExpression(null, doubleStack, characterStack, newFormula, Formula);
     }
 
-    /**
-     * 计算一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
-     * <p>
-     * Compute a mathematical expression and store the calculation details and results in the numerical result set.
-     *
-     * @param newFormula 被计算的表达式，要求返回值是一个数值。
-     *                   <p>
-     *                   The returned value of the evaluated expression is required to be a numeric value.
-     * @return 数值结果集对象，其中保存着每一步的操作数据，以及最终结果数值
-     * <p>
-     * Numerical result set object, which stores the operation data of each step and the final result value
-     */
-    private CalculationNumberResults calculationBigDecimal(final String newFormula) {
+    @Override
+    public PrefixExpression compileBigDecimal(String Formula, boolean formatRequired) {
+        final String newFormula;
+        if (formatRequired) {
+            newFormula = formatStr(Formula);
+        } else {
+            newFormula = Formula;
+        }
         // 创建操作符栈
         final Stack<BigDecimal> doubleStack = new Stack<>();
         // 创建操作数栈
@@ -271,20 +238,49 @@ public final class PrefixExpressionOperation extends NumberCalculation {
             }
             backIsOpt = isBackIsOpt(stringBuilder, backIsOpt, c);
         }
-        doubleStack.push(StrUtils.stringToBigDecimal(stringBuilder.toString()));
-        BigDecimal res = doubleStack.firstElement();
-        char back;
-        final int size = doubleStack.size();
-        // 开始计算
-        final int sizeD2 = size >> 1;
-        for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
-            // 更新操作符
-            back = characterStack.get(offset);
-            // 获取操作数并计算结果
-            res = CalculationOptimized.calculation(back, res, doubleStack.get(i));
+        return new PrefixExpression(doubleStack, null, characterStack, newFormula, Formula);
+    }
+
+    /**
+     * 计算一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
+     * <p>
+     * Compute a mathematical expression and store the calculation details and results in the numerical result set.
+     *
+     * @param Formula        被计算的表达式，要求返回值是一个数值。
+     *                       <p>
+     *                       The returned value of the evaluated expression is required to be a numeric value.
+     * @param formatRequired 是否需要被格式化，用于确保公式格式正确。
+     *                       <p>
+     *                       Whether it needs to be formatted to ensure that the formula format is correct.
+     * @return 数值结果集对象，其中保存着每一步的操作数据，以及最终结果数值
+     * <p>
+     * Numerical result set object, which stores the operation data of each step and the final result value
+     */
+    @Override
+    public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
+        if (Mathematical_Expression.Options.isUseBigDecimal()) {
+            return this.calculationBigDecimal(Formula, formatRequired);
         }
-        // 返回结果
-        return new CalculationBigDecimalResults(sizeD2, res, this.Name);
+        return this.compile(Formula, formatRequired).calculationCache(false);
+    }
+
+    /**
+     * 计算一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
+     * <p>
+     * Compute a mathematical expression and store the calculation details and results in the numerical result set.
+     *
+     * @param newFormula     被计算的表达式，要求返回值是一个数值。
+     *                       <p>
+     *                       The returned value of the evaluated expression is required to be a numeric value.
+     * @param formatRequired 是否需要被格式化，用于确保公式格式正确。
+     *                       <p>
+     *                       Whether it needs to be formatted to ensure that the formula format is correct.
+     * @return 数值结果集对象，其中保存着每一步的操作数据，以及最终结果数值
+     * <p>
+     * Numerical result set object, which stores the operation data of each step and the final result value
+     */
+    private CalculationNumberResults calculationBigDecimal(final String newFormula, boolean formatRequired) {
+        return this.compileBigDecimal(newFormula, formatRequired).calculationBigDecimalsCache(false);
     }
 
     @Override

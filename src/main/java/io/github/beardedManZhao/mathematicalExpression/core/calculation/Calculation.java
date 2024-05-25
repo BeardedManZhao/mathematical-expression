@@ -27,7 +27,6 @@ public interface Calculation {
      * @return 计算组件的名称
      */
     String getName();
-
     /**
      * 获取计算过程的信息
      * <p>
