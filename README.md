@@ -1507,7 +1507,7 @@ public class MAIN {
     // 将表达式 3*0.3 编译为一个表达式对象，我们在 1.4.1 版本中新增了compile & compileBigDecimal 方法，他们可以将表达式编译为对象，方便我们进行使用。
     final Expression compile = instance.compile("3 * 0.3", true);
     // 获取到计算结果 在这里有一个参数，设置为 false 性能会好些！设置为 true 功能会多些
-    System.out.println(compile.calculation(true));
+    System.out.println(compile.calculationCache(true));
     // 我们可以使用这个表达式重复的计算，对于表达式对象来说 多次调用 calculationCache 的效率会很高
     // 除了第一次 calculationCache，其余调用 calculationCache 的复杂度皆为 O(1)
     System.out.println(compile.calculationCache(false));
