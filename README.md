@@ -25,6 +25,8 @@ fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/i
 
 ## introduce
 
+![GitHub Repo stars](https://img.shields.io/github/stars/BeardedManZhao/mathematical-expression)
+
 This framework is an effective tool for mathematical formula analysis. It can analyze mathematical formulas including
 nested functions, including functions, and step accumulation of series. The return value is a numerical result object.
 At the same time, it can also be used for comparison operations. When comparing again, the return value is a Boolean
