@@ -19,6 +19,8 @@
 
 ## 介绍
 
+![GitHub Repo stars](https://img.shields.io/github/stars/BeardedManZhao/mathematical-expression)
+
 本框架是一种针对数学公式解析的有效工具，能够解析包含嵌套函数，包含函数，数列步长累加等数学公式，返回值是一个数值的结果对象，同时也可以进行比较运算的操作，再进行比较的时候，返回值是一个布尔值结果对象。
 
 - Maven依赖坐标
