@@ -42,6 +42,14 @@ public interface CalculationResults extends Serializable {
      */
     Object getResult();
 
+
+    /**
+     * 重新设置此计算结果的名称
+     *
+     * @param source 来源，表明该结果对象的计算来源。
+     */
+    void setSource(String source);
+
     /**
      * 获取计算结果，计算结果的类型在不同的子类中是不同的，所以这里返回的是Object类型
      * <p>

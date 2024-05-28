@@ -14,7 +14,8 @@ public class CalculationNumberResults implements CalculationResults, Comparator<
 
     private final static long serialVersionUID = "CalculationNumberResults".hashCode();
     private final double result;
-    private final String source;
+
+    private String source;
     private final int layers;
 
     /**
@@ -46,6 +47,11 @@ public class CalculationNumberResults implements CalculationResults, Comparator<
 
     public Double getResult() {
         return this.result;
+    }
+
+    @Override
+    public void setSource(String source) {
+        this.source = source;
     }
 
     @Override

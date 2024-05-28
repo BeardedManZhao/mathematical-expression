@@ -50,6 +50,11 @@ public class LogResults extends DataObj implements CalculationResults {
         return this.result;
     }
 
+    @Override
+    public void setSource(String source) {
+        throw new UnsupportedOperationException("LogResults currently does not support setting the source");
+    }
+
     /**
      * 设置结果
      *

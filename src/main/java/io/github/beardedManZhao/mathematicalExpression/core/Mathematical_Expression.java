@@ -4,6 +4,7 @@ import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculat
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.bool.BooleanCalculation2;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.*;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.*;
+import io.github.beardedManZhao.mathematicalExpression.core.container.PackExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
@@ -345,6 +346,10 @@ public enum Mathematical_Expression {
      */
     public final static class Options {
         private final static HashMap<Integer, Number> HASH_MAP = new HashMap<>();
+        /**
+         * 表达式对象的缓存池！
+         */
+        private final static HashMap<String, PackExpression> Formula_NameExpression = new HashMap<>();
         private static boolean useBigDecimal = false;
         private static boolean useCache = false;
 
@@ -366,6 +371,26 @@ public enum Mathematical_Expression {
          */
         public static Number getCacheCalculation(int hashCode) {
             return HASH_MAP.get(hashCode);
+        }
+
+        /**
+         * 手动添加一个 hash 的缓存，此函数请勿随意调用，因为随意调用，会带来 hash 冲突
+         *
+         * @param Formula        hash
+         * @param packExpression 表达式对象
+         */
+        public static void cacheCalculation(String Formula, PackExpression packExpression) {
+            Formula_NameExpression.put(Formula, packExpression);
+        }
+
+        /**
+         * 手动获取一个 hash 的缓存
+         *
+         * @param Formula hash
+         * @return 提前缓存好的结果
+         */
+        public static PackExpression getCacheCalculation(String Formula) {
+            return Formula_NameExpression.get(Formula);
         }
 
         /**
@@ -411,6 +436,7 @@ public enum Mathematical_Expression {
         public static void setUseCache(boolean useCache) {
             if (!useCache) {
                 HASH_MAP.clear();
+                Formula_NameExpression.clear();
             }
             Options.useCache = useCache;
         }

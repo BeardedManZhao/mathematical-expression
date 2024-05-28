@@ -1,6 +1,6 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation;
 
-import io.github.beardedManZhao.mathematicalExpression.core.container.PrefixExpression;
+import io.github.beardedManZhao.mathematicalExpression.core.container.NameExpression;
 
 /**
  * 带有编译功能的所有数学表达式对象都实现了此接口，编译功能的灵活度很高，能够实现强大的表达式对象获取的功能！
@@ -26,7 +26,7 @@ public interface CompileCalculation {
      * <p>
      * The compilation object of mathematical expressions. You can use compiled objects to perform a series of operations.
      */
-    PrefixExpression compile(String Formula, boolean formatRequired);
+    NameExpression compile(String Formula, boolean formatRequired);
 
     /**
      * 将一个数学表达式编译为对象，这有助于您更好地使用数学表达式。
@@ -43,5 +43,5 @@ public interface CompileCalculation {
      * <p>
      * The compilation object of mathematical expressions. You can use compiled objects to perform a series of operations.
      */
-    PrefixExpression compileBigDecimal(String Formula, boolean formatRequired);
+    NameExpression compileBigDecimal(String Formula, boolean formatRequired);
 }

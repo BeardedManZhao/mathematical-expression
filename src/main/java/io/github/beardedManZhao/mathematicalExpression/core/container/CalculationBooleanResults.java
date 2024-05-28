@@ -14,7 +14,7 @@ public class CalculationBooleanResults implements CalculationResults, Comparator
     private static final long serialVersionUID = "CalculationBooleanResults".hashCode();
 
     private final boolean result;
-    private final String source;
+    private String source;
     private final int Layers;
     private final double left;
     private final double right;
@@ -50,6 +50,11 @@ public class CalculationBooleanResults implements CalculationResults, Comparator
 
     public Boolean getResult() {
         return this.result;
+    }
+
+    @Override
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public double getLeft() {

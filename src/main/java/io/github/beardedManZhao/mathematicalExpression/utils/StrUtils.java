@@ -36,22 +36,36 @@ public final class StrUtils {
      * @return 字符串转换的浮点数值
      */
     public static double stringToDouble(String s) {
-        if (Mathematical_Expression.Options.isUseCache()) {
-            final Number cacheCalculation = Mathematical_Expression.Options.getCacheCalculation(s.hashCode());
+        final Boolean useCache = Mathematical_Expression.Options.isUseCache();
+        int hash = 0;
+        if (useCache) {
+            hash = s.hashCode();
+            final Number cacheCalculation = Mathematical_Expression.Options.getCacheCalculation(hash);
             if (cacheCalculation != null) {
                 return cacheCalculation.doubleValue();
             }
         }
         final int lastIndex = s.length() - 1;
+        double res;
         if (s.charAt(lastIndex) == ConstantRegion.FACTORIAL_SIGN) {
             // 代表要进行阶乘计算
             final double v = Double.parseDouble(s.substring(0, lastIndex));
             if (v < 0) {
                 throw new UnsupportedOperationException("负数不支持计算阶乘:" + v);
             }
-            return NumberUtils.factorial(v);
+            res = NumberUtils.factorial(v);
+            if (useCache) {
+                // 缓存结果
+                Mathematical_Expression.Options.cacheCalculation(hash, res);
+            }
+            return res;
         }
-        return Double.parseDouble(s);
+        res = Double.parseDouble(s);
+        if (useCache) {
+            // 缓存结果
+            Mathematical_Expression.Options.cacheCalculation(hash, res);
+        }
+        return res;
     }
 
     /**
@@ -61,12 +75,15 @@ public final class StrUtils {
      * @return 字符串转换的浮点数值
      */
     public static BigDecimal stringToBigDecimal(String s) {
-        if (Mathematical_Expression.Options.isUseCache()) {
-            final Number cacheCalculation = Mathematical_Expression.Options.getCacheCalculation(s.hashCode());
+        final Boolean useCache = Mathematical_Expression.Options.isUseCache();
+        int hash = s.hashCode();
+        if (useCache) {
+            final Number cacheCalculation = Mathematical_Expression.Options.getCacheCalculation(hash);
             if (cacheCalculation instanceof BigDecimal) {
                 return (BigDecimal) cacheCalculation;
             }
         }
+        BigDecimal res;
         final int lastIndex = s.length() - 1;
         if (s.charAt(lastIndex) == ConstantRegion.FACTORIAL_SIGN) {
             // 代表要进行阶乘计算
@@ -75,13 +92,17 @@ public final class StrUtils {
             if (v1 < 0) {
                 throw new UnsupportedOperationException("负数不支持计算阶乘:" + v);
             }
-            return BigDecimal.valueOf(NumberUtils.factorial(v1));
+            res = BigDecimal.valueOf(NumberUtils.factorial(v1));
+            if (useCache) {
+                Mathematical_Expression.Options.cacheCalculation(hash, res);
+            }
+            return res;
         }
-        final BigDecimal bigDecimal = new BigDecimal(s);
-        if (Mathematical_Expression.Options.isUseCache()) {
-            Mathematical_Expression.Options.cacheCalculation(s.hashCode(), bigDecimal);
+        res = new BigDecimal(s);
+        if (useCache) {
+            Mathematical_Expression.Options.cacheCalculation(hash, res);
         }
-        return bigDecimal;
+        return res;
     }
 
     /**

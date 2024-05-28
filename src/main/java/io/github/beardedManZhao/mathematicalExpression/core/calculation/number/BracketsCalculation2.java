@@ -1,8 +1,12 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.BracketsExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
 import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.PackExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
@@ -14,7 +18,7 @@ import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractExcept
  *
  * @author zhao
  */
-public class BracketsCalculation2 extends BracketsCalculation {
+public class BracketsCalculation2 extends BracketsCalculation implements CompileCalculation {
 
     /**
      * 新版括号表达式解析计算时，需要使用的第三方计算组件
@@ -69,37 +73,10 @@ public class BracketsCalculation2 extends BracketsCalculation {
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        int length = Formula.length();
-        // 公式存储区
-        final StringBuilder stringBuilder = new StringBuilder(length + 16);
-        // 括号内数据的起始索引
-        int start = 0;
-        boolean setok = false;
-        // 括号内的括号均衡数量，为了确定是一对括号
-        int count = 0;
-        // 计算结果临时存储
-        for (int i = 0; i < length; i++) {
-            char aChar = Formula.charAt(i);
-            if (aChar == ConstantRegion.LEFT_BRACKET) {
-                // 如果当前字符是一个左括号，那么说明括号开始了，这个时候需要将起始点记录
-                if (!setok) {
-                    setok = true;
-                    start = i + 1;
-                }
-                ++count;
-            } else if (aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
-                setok = false;
-                // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
-                CalculationNumberResults calculation = this.calculation(Formula.substring(start, i), formatRequired);
-                stringBuilder.append(calculation.getResult());
-            } else if (!setok && aChar != ConstantRegion.EMPTY) {
-                // 如果不是一个括号就将字符提供给字符串缓冲区
-                stringBuilder.append(aChar);
-            }
+        if (Mathematical_Expression.Options.isUseBigDecimal()) {
+            return (CalculationNumberResults) this.compile(Formula, formatRequired).calculationCache(false);
         }
-        // 将此字符串的结果计算出来
-        final CalculationNumberResults calculation = PREFIX_EXPRESSION_OPERATION.calculation(stringBuilder.toString(), formatRequired);
-        return new CalculationNumberResults(calculation.getResultLayers(), calculation.getResult(), this.getName());
+        return (CalculationNumberResults) this.compileBigDecimal(Formula, formatRequired).calculationBigDecimalsCache(false);
     }
 
     @Override
@@ -118,25 +95,25 @@ public class BracketsCalculation2 extends BracketsCalculation {
         final StringBuilder stringBuilder = new StringBuilder(length + 16);
         // 括号内数据的起始索引
         int start = 0;
-        boolean setok = false;
+        boolean setOk = false;
         // 括号内的括号均衡数量，为了确定是一对括号
         int count = 0;
         for (int i = 0; i < length; i++) {
             char aChar = Formula.charAt(i);
             if (aChar == ConstantRegion.LEFT_BRACKET) {
                 // 如果当前字符是一个左括号，那么说明括号开始了，这个时候需要将起始点记录
-                if (!setok) {
-                    setok = true;
+                if (!setOk) {
+                    setOk = true;
                     start = i + 1;
                 }
                 ++count;
             } else if (aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
-                setok = false;
+                setOk = false;
                 // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
                 final LogResults explain = this.explain(Formula.substring(start, i), formatRequired);
                 stringBuilder.append(explain.getResult());
                 logResults.put(explain);
-            } else if (!setok && aChar != ConstantRegion.EMPTY) {
+            } else if (!setOk && aChar != ConstantRegion.EMPTY) {
                 // 如果不是一个括号就将字符提供给字符串缓冲区
                 stringBuilder.append(aChar);
             }
@@ -160,5 +137,15 @@ public class BracketsCalculation2 extends BracketsCalculation {
     @Override
     public String formatStr(String string) {
         return super.formatStr(string);
+    }
+
+    @Override
+    public PackExpression compile(String Formula, boolean formatRequired) {
+        return BracketsExpression.compile(Formula, formatRequired, this);
+    }
+
+    @Override
+    public PackExpression compileBigDecimal(String Formula, boolean formatRequired) {
+        return BracketsExpression.compileBigDecimal(Formula, formatRequired, this);
     }
 }

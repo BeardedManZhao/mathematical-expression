@@ -10,12 +10,10 @@ import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationM
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
-import io.github.beardedManZhao.mathematicalExpression.utils.CalculationOptimized;
 import io.github.beardedManZhao.mathematicalExpression.utils.NumberUtils;
 import io.github.beardedManZhao.mathematicalExpression.utils.StrUtils;
 import top.lingyuzhao.varFormatter.utils.DataObj;
 
-import java.math.BigDecimal;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
@@ -59,32 +57,6 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
             CalculationManagement.register(PrefixExpressionOperation, false);
             return PrefixExpressionOperation;
         }
-    }
-
-    /**
-     * 更新当前的操作符类型
-     *
-     * @param stringBuilder 结果缓冲
-     * @param backIsOpt     上一个字符是否是操作符
-     * @param c             被判断的操作字符
-     * @return 新的结果
-     */
-    private static boolean isBackIsOpt(StringBuilder stringBuilder, boolean backIsOpt, char c) {
-        if (StrUtils.IsANumber(c)) {
-            // 如果是数值的某一位，就将数值存储到变量中
-            stringBuilder.append(c);
-            backIsOpt = false;
-            return backIsOpt;
-        }
-        switch (c) {
-            case ConstantRegion.FACTORIAL_SIGN:
-            case ConstantRegion.DECIMAL_POINT:
-            case ConstantRegion.MINUS_SIGN:
-                // 如果是数值的某一位，就将数值存储到变量中
-                stringBuilder.append(c);
-                backIsOpt = false;
-        }
-        return backIsOpt;
     }
 
     /**
@@ -146,48 +118,7 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
         } else {
             newFormula = Formula;
         }
-        // 创建操作符栈
-        final Stack<Double> doubleStack = new Stack<>();
-        // 创建操作数栈
-        final Stack<Character> characterStack = new Stack<>();
-        // 开始格式化，将符号与操作数进行分类
-        int length = newFormula.length();
-        final StringBuilder stringBuilder = new StringBuilder(length);
-        // 创建标记点 标记上一个是否是操作符
-        boolean backIsOpt = true;
-        for (int i = 0; i < length; i++) {
-            char c = newFormula.charAt(i);
-            if (!backIsOpt && StrUtils.IsAnOperator(c)) {
-                backIsOpt = true;
-                // 如果上一个不是操作符，且当前是操作符，就先将上一个数值计算出来
-                double number = StrUtils.stringToDouble(stringBuilder.toString());
-                if (characterStack.isEmpty()) {
-                    // 如果栈为空 直接将运算符添加到栈顶
-                    characterStack.push(c);
-                    // 将数值添加到数值栈顶
-                    doubleStack.push(number);
-                } else {
-                    // 如果不为空就检查栈顶的与当前运算符的优先级
-                    if (!NumberUtils.PriorityComparison(characterStack.peek(), c)) {
-                        // 如果上一个优先级较大 就将上一个操作符取出
-                        char top = characterStack.pop();
-                        // 将上一个优先级高的值 与当下优先级较低的值进行运算，然后将当下的新数值和当下的操作符推到栈顶
-                        doubleStack.push(NumberUtils.calculation(top, doubleStack.pop(), number));
-                        characterStack.push(c);
-                    } else {
-                        // 反之就将当前运算符提供到栈顶
-                        characterStack.push(c);
-                        doubleStack.push(number);
-                    }
-                }
-                // 清理所有的字符缓冲
-                stringBuilder.delete(0, stringBuilder.length());
-                continue;
-            }
-            backIsOpt = isBackIsOpt(stringBuilder, backIsOpt, c);
-        }
-        doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
-        return new PrefixExpression(null, doubleStack, characterStack, newFormula, Formula);
+        return PrefixExpression.compile(newFormula, this.Name);
     }
 
     @Override
@@ -198,47 +129,7 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
         } else {
             newFormula = Formula;
         }
-        // 创建操作符栈
-        final Stack<BigDecimal> doubleStack = new Stack<>();
-        // 创建操作数栈
-        final Stack<Character> characterStack = new Stack<>();
-        // 开始格式化，将符号与操作数进行分类
-        int length = newFormula.length();
-        final StringBuilder stringBuilder = new StringBuilder(length);
-        // 创建标记点 标记上一个是否是操作符
-        boolean backIsOpt = true;
-        for (int i = 0; i < length; i++) {
-            char c = newFormula.charAt(i);
-            if (!backIsOpt && StrUtils.IsAnOperator(c)) {
-                backIsOpt = true;
-                // 如果上一个不是操作符，且当前是操作符，就先将上一个数值计算出来
-                BigDecimal number = StrUtils.stringToBigDecimal(stringBuilder.toString());
-                if (characterStack.isEmpty()) {
-                    // 如果栈为空 直接将运算符添加到栈顶
-                    characterStack.push(c);
-                    // 将数值添加到数值栈顶
-                    doubleStack.push(number);
-                } else {
-                    // 如果不为空就检查栈顶的与当前运算符的优先级
-                    if (!NumberUtils.PriorityComparison(characterStack.peek(), c)) {
-                        // 如果上一个优先级较大 就将上一个操作符取出
-                        char top = characterStack.pop();
-                        // 将上一个优先级高的值 与当下优先级较低的值进行运算，然后将当下的新数值和当下的操作符推到栈顶
-                        doubleStack.push(CalculationOptimized.calculation(top, doubleStack.pop(), number));
-                        characterStack.push(c);
-                    } else {
-                        // 反之就将当前运算符提供到栈顶
-                        characterStack.push(c);
-                        doubleStack.push(number);
-                    }
-                }
-                // 清理所有的字符缓冲
-                stringBuilder.delete(0, stringBuilder.length());
-                continue;
-            }
-            backIsOpt = isBackIsOpt(stringBuilder, backIsOpt, c);
-        }
-        return new PrefixExpression(doubleStack, null, characterStack, newFormula, Formula);
+        return PrefixExpression.compileBigDecimal(newFormula, this.Name);
     }
 
     /**
@@ -349,7 +240,8 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
                 stringBuilder.delete(0, stringBuilder.length());
                 continue;
             }
-            backIsOpt = isBackIsOpt(stringBuilder, backIsOpt, c);
+            PrefixExpression.isBackIsOpt(stringBuilder, c);
+            backIsOpt = false;
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
         double res = doubleStack.firstElement();

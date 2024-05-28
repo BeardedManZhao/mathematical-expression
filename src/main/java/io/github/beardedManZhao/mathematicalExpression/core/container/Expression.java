@@ -137,6 +137,7 @@ public interface Expression extends Serializable {
      * <p>
      * Is the current expression available? If not, it means that some functions may not be called!
      */
+    @SuppressWarnings("")
     boolean isAvailable();
 
 }
