@@ -22,8 +22,8 @@ public class BracketsExpression extends PackExpression {
     protected final static PrefixExpressionOperation PREFIX_EXPRESSION_OPERATION = PrefixExpressionOperation.getInstance(CalculationManagement.PREFIX_EXPRESSION_OPERATION_NAME);
 
 
-    protected BracketsExpression(NameExpression nameExpression, String packName) {
-        super(nameExpression, packName);
+    protected BracketsExpression(String expressionName, NameExpression nameExpression, String packName) {
+        super(expressionName, nameExpression, packName);
     }
 
     /**
@@ -43,7 +43,7 @@ public class BracketsExpression extends PackExpression {
                 return cacheCalculation;
             } else {
                 // 代表缓存中没有
-                final PackExpression compile = new BracketsExpression(
+                final PackExpression compile = new BracketsExpression(Formula,
                         PREFIX_EXPRESSION_OPERATION.compile(parseStringBuilder(Formula, formatRequired, bracketsCalculation2).toString(), formatRequired), bracketsCalculation2.getName()
                 );
                 // 编译好直接缓存
@@ -52,7 +52,7 @@ public class BracketsExpression extends PackExpression {
                 return compile;
             }
         }
-        return new BracketsExpression(
+        return new BracketsExpression(Formula,
                 PREFIX_EXPRESSION_OPERATION.compile(parseStringBuilder(Formula, formatRequired, bracketsCalculation2).toString(), formatRequired), bracketsCalculation2.getName()
         );
     }
@@ -76,7 +76,7 @@ public class BracketsExpression extends PackExpression {
                 return cacheCalculation;
             } else {
                 // 代表缓存中没有
-                final PackExpression compile = new BracketsExpression(
+                final PackExpression compile = new BracketsExpression(Formula,
                         PREFIX_EXPRESSION_OPERATION.compileBigDecimal(parseStringBuilder(Formula, formatRequired, bracketsCalculation2).toString(), formatRequired), bracketsCalculation2.getName()
                 );
                 // 编译好直接缓存
@@ -85,7 +85,7 @@ public class BracketsExpression extends PackExpression {
                 return compile;
             }
         }
-        return new BracketsExpression(
+        return new BracketsExpression(Formula,
                 PREFIX_EXPRESSION_OPERATION.compileBigDecimal(parseStringBuilder(Formula, formatRequired, bracketsCalculation2).toString(), formatRequired), bracketsCalculation2.getName()
         );
     }

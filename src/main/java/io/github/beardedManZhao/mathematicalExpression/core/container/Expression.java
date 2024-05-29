@@ -42,6 +42,20 @@ public interface Expression extends Serializable {
     boolean isBigDecimal();
 
     /**
+     * 如果当前的计算表达式对象支持非高精度的计算模式，则返回 true
+     *
+     * @return If the current calculation expression object supports non high-precision calculation modes, return true
+     */
+    boolean isUnBigDecimal();
+
+    /**
+     * 转换计算表达式为多精度支持形式
+     * <p>
+     * Transforms the current calculation expression into a form that supports both high precision and standard precision evaluations.
+     */
+    void convertToMultiPrecisionSupported();
+
+    /**
      * 获取缓存的计算结果，如果没有缓存则返回null
      *
      * @return 缓存的计算结果，如果没有缓存则返回null
@@ -137,7 +151,6 @@ public interface Expression extends Serializable {
      * <p>
      * Is the current expression available? If not, it means that some functions may not be called!
      */
-    @SuppressWarnings("")
     boolean isAvailable();
 
 }

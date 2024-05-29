@@ -1417,6 +1417,10 @@ public class MAIN {
 _PS: `io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation`
 的支持会随着版本的递增逐渐增多！_
 
+#### 基础使用示例
+
+> 这里演示的案例 是基于 1.4.2 版本，因此您需要确保您使用的版本大于等于 1.4.2 才可以使用哦! 在 1.4.1 版本中的使用方式差不多，不过一些功能不被支持！
+
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
@@ -1442,6 +1446,97 @@ public class MAIN {
             System.out.println(compile.calculationBigDecimalsCache(false));
         }
     }
+}
+```
+
+还可以手动的调整计算模式，下面是一个示例！
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.Expression;
+
+public class MAIN {
+
+  public static void run(Expression expression) {
+    if (expression.isBigDecimal()) {
+      // 代表支持高精度的计算 TODO 这里使用的是不带 cache 的计算 这是为了测试效果，事实上 在此案例之外，我们建议您使用 cache 的计算！
+      System.out.println("高精度计算结果：" + expression.calculationBigDecimals(true).getResult());
+    }
+    if (expression.isUnBigDecimal()) {
+      // 代表支持非高精度的计算
+      System.out.println("非精度计算结果：" + expression.calculation(true).getResult());
+    }
+  }
+
+  public static void main(String[] args) {
+    // 获取到计算表达式组件
+    final CompileCalculation instance = (CompileCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+    // 将表达式 3*0.3 编译为一个表达式对象，我们在 1.4.1 版本中新增了compile & compileBigDecimal 方法，他们可以将表达式编译为对象，方便我们进行使用。
+    final Expression compile = instance.compile("1 + (3 * 0.3)", true);
+    // 运行表达式 这里第一次计算的时候 它因为 compile 的编译，只支持使用 非精度计算模式
+    System.out.println("--------");
+    run(compile);
+    if (compile.isAvailable()) {
+      // TODO 此函数需要确保您在 calculationCache or calculationBigDecimalsCache 调用时没有设置为 false
+      //  我们可以通过 compile.isAvailable() 方法来判断是否支持多精度计算模块的启用 启用之后 您可以随意调用 calculationCache or calculationBigDecimalsCache
+      // 将表达式的多精度支持模式启用 请注意 此操作仅可以对表达式的最后一层计算起作用！
+      // 例如 1 + (3*0.3) 最后一层就是 1 + 0.899999（compile编译的） 或者 1 + 0.9（compileBigDecimal 编译的）
+      compile.convertToMultiPrecisionSupported();
+      // 运行表达式 TODO 这样操作之后 我们会发现它可以在两种模式中进行计算了
+      System.out.println("--------");
+      run(compile);
+        }
+    }
+}
+```
+
+#### 序列化一个表达式对象
+
+表达式对象继承了 `java.io.Serializable` 接口，所以您可以使用 `java.io.ObjectOutputStream` 和 `java.io.ObjectInputStream`
+来序列化一个表达式对象！
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.NameExpression;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class MAIN {
+  public static void main(String[] args) throws IOException, ClassNotFoundException {
+    // 获取到计算组件
+    final CompileCalculation instance = (CompileCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+    // 准备一个路径对象
+    final Path path = Paths.get("C:\\Users\\zhao\\Downloads\\表达式.me");
+
+    // 将表达式对象保存到磁盘
+    try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(Files.newOutputStream(path))) {
+      // 编译一个表达式对象
+      final NameExpression compile = instance.compile(" 1 + (20 * 3 - 3 + (10 -4)) + (30 -2)  /2 + 10", true);
+      // 将表达式对象输出到磁盘
+      objectOutputStream.writeObject(compile);
+    }
+
+    // 再将表达式从磁盘读取进来
+    try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(path))) {
+      // 从磁盘中将表达式重新加载到内存
+      final NameExpression expression = (NameExpression) objectInputStream.readObject();
+      // 查看表达式的信息
+      System.out.println("表达式来源：" + expression.getCalculationName());
+      System.out.println("表达式的格式：" + expression.getExpressionStr());
+      System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
+      System.out.println(">>> 开始为表达式对象添加多精度支持");
+      expression.convertToMultiPrecisionSupported();
+      System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
+      System.out.println("计算结果：" + expression.calculation(false));
+    }
+  }
 }
 ```
 

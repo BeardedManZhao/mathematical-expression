@@ -11,14 +11,24 @@ public class PackExpression extends NameExpression {
 
     private final NameExpression nameExpression;
 
-    public PackExpression(NameExpression nameExpression, String packName) {
-        super(nameExpression.getExpressionStr(), packName + ":{" + nameExpression.getCalculationName() + '}');
+    public PackExpression(String expressionName, NameExpression nameExpression, String packName) {
+        super(expressionName != null ? expressionName + " -> " + nameExpression.getExpressionStr() : nameExpression.getExpressionStr(), packName + ":{" + nameExpression.getCalculationName() + '}');
         this.nameExpression = nameExpression;
     }
 
     @Override
     public boolean isBigDecimal() {
         return nameExpression.isBigDecimal();
+    }
+
+    @Override
+    public boolean isUnBigDecimal() {
+        return nameExpression.isUnBigDecimal();
+    }
+
+    @Override
+    public void convertToMultiPrecisionSupported() {
+        nameExpression.convertToMultiPrecisionSupported();
     }
 
     @Override

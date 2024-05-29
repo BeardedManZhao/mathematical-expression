@@ -4,10 +4,12 @@
 
 ==Java==
 
+- 优化表达式对象的类结构
 - 对于缓存操作进行了优化，将缓存接入到编译操作中，让缓存效果更加明显
 - 对于数学表达式的编译工作的代码进行优化，减少了一些不必要的逻辑。
 - 对于 `io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2`
   计算组件，我们也提供了表达式的编译功能！
+- 为编译出来的计算表达式对象新增了两个函数 `convertToMultiPrecisionSupported` 和 `isUnBigDecimal`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;

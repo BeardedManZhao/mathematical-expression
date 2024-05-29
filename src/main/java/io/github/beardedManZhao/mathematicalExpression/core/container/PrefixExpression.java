@@ -20,18 +20,18 @@ import java.util.Stack;
 @SuppressWarnings("unchecked")
 public class PrefixExpression extends NameExpression {
 
-    private static final long serialVersionUID = "PrefixExpression".hashCode();
+    private static final long serialVersionUID = "PrefixExpression_1".hashCode();
 
-    private         // 创建操作符栈
-    final Stack<Double> doubleStackR;
-    private final Stack<BigDecimal> bigDecimalsR;
+    private Stack<Double> doubleStackR;
+    private Stack<BigDecimal> bigDecimalsR;
     // 创建操作数栈
     private final Stack<Character> characterStackR;
 
     /**
-     * 是否是一个 高精度模式的计算表达式
+     * isBigDecimal 是否是一个 支持高精度模式的计算表达式
+     * isUnBigDecimal 是否是一个 支持非高精度模式的计算表达式
      */
-    private final boolean isBigDecimal;
+    private boolean isBigDecimal, isUnBigDecimal;
 
     public PrefixExpression(Stack<BigDecimal> bigDecimalStack, Stack<Double> doubleStack, Stack<Character> characterStack, String expression, String calculationName) {
         super(expression, calculationName);
@@ -39,6 +39,7 @@ public class PrefixExpression extends NameExpression {
         this.bigDecimalsR = bigDecimalStack;
         this.characterStackR = characterStack;
         this.isBigDecimal = bigDecimalStack != null;
+        this.isUnBigDecimal = !this.isBigDecimal;
     }
 
     /**
@@ -130,7 +131,7 @@ public class PrefixExpression extends NameExpression {
         final PrefixExpression prefixExpression = new PrefixExpression(null, doubleStack, characterStack, newFormula, calculationName);
         // 如果启用了缓存就缓存
         if (useCache) {
-            Mathematical_Expression.Options.cacheCalculation(newFormula, new PackExpression(prefixExpression, calculationName));
+            Mathematical_Expression.Options.cacheCalculation(newFormula, new PackExpression(null, prefixExpression, calculationName));
         }
         return prefixExpression;
     }
@@ -204,7 +205,7 @@ public class PrefixExpression extends NameExpression {
         final PrefixExpression prefixExpression = new PrefixExpression(doubleStack, null, characterStack, newFormula, calculationName);
         // 如果启用了缓存就缓存
         if (useCache) {
-            Mathematical_Expression.Options.cacheCalculation(newFormula + "uB", new PackExpression(prefixExpression, calculationName));
+            Mathematical_Expression.Options.cacheCalculation(newFormula + "uB", new PackExpression(null, prefixExpression, calculationName));
         }
         return prefixExpression;
     }
@@ -268,8 +269,42 @@ public class PrefixExpression extends NameExpression {
     }
 
     @Override
+    public boolean isUnBigDecimal() {
+        return this.isUnBigDecimal;
+    }
+
+    @Override
+    public void convertToMultiPrecisionSupported() {
+        // 首先判断当前的状态
+        if (this.isBigDecimal()) {
+            // 代表是精度模式，看是否支持非精度，如果不支持就给非精度模式的支持开通
+            if (doubleStackR != null) {
+                // 代表都支持 不需要进行操作
+                return;
+            }
+            // 开通非精度模式
+            this.doubleStackR = new Stack<>();
+            for (BigDecimal bigDecimal : this.getBigDecimalsR(false)) {
+                this.doubleStackR.push(bigDecimal.doubleValue());
+            }
+            this.isUnBigDecimal = true;
+            return;
+        }
+        // 代表是非精度模式，看是否支持精度，如果不支持就给精度模式的支持开通
+        if (bigDecimalsR != null) {
+            // 代表都支持 不需要进行操作
+            return;
+        }
+        this.bigDecimalsR = new Stack<>();
+        for (Double aDouble : this.getDoubleStack(false)) {
+            this.bigDecimalsR.push(new BigDecimal(aDouble));
+        }
+        this.isBigDecimal = true;
+    }
+
+    @Override
     public CalculationNumberResults calculation(boolean isCopy) {
-        if (this.isBigDecimal) {
+        if (!this.isUnBigDecimal()) {
             throw new UnsupportedOperationException("此表达式是一个高精度的类型，请您调用 calculationBigDecimals(" + isCopy + ") or calculationBigDecimalsCache(" + isCopy + ")\nThis Expression is of high precision type. Please call calculationBigDecimals(" + isCopy + ") or calculationBigDecimalsCache(" + isCopy + ')');
         }
         final Stack<Double> doubleStack = getDoubleStack(isCopy);
@@ -291,7 +326,7 @@ public class PrefixExpression extends NameExpression {
 
     @Override
     public CalculationNumberResults calculationBigDecimals(boolean isCopy) {
-        if (!this.isBigDecimal) {
+        if (!this.isBigDecimal()) {
             throw new UnsupportedOperationException("此表达式不是一个高精度的类型，请您调用 calculation(" + isCopy + ") or calculationCache(" + isCopy + ")\nThis expression is not of a high precision type. Please call calculation(" + isCopy + ") or calculation(" + isCopy + ')');
         }
         final Stack<BigDecimal> doubleStack = getBigDecimalsR(isCopy);
