@@ -1524,13 +1524,13 @@ public class MAIN {
 }
 ```
 
-## Mathematical_Expression.Options 操作
+## Mathematical_Expression.Options
 
-我们允许您通过 `Mathematical_Expression.Options` 来配置数学表达式的计算组件的一些模式，配置的选项会改变计算组件的行为。
+We allow you to use `Mathematical_Expression.Options` is used to configure some patterns of the calculation components of mathematical expressions, and the configured options will change the behavior of the calculation components.
 
-### 设置缓存计算模式 setUseCache
+### Set cache calculation mode setUseCache
 
-缓存计算模式是一种牺牲内存，但是提高计算速度的模式，值得注意的是，缓存操作将会伴随您的所有子表达式，这意味着您的表达式即使有改动，只要其中包含一些被计算过的表达式，还是可以使用缓存的。您可以按照下面的操作将其启用。
+The cache computation mode is a mode that sacrifices memory but improves computation speed. It is worth noting that cache operations will accompany all of your subexpressions, which means that even if your expression is modified, as long as it contains some computed expressions, it can still be used with cache. You can enable it by following the steps below.
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
