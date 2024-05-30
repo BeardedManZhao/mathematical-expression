@@ -141,6 +141,7 @@ public final class NumberUtils {
         if (start == end) {
             return start;
         }
+        // （首 + 尾）* 项数 / 2
         return (start + end) * (Math.abs(end - start) + 1) / 2;
     }
 
@@ -161,7 +162,44 @@ public final class NumberUtils {
         end -= abs % step;
         abs = Math.abs(end - start);
         double n = 1 + (abs / step);
+        // na1 + n(n-1) * d / 2
         return n * start + n * (n - 1) * (Math.max(step, 2)) / 2;
+    }
+
+    /**
+     * 将区间内的所有数值进行累加
+     *
+     * @param start 区间起始数值
+     * @param end   区间终止数值
+     * @return 区间内所有数值的累加结果
+     */
+    public static String sumOfRangeString(double start, double end) {
+        if (start == end) {
+            return String.valueOf(start);
+        }
+        // （首 + 尾）* 项数 / 2
+        return "(" + start + '+' + end + ')' + '*' + (Math.abs(end - start) + 1) + '/' + 2;
+    }
+
+    /**
+     * 带有步长的方式计算一个区间内所有数值的累加
+     *
+     * @param start 区间起始数值
+     * @param end   区间终止数值
+     * @param step  区间内每一个元素之间的步长
+     * @return 区间内元素之和
+     */
+    public static String sumOfRangeString(double start, double end, double step) {
+        if (step == 1) return sumOfRangeString(start, end);
+        if (start == end) {
+            return String.valueOf(start);
+        }
+        double abs = Math.abs(end - start);
+        end -= abs % step;
+        abs = Math.abs(end - start);
+        double n = 1 + (abs / step);
+        // na1 + n(n-1) * d / 2
+        return n + "*" + start + "+" + n + "*(" + n + "-1)*" + Math.max(step, 2) + "/2";
     }
 
     /**
@@ -183,5 +221,25 @@ public final class NumberUtils {
             start += step;
         }
         return res;
+    }
+
+    /**
+     * 带有步长的方式计算一个区间内所有数值的累乘
+     *
+     * @param start 区间的起始数值
+     * @param end   区间的终止数值
+     * @param step  区间内每一个元素之间的等差
+     * @return 区间内所有元素的累乘结果
+     */
+    public static String MultiplyOfRangeString(double start, double end, double step) {
+        if (start == end) {
+            return String.valueOf(start);
+        }
+        double res = 1;
+        while (start <= end) {
+            res *= start;
+            start += step;
+        }
+        return String.valueOf(res);
     }
 }

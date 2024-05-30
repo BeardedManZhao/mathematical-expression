@@ -3,6 +3,7 @@ package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.SharedCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.PackExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
@@ -207,9 +208,7 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
     public CalculationNumberResults calculation(CalculationNumberResults start, CalculationNumberResults end) {
         return new CalculationNumberResults(
                 start.getResultLayers() + end.getResultLayers(),
-                this.step == 1 ?
-                        NumberUtils.sumOfRange(start.getResult(), end.getResult()) :
-                        NumberUtils.sumOfRange(start.getResult(), end.getResult(), step),
+                NumberUtils.sumOfRange(start.getResult(), end.getResult(), this.step),
                 this.Name
         );
     }
@@ -253,5 +252,23 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
         this.left = null;
         this.right = null;
         this.CurrentOwner = null;
+    }
+
+    @Override
+    public PackExpression compile(String Formula, boolean formatRequired) {
+        // 如果是其他情况，代表共享池数据不可用，在这里获取出公式
+        ArrayList<String> arrayList = StrUtils.splitByChar(Formula, ConstantRegion.COMMA);
+        String start = arrayList.get(0);
+        String end = arrayList.get(1);
+        return FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.compile(NumberUtils.sumOfRangeString(FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(start).getResult(), FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(end).getResult(), this.step), formatRequired);
+    }
+
+    @Override
+    public PackExpression compileBigDecimal(String Formula, boolean formatRequired) {
+        // 如果是其他情况，代表共享池数据不可用，在这里获取出公式
+        ArrayList<String> arrayList = StrUtils.splitByChar(Formula, ConstantRegion.COMMA);
+        String start = arrayList.get(0);
+        String end = arrayList.get(1);
+        return FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.compileBigDecimal(NumberUtils.sumOfRangeString(FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(start).getResult(), FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(end).getResult(), this.step), formatRequired);
     }
 }

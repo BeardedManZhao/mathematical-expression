@@ -2,9 +2,14 @@ package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.PackExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
 import io.github.beardedManZhao.mathematicalExpression.utils.NumberUtils;
+import io.github.beardedManZhao.mathematicalExpression.utils.StrUtils;
+
+import java.util.ArrayList;
 
 /**
  * 快速的将一个区间内所有元素的累积结果计算出来，该组件继承于“FastSumOfIntervalsBrackets” 父类中的“step” 字段在这里还是作为区间步长，默认为2
@@ -63,5 +68,23 @@ public class FastMultiplyOfIntervalsBrackets extends FastSumOfIntervalsBrackets 
                 NumberUtils.MultiplyOfRange(start.getResult(), end.getResult(), step),
                 this.Name
         );
+    }
+
+    @Override
+    public PackExpression compile(String Formula, boolean formatRequired) {
+        // 如果是其他情况，代表共享池数据不可用，在这里获取出公式
+        ArrayList<String> arrayList = StrUtils.splitByChar(Formula, ConstantRegion.COMMA);
+        String start = arrayList.get(0);
+        String end = arrayList.get(1);
+        return FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.compile(NumberUtils.MultiplyOfRangeString(FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(start).getResult(), FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(end).getResult(), this.step), formatRequired);
+    }
+
+    @Override
+    public PackExpression compileBigDecimal(String Formula, boolean formatRequired) {
+        // 如果是其他情况，代表共享池数据不可用，在这里获取出公式
+        ArrayList<String> arrayList = StrUtils.splitByChar(Formula, ConstantRegion.COMMA);
+        String start = arrayList.get(0);
+        String end = arrayList.get(1);
+        return FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.compileBigDecimal(NumberUtils.MultiplyOfRangeString(FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(start).getResult(), FastSumOfIntervalsBrackets.BRACKETS_CALCULATION_2.calculation(end).getResult(), this.step), formatRequired);
     }
 }

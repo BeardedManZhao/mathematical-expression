@@ -3,6 +3,7 @@ package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
 import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.PackExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
@@ -137,5 +138,15 @@ public class CumulativeCalculation extends BracketsCalculation2 {
     @Override
     public LogResults explain(String Formula, boolean formatRequired) {
         return super.explain(formatRequired ? formatStr(Formula) : Formula, false);
+    }
+
+    @Override
+    public PackExpression compile(String Formula, boolean formatRequired) {
+        return super.compile(formatRequired ? formatStr(Formula) : Formula, false);
+    }
+
+    @Override
+    public PackExpression compileBigDecimal(String Formula, boolean formatRequired) {
+        return super.compileBigDecimal(formatRequired ? formatStr(Formula) : Formula, false);
     }
 }
