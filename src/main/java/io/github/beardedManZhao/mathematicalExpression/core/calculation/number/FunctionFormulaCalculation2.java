@@ -2,9 +2,11 @@ package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.SharedCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.FunctionExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
@@ -25,11 +27,11 @@ import java.util.Stack;
  *
  * @author zhao
  */
-public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation implements SharedCalculation, Serializable {
+public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation implements SharedCalculation, Serializable, CompileCalculation {
 
     private final static long serialVersionUID = "FunctionFormulaCalculation2".hashCode();
 
-    private final HashMap<String, Object[]> ShareHashMap = new HashMap<>();
+    private final HashMap<String, FunctionExpression> ShareHashMap = new HashMap<>();
     private final HashMap<String, CalculationNumberResults> ShareResultsHashMap = new HashMap<>();
     private boolean StartSharedPool = true;
 
@@ -107,50 +109,42 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
     }
 
     /**
-     * 检查公式格式是否正确，如果不正确就会抛出一个异常
-     * <p>
-     * Check whether the formula format is correct. If not, an exception will be thrown
+     * 提取出来一个公式中所有函数的名称，以及其函数形参的起始与终止索引值
      *
-     * @param string 需要被判断格式的数学运算公式
-     *               <p>
-     *               Mathematical operation formula of the format to be judged
+     * @param string 需要被解析的数学运算公式
+     * @param start  公式中所有包含函数实参公式的起始索引值
+     * @param end    公式中所有包含函数实参公式的的终止索引值
+     * @param names  公式中所有包含函数的名字
      */
-    @Override
-    public void check(String string) throws WrongFormat {
-        string = StrUtils.removeEmpty(string);
-        if (this.StartSharedPool && this.isCache(string)) {
-            return;
-        }
-        // 准备函数元数据缓冲区
-        Stack<Integer> start = new Stack<>();
-        Stack<Integer> end = new Stack<>();
-        Stack<String> names = new Stack<>();
-        // 准备公式缓冲区
-        StringBuilder stringBuilder = new StringBuilder(string.length());
-        // 开始进行公式函数元数据提取
-        FunctionParameterExtraction(string, start, end, names, stringBuilder);
-        // 判断是否全部一致
-        int size1 = start.size();
-        int size2 = end.size();
-        if (size1 == size2 && size1 == names.size()) {
-            // 检查无误后，判断是否启动共享池，如果启动了的话，将格式化中的没有问题的数据提供给共享池
-            if (StartSharedPool) {
-                // 更新共享池所属公式
-                ShareHashMap.put(string, new Object[]{
-                        start.clone(), end.clone(), names
-                });
-            }
-            while (!(start.isEmpty() || end.isEmpty())) {
-                // 如果一致，就进行函数内部每一个公式的检查 这里首先将函数中的每一个公式切割出来
-                for (String s : StrUtils.splitByChar(string.substring(start.pop(), end.pop()), ConstantRegion.COMMA)) {
-                    // 将每一个公式进行检查
-                    BRACKETS_CALCULATION_2.check(s);
+    public static void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names) {
+        // 创建一个标记，标记是否进入函数
+        boolean b = false;
+        int count = 0;
+        // 创建函数名称缓冲区
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < string.length(); i++) {
+            char aChar = string.charAt(i);
+            if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
+                if (!b) {
+                    // 如果是刚刚进入函数，就将当前索引添加到栈
+                    b = true;
+                    start.push(i + 1);
                 }
+                // 将当前函数名字字符添加到函数名称缓冲区
+                stringBuilder.append(aChar);
+                // 如果当前是函数的名字，就将函数起始索引继续移动，将函数名字部分的索引去除
+                start.push(start.pop() + 1);
+            } else if (b && aChar == ConstantRegion.LEFT_BRACKET) {
+                count += 1;
+            } else if (b && aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
+                // 如果是函数结束，就将函数的终止点索引添加到栈
+                b = false;
+                end.push(i);
+                // 将函数的名称添加到栈
+                names.push(stringBuilder.toString());
+                // 清理名称缓冲区
+                stringBuilder.delete(0, stringBuilder.length());
             }
-            // 如果函数没有问题就检查整个公式
-            BRACKETS_CALCULATION_2.check(stringBuilder.toString());
-        } else {
-            throw new WrongFormat("函数可能缺少起始或结束括号，没有正常的闭环。\nThe function may lack a start or end bracket, and there is no normal closed loop\nMissing function bracket logarithm: " + Math.abs(size2 - size1));
         }
     }
 
@@ -205,42 +199,48 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
     }
 
     /**
-     * 提取出来一个公式中所有函数的名称，以及其函数形参的起始与终止索引值
+     * 检查公式格式是否正确，如果不正确就会抛出一个异常
+     * <p>
+     * Check whether the formula format is correct. If not, an exception will be thrown
      *
-     * @param string 需要被解析的数学运算公式
-     * @param start  公式中所有包含函数实参公式的起始索引值
-     * @param end    公式中所有包含函数实参公式的的终止索引值
-     * @param names  公式中所有包含函数的名字
+     * @param string 需要被判断格式的数学运算公式
+     *               <p>
+     *               Mathematical operation formula of the format to be judged
      */
-    public void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names) {
-        // 创建一个标记，标记是否进入函数
-        boolean b = false;
-        int count = 0;
-        // 创建函数名称缓冲区
-        final StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < string.length(); i++) {
-            char aChar = string.charAt(i);
-            if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
-                if (!b) {
-                    // 如果是刚刚进入函数，就将当前索引添加到栈
-                    b = true;
-                    start.push(i + 1);
-                }
-                // 将当前函数名字字符添加到函数名称缓冲区
-                stringBuilder.append(aChar);
-                // 如果当前是函数的名字，就将函数起始索引继续移动，将函数名字部分的索引去除
-                start.push(start.pop() + 1);
-            } else if (b && aChar == ConstantRegion.LEFT_BRACKET) {
-                count += 1;
-            } else if (b && aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
-                // 如果是函数结束，就将函数的终止点索引添加到栈
-                b = false;
-                end.push(i);
-                // 将函数的名称添加到栈
-                names.push(stringBuilder.toString());
-                // 清理名称缓冲区
-                stringBuilder.delete(0, stringBuilder.length());
+    @Override
+    public void check(String string) throws WrongFormat {
+        string = StrUtils.removeEmpty(string);
+        if (this.StartSharedPool && this.isCache(string)) {
+            return;
+        }
+        // 准备函数元数据缓冲区
+        Stack<Integer> start = new Stack<>();
+        Stack<Integer> end = new Stack<>();
+        Stack<String> names = new Stack<>();
+        // 准备公式缓冲区
+        StringBuilder stringBuilder = new StringBuilder(string.length());
+        // 开始进行公式函数元数据提取
+        FunctionParameterExtraction(string, start, end, names, stringBuilder);
+        // 判断是否全部一致
+        int size1 = start.size();
+        int size2 = end.size();
+        if (size1 == size2 && size1 == names.size()) {
+            // 检查无误后，判断是否启动共享池，如果启动了的话，将格式化中的没有问题的数据提供给共享池
+            if (StartSharedPool) {
+                // 更新共享池所属公式
+                ShareHashMap.put(string, new FunctionExpression(string, this.getName(), start, end, names));
             }
+            while (!(start.isEmpty() || end.isEmpty())) {
+                // 如果一致，就进行函数内部每一个公式的检查 这里首先将函数中的每一个公式切割出来
+                for (String s : StrUtils.splitByChar(string.substring(start.pop(), end.pop()), ConstantRegion.COMMA)) {
+                    // 将每一个公式进行检查
+                    BRACKETS_CALCULATION_2.check(s);
+                }
+            }
+            // 如果函数没有问题就检查整个公式
+            BRACKETS_CALCULATION_2.check(stringBuilder.toString());
+        } else {
+            throw new WrongFormat("函数可能缺少起始或结束括号，没有正常的闭环。\nThe function may lack a start or end bracket, and there is no normal closed loop\nMissing function bracket logarithm: " + Math.abs(size2 - size1));
         }
     }
 
@@ -260,13 +260,9 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      * Numerical result set object, which stores the operation data of each step and the final result value
      */
     @Override
-    @SuppressWarnings("unchecked")
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        if (formatRequired) {
-            Formula = StrUtils.removeEmpty(Formula);
-        }
         boolean equals = this.StartSharedPool;
-        Object[] objects = null;
+        FunctionExpression objects = null;
         if (equals) {
             final CalculationNumberResults calculationNumberResults = this.ShareResultsHashMap.get(Formula);
             if (calculationNumberResults != null) {
@@ -276,54 +272,19 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             objects = this.ShareHashMap.get(Formula);
             equals = objects != null;
         }
-        Stack<Integer> start;
-        Stack<Integer> end;
-        Stack<String> names;
-        StringBuilder stringBuilder = new StringBuilder(Formula);
+        // 准备编译对象
+        FunctionExpression functionExpression;
         // 开始进行函数计算，首先判断是否启用了共享池 以及身份是否正确，确保两个公式是同一个
         if (equals) {
-            start = (Stack<Integer>) objects[0];
-            end = (Stack<Integer>) objects[1];
-            names = (Stack<String>) objects[2];
+            functionExpression = objects;
             LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         } else {
-            start = new Stack<>();
-            end = new Stack<>();
-            names = new Stack<>();
-            FunctionParameterExtraction(Formula, start, end, names);
+            functionExpression = FunctionExpression.compile(Formula, this.Name);
             LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL_NO_USE + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         }
-        int l = 0;
-        // 开始计算，首先迭代所有函数的公式与函数的名字，计算出来函数的结果
-        while (!start.isEmpty()) {
-            int pop1 = start.pop();
-            int pop2 = end.pop();
-            String pop = names.pop();
-            // 通过函数名字获取函数对象
-            final ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(pop);
-            // 通过函数索引获取实参
-
-            // 提前计算substring，避免重复计算
-            String subFormula = Formula.substring(pop1, pop2);
-
-            // 使用ArrayList收集结果，以便于添加和转换为数组
-            ArrayList<Double> results = new ArrayList<>();
-
-            for (String s : StrUtils.splitByChar(subFormula, ConstantRegion.COMMA)) {
-                double result = BRACKETS_CALCULATION_2.calculation(s).getResult();
-                l++;
-                results.add(result);
-            }
-
-            // 将ArrayList转换为double[]数组，这一步在内部已经优化过
-            double[] resultArray = results.stream().mapToDouble(Double::doubleValue).toArray();
-
-            // 最后替换字符串内容 functionByName
-            stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, String.valueOf(functionByName.run(resultArray)));
-        }
-        CalculationNumberResults calculation = BRACKETS_CALCULATION_2.calculation(stringBuilder.toString());
+        // 开始计算
+        final CalculationNumberResults calculation = Mathematical_Expression.Options.isUseBigDecimal() ? functionExpression.calculationBigDecimalsCache(false) : functionExpression.calculationCache(false);
         if (this.StartSharedPool) {
-            calculation = new CalculationNumberResults(l + calculation.getResultLayers(), calculation.getResult(), this.Name);
             this.ShareResultsHashMap.put(Formula, calculation);
         }
         return calculation;
@@ -390,5 +351,15 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         logResults.put(explain);
         logResults.setResult(explain.getResult());
         return logResults;
+    }
+
+    @Override
+    public FunctionExpression compile(String Formula, boolean formatRequired) {
+        return FunctionExpression.compile(Formula, this.Name);
+    }
+
+    @Override
+    public FunctionExpression compileBigDecimal(String Formula, boolean formatRequired) {
+        return this.compile(Formula, formatRequired);
     }
 }

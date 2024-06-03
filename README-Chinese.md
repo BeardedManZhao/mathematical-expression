@@ -236,11 +236,12 @@ public class MAIN {
 
 您在一些计算组件中，可以使用 `explain` 函数来进行表达式的计算，这个函数能够将计算组件的计算过程完整的绘制成为一个日志结果对象，日志结果对象可以被绘制成为一个图，下面是支持的组件以及使用示例。
 
-| 计算组件名称                                                                                     | 是否支持 `explain` | 从何时开始支持 | 相关知识                   |
-|--------------------------------------------------------------------------------------------|----------------|---------|------------------------|
-| io.github.beardedManZhao.mathematicalExpression.core.calculation.PrefixExpressionOperation | yes            | v1.3.5  | [click this](#无括号表达式)  |
-| io.github.beardedManZhao.mathematicalExpression.core.calculation.BracketsCalculation2      | yes            | v1.3.5  | [click this](#嵌套括号表达式) |
-| io.github.beardedManZhao.mathematicalExpression.core.calculation.CumulativeCalculation     | yes            | v1.3.6  | [click this](#区间累加表达式) |
+| 计算组件名称                                                                                       | 是否支持 `explain` | 从何时开始支持 | 相关知识                   |
+|----------------------------------------------------------------------------------------------|----------------|---------|------------------------|
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.PrefixExpressionOperation   | yes            | v1.3.5  | [click this](#无括号表达式)  |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.BracketsCalculation2        | yes            | v1.3.5  | [click this](#嵌套括号表达式) |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.CumulativeCalculation       | yes            | v1.3.6  | [click this](#区间累加表达式) |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.FunctionFormulaCalculation2 | yes            | v1.3.6  | [click this](#函数运算表达式) |
 
 #### 引入流程图代码生成库
 

@@ -8,21 +8,33 @@ package io.github.beardedManZhao.mathematicalExpression.core.container;
 public abstract class NameExpression implements Expression {
 
 
-    private final String Expression, calculationName;
+    private final StringBuilder Expression;
+
+    private final String calculationName;
 
     private boolean available = true;
 
     private CalculationResults cache;
 
     public NameExpression(String expression, String calculationName) {
-        this.Expression = expression;
+        this.Expression = new StringBuilder(expression);
         this.calculationName = calculationName;
     }
 
     @Override
     public String getExpressionStr() {
+        return this.Expression.toString();
+    }
+
+    /**
+     * @return 当前表达式的原始引用，我们允许子类通过引用修改表达式
+     * <p>
+     * The original reference of the current expression, we allow subclasses to modify the expression by reference
+     */
+    protected StringBuilder getExpressionStrBuilder() {
         return this.Expression;
     }
+
 
     @Override
     public String getCalculationName() {

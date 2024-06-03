@@ -265,11 +265,12 @@ In some calculation components, you can use the 'explain' function to calculate 
 plot the calculation process of the calculation component as a log result object, which can be plotted as a graph. The
 following are the supported components and usage examples.
 
-| Calculation component name                                                                 | Does it support `explain` | When did support start | Related knowledge                             |
-|--------------------------------------------------------------------------------------------|---------------------------|------------------------|-----------------------------------------------|
-| io.github.beardedManZhao.mathematicalExpression.core.calculation.PrefixExpressionOperation | yes                       | v1.3.5                 | [click this](#NotBracketedExpression)         |
-| io.github.beardedManZhao.mathematicalExpression.core.calculation.BracketsCalculation2      | yes                       | v1.3.5                 | [click this](#NestedParenthesisExpression)    |
-| io.github.beardedManZhao.mathematicalExpression.core.calculation.CumulativeCalculation     | yes                       | v1.3.6                 | [click this](#IntervalAccumulationExpression) |
+| Calculation component name                                                                   | Does it support `explain` | When did support start | Related knowledge                             |
+|----------------------------------------------------------------------------------------------|---------------------------|------------------------|-----------------------------------------------|
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.PrefixExpressionOperation   | yes                       | v1.3.5                 | [click this](#NotBracketedExpression)         |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.BracketsCalculation2        | yes                       | v1.3.5                 | [click this](#NestedParenthesisExpression)    |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.CumulativeCalculation       | yes                       | v1.3.6                 | [click this](#IntervalAccumulationExpression) |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.FunctionFormulaCalculation2 | yes                       | v1.3.6                 | [click this](#FunctionOperationExpression)    |
 
 #### Introducing a flowchart code generation library
 
@@ -841,7 +842,7 @@ public class MAIN {
 计算层数：21	计算结果：130.0	计算来源：zhao
 ```
 
-### Function operation expression
+### FunctionOperationExpression
 
 - Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationFunctionFormulaCalculation`
 - introduce
