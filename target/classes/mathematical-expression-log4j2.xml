@@ -2,6 +2,13 @@
     status="warn" 日志框架本身的输出日志级别，可以修改为debug
     monitorInterval="5" 自动加载配置文件的间隔时间，不低于 5秒；生产环境中修改配置文件，是热更新，无需重启应用
  -->
+<!--
+    此配置文件 在 1.4.3 版本中，已经移除，这是为了开发者们可以使用自己的配置文件！
+    详情请阅读：https://github.com/BeardedManZhao/mathematical-expression/issues/17
+    感谢小伙伴的及时反馈哦！！！
+
+    您项目中的配置文件将会做为此框架的日志文件！因此此配置文件不再起作用了！
+-->
 <configuration monitorInterval="5" status="warn">
     <!--
     集中配置属性进行管理

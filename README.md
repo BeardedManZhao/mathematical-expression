@@ -278,7 +278,7 @@ You only need to import the dependency coordinates below to automatically import
 will help you draw a flowchart of the calculation process of computational components.
 
 ```xml
-
+<!-- If your mathematicalExpression version is greater than 1.4.2, there is no need to introduce this dependency! -->
 <dependency>
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>varFormatter</artifactId>
@@ -781,16 +781,16 @@ public class MAIN {
 - Running results
 
 ```
-计算层数：4	计算结果：false	计算来源：Bool
-计算层数：4	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：false	计算来源：Bool
-计算层数：3	计算结果：false	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：4	计算结果：true	计算来源：Bool
-计算层数：4	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：false	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：false	计算来源：Bool
+计算层数：2	计算结果：false	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
 ```
 
 ### IntervalAccumulationExpression

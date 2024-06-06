@@ -5,6 +5,8 @@ import io.github.beardedManZhao.mathematicalExpression.utils.NumberUtils;
 
 import java.util.HashMap;
 
+import static io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion.*;
+
 /**
  * 函数包类，在这里包含一些内置的函数包，您可以直接将这里的内置函数包选择性的注册到计算组件中！
  * <p>
@@ -222,6 +224,73 @@ public enum FunctionPackage {
                 @Override
                 public double run(double... numbers) {
                     return numbers[0] * 31536000000L;
+                }
+            }
+    ),
+
+    /**
+     * 分支函数包
+     */
+    BRANCH("Branch",
+            // if_eq 函数
+            new ManyToOneNumberFunction("ifEq") {
+                @Override
+                public double run(double... numbers) {
+                    // 检查参数
+                    if (numbers.length != 4) {
+                        throw new UnsupportedOperationException("if函数的参数个数必须为4，示例 ifEq(比较值1, 比较值2, true的结果, false的结果)");
+                    }
+                    // 返回结果
+                    return NumberUtils.ComparisonOperation(EQUAL_SIGN1, numbers[0], numbers[1]) ? numbers[2] : numbers[3];
+                }
+            },
+            // if_gt 函数
+            new ManyToOneNumberFunction("ifGt") {
+                @Override
+                public double run(double... numbers) {
+                    // 检查参数
+                    if (numbers.length != 4) {
+                        throw new UnsupportedOperationException("if函数的参数个数必须为4，示例 ifGt(比较值1, 比较值2, true的结果, false的结果)");
+                    }
+                    // 返回结果
+                    return NumberUtils.ComparisonOperation(GREATER_THAN_SIGN, numbers[0], numbers[1]) ? numbers[2] : numbers[3];
+                }
+            },
+            // if_lt 函数
+            new ManyToOneNumberFunction("ifLt") {
+
+                @Override
+                public double run(double... numbers) {
+                    // 检查参数
+                    if (numbers.length != 4) {
+                        throw new UnsupportedOperationException("if函数的参数个数必须为4，示例 ifLt(比较值1, 比较值2, true的结果, false的结果)");
+                    }
+                    // 返回结果
+                    return NumberUtils.ComparisonOperation(LESS_THAN_SIGN, numbers[0], numbers[1]) ? numbers[2] : numbers[3];
+                }
+            },
+            // if_ge 函数
+            new ManyToOneNumberFunction("ifGe") {
+                @Override
+                public double run(double... numbers) {
+                    // 检查参数
+                    if (numbers.length != 4) {
+                        throw new UnsupportedOperationException("if函数的参数个数必须为4，示例 ifGe(比较值1, 比较值2, true的结果, false的结果)");
+                    }
+                    // 返回结果
+                    return NumberUtils.ComparisonOperation(GREATER_THAN_OR_EQUAL_TO_SIGN, numbers[0], numbers[1])? numbers[2] : numbers[3];
+                }
+            },
+            // if_le 函数
+            new ManyToOneNumberFunction("ifLe") {
+                @Override
+                public double run(double... numbers) {
+                    // 检查参数
+                    if (numbers.length != 4) {
+                        throw new UnsupportedOperationException("if函数的参数个数必须为4，示例 ifLe(比较值1, 比较值2, true的结果, false的结果)");
+                    }
+                    // 返回结果
+                    return NumberUtils.ComparisonOperation(LESS_THAN_OR_EQUAL_TO_SIGN, numbers[0], numbers[1]) ? numbers[2] : numbers[3];
                 }
             }
     );

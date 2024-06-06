@@ -208,8 +208,8 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      *               Mathematical operation formula of the format to be judged
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void check(String string) throws WrongFormat {
-        string = StrUtils.removeEmpty(string);
         if (this.StartSharedPool && this.isCache(string)) {
             return;
         }
@@ -227,8 +227,8 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         if (size1 == size2 && size1 == names.size()) {
             // 检查无误后，判断是否启动共享池，如果启动了的话，将格式化中的没有问题的数据提供给共享池
             if (StartSharedPool) {
-                // 更新共享池所属公式
-                ShareHashMap.put(string, new FunctionExpression(string, this.getName(), start, end, names));
+                // 更新共享池所属公式 TODO 这里是需要将函数的元素复制下 因为共享池中的栈需要用来计算!
+                ShareHashMap.put(string, new FunctionExpression(string, this.getName(), (Stack<Integer>) start.clone(), (Stack<Integer>) end.clone(), names));
             }
             while (!(start.isEmpty() || end.isEmpty())) {
                 // 如果一致，就进行函数内部每一个公式的检查 这里首先将函数中的每一个公式切割出来
@@ -292,9 +292,6 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
 
     @Override
     public LogResults explain(String Formula, boolean formatRequired) {
-        if (formatRequired) {
-            Formula = StrUtils.removeEmpty(Formula);
-        }
         Stack<Integer> start;
         Stack<Integer> end;
         Stack<String> names;

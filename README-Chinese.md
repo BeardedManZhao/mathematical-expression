@@ -248,7 +248,7 @@ public class MAIN {
 您只需要导入下面的依赖坐标就可以自动实现相关组件的导入。这个库将会帮助您将计算组件的计算过程绘制成一个流程图。
 
 ```xml
-
+<!-- 若您的 mathematicalExpression 版本大于 1.4.2 则不需要引入此依赖！ -->
 <dependency>
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>varFormatter</artifactId>
@@ -733,16 +733,16 @@ public class MAIN {
 - 运行结果
 
 ```
-计算层数：4	计算结果：false	计算来源：Bool
-计算层数：4	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：false	计算来源：Bool
-计算层数：3	计算结果：false	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：3	计算结果：true	计算来源：Bool
-计算层数：4	计算结果：true	计算来源：Bool
-计算层数：4	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：false	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：false	计算来源：Bool
+计算层数：2	计算结果：false	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
+计算层数：2	计算结果：true	计算来源：Bool
 ```
 
 ### 区间累加表达式

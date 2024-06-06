@@ -1,7 +1,9 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation.bool;
 
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.NumberCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationBooleanResults;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
@@ -21,13 +23,39 @@ public abstract class BooleanCalculation implements Calculation {
     /**
      * 在进行该模块的计算时，需要使用到的第三方计算组件
      */
-    protected final static BracketsCalculation2 BRACKETS_CALCULATION_2 = BracketsCalculation2.getInstance(CalculationManagement.BRACKETS_CALCULATION_2_NAME);
+    protected NumberCalculation numberCalculation = BracketsCalculation2.getInstance(CalculationManagement.BRACKETS_CALCULATION_2_NAME);
     protected final String Name;
     protected final Logger LOGGER;
 
     protected BooleanCalculation(String name) {
         Name = name;
         LOGGER = LoggerFactory.getLogger(name);
+    }
+
+    /**
+     * 为该组件配置数值计算过程中所采用的模块，特别是针对“比较表达式”的运算，需依托于高效的数值计算模块。我们赋予您这一自定义能力，旨在让您能灵活选择或设计数值计算模块，从而大幅提高系统应对多样需求的灵活性。
+     * <p>
+     * Configuring the module utilized by this component during numerical computations, particularly for "expression comparison," necessitates the integration of a robust numerical calculation module. Our provision of this customization capability aims to enable you to handpick or design your numerical computation modules, thereby significantly enhancing the adaptability and flexibility of the system to diverse requirements.
+     *
+     * @param numberCalculation 数值计算组件，如果您没有调用过此函数，则默认是使用的 BracketsCalculation2
+     *                          <p>
+     *                          Numerical Calculation Component - if you have not invoked this function, the default module in use is BracketsCalculation2.
+     */
+    public void setCalculation(NumberCalculation numberCalculation) {
+        this.numberCalculation = numberCalculation;
+    }
+
+    /**
+     * 为该组件配置数值计算过程中所采用的模块，特别是针对“比较表达式”的运算，需依托于高效的数值计算模块。我们赋予您这一自定义能力，旨在让您能灵活选择或设计数值计算模块，从而大幅提高系统应对多样需求的灵活性。
+     * <p>
+     * Configuring the module utilized by this component during numerical computations, particularly for "expression comparison," necessitates the integration of a robust numerical calculation module. Our provision of this customization capability aims to enable you to handpick or design your numerical computation modules, thereby significantly enhancing the adaptability and flexibility of the system to diverse requirements.
+     *
+     * @param numberCalculation 数值计算组件，如果您没有调用过此函数，则默认是使用的 BracketsCalculation2
+     *                          <p>
+     *                          Numerical Calculation Component - if you have not invoked this function, the default module in use is BracketsCalculation2.
+     */
+    public void setCalculation(Mathematical_Expression numberCalculation) {
+        this.setCalculation((NumberCalculation) Mathematical_Expression.getInstance(numberCalculation));
     }
 
     /**
@@ -69,8 +97,8 @@ public abstract class BooleanCalculation implements Calculation {
             // 检查表达式两边是否符合条件
             final String left = split[0];
             final String right = split[1];
-            if (!ConstantRegion.STRING_NULL.equals(left)) BRACKETS_CALCULATION_2.check(left);
-            if (!ConstantRegion.STRING_NULL.equals(right)) BRACKETS_CALCULATION_2.check(right);
+            if (!ConstantRegion.STRING_NULL.equals(left)) numberCalculation.check(left);
+            if (!ConstantRegion.STRING_NULL.equals(right)) numberCalculation.check(right);
         } else {
             // 如果比较运算符两边的表达式不是2个，说明不是一个布尔表达式
             throw new WrongFormat("发生了错误，您的布尔表达式中，存在着数量不正确的比较运算符\n" +
