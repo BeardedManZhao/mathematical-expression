@@ -1,6 +1,7 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation;
 
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 /**
@@ -41,7 +42,7 @@ public interface Calculation {
      * <p>
      * The statistical information object of the current calculation component's calculation process when calculating an expression.
      */
-    default CalculationResults explain(String Formula, boolean formatRequired) {
+    default LogResults explain(String Formula, boolean formatRequired) {
         throw new UnsupportedOperationException("The current computing component cannot be used for " + this.getName() + ".explain(" + Formula + "), as it does not have the ability to perform process analysis~");
     }
 
