@@ -5,19 +5,19 @@ import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegi
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * 字符串工具类
  */
 public final class StrUtils {
 
+/*
     /**
      * 删除一个字符串中所有的空字符
      *
      * @param s 需要被删除的字符串
      * @return 删除后的字符串
-     */
+     * /
     public static String removeEmpty(String s) {
         StringBuilder stringBuilder = new StringBuilder(s.length());
         for (int i = 0; i < s.length(); i++) {
@@ -28,6 +28,7 @@ public final class StrUtils {
         }
         return stringBuilder.toString();
     }
+*/
 
     /**
      * 将一个字符串转换为浮点数值
@@ -105,12 +106,13 @@ public final class StrUtils {
         return res;
     }
 
+/*
     /**
      * 将一个数值字符传换成一个数值
      *
      * @param c 需要被转换的字符
      * @return 转换之后的数值
-     */
+     * /
     public static int charToInteger(char c) {
         if (StrUtils.IsANumber(c)) {
             return c - 0x30;
@@ -119,6 +121,7 @@ public final class StrUtils {
                     "\nWhen you are converting characters to numeric values, the conversion cannot be successful due to incorrect characters. Error characters:" + c);
         }
     }
+*/
 
     /**
      * 判断一个字符是不是一个操作符
@@ -154,13 +157,14 @@ public final class StrUtils {
         return true;
     }
 
+/*
     /**
      * 判断一个字符串是不是一个数值 允许阶乘
      *
      * @param c              需要被判断的自读
      * @param allowFactorial 允许阶乘则设置为 true
      * @return 如果是一个数值，这里返回True
-     */
+     * /
     public static boolean IsANumber(CharSequence c, boolean allowFactorial) {
         final int i = c.length() - 1;
         if (allowFactorial && c.charAt(i) == ConstantRegion.FACTORIAL_SIGN) {
@@ -168,6 +172,7 @@ public final class StrUtils {
         }
         return IsANumber(c);
     }
+*/
 
     /**
      * 判断一个字符是不是一个数值
@@ -203,13 +208,14 @@ public final class StrUtils {
         return arrayList;
     }
 
+/*
     /**
      * 替换字符串a中所有出现在字符集b中的字符为字符c。
      *
      * @param a          原始字符串
      * @param replaceMap 替换字典，会按照字典来进行替换操作
      * @return 新字符串，其中a中所有在b中存在的字符已被c替换
-     */
+     * /
     public static String replaceCharsInString(String a, HashMap<Character, String> replaceMap) {
         // 创建一个字符集合，用于存储字符b中的字符
         StringBuilder result = new StringBuilder();
@@ -226,5 +232,6 @@ public final class StrUtils {
         }
         return result.toString();
     }
+*/
 }
 

@@ -25,11 +25,11 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>mathematical-expression</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
     <packaging>jar</packaging>
     <name>mathematical-expression</name>
     <description>mathematical-expression-java</description>
-    <url>https://github.com/BeardedManZhao/mathematical-expression</url>
+    <url>https://github.com/BeardedManZhao/mathematical-expression.git</url>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

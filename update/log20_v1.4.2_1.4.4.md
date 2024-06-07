@@ -1,10 +1,12 @@
-# 1.4.2 -> 1.4.3 版本更新日志
+# 1.4.2 -> 1.4.4 版本更新日志
 
 ### 更新时间：2024年06月07日
 
 > 首先要感谢 [17号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/17) [16号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/16) 的发起者提供的建议！！！
 
 ==Java==
+
+[//]: # (接下来为1.4.3 基本更新)
 
 - 为函数计算表达式组件增加了编译支持！
 
@@ -119,3 +121,8 @@ public class MAIN {
   }
 }
 ```
+
+[//]: # (接下来为 1.4.4 补充更新)
+
+- 版本号更新到 `1.4.4`
+- 将不再使用到的工具类中的某些函数进行删减！
