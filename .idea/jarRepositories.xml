@@ -19,6 +19,11 @@
     <remote-repository>
       <option name="id" value="public" />
       <option name="name" value="AliYun nexus" />
+      <option name="url" value="https://maven.aliyun.com/nexus/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="public" />
+      <option name="name" value="AliYun nexus" />
       <option name="url" value="http://maven.aliyun.com/nexus/content/groups/public/" />
     </remote-repository>
     <remote-repository>

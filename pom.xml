@@ -11,7 +11,7 @@
         <repository>
             <id>public</id>
             <name>AliYun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -25,7 +25,7 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>mathematical-expression</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
     <packaging>jar</packaging>
     <name>mathematical-expression</name>
     <description>mathematical-expression-java</description>
@@ -68,7 +68,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>

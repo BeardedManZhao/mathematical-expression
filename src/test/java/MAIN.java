@@ -1,7 +1,7 @@
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.bool.BooleanCalculation2;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationBooleanResults;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
 @Functions({
@@ -10,12 +10,33 @@ import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 public class MAIN {
     public static void main(String[] args) throws WrongFormat {
         Mathematical_Expression.register_function(MAIN.class);
-        Mathematical_Expression.register_function(FunctionPackage.BRANCH);
+        BooleanCalculation2 booleanCalculation2 = BooleanCalculation2.getInstance("Bool");
+        booleanCalculation2.setCalculation(Mathematical_Expression.functionFormulaCalculation2);
+        // 创建3个表达式
+        String s1 = "1 + 2 + 4 * f(10, 3)";
+        String s2 = "2 + 30 + (2 * 3) - 1";
+        String s3 = "1 + 3 * 10";
+        extracted(booleanCalculation2, s1 + " > " + s2);// false
+        extracted(booleanCalculation2, s1 + " < " + s2);// true
+        extracted(booleanCalculation2, s1 + " = " + s3);// true
+        extracted(booleanCalculation2, s1 + " == " + s3);// true
+        extracted(booleanCalculation2, s1 + " != " + s3);// false
+        extracted(booleanCalculation2, s1 + " <> " + s3);// false
+        extracted(booleanCalculation2, s1 + " <= " + s3);// true
+        extracted(booleanCalculation2, s1 + " >= " + s3);// true
+        extracted(booleanCalculation2, s1 + " != " + s2);// true
+        extracted(booleanCalculation2, s1 + " <> " + s2);// true
+    }
 
-        final Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.functionFormulaCalculation2);
-        // 直接计算
-        instance.check("1 + ifEq(10-2, 8, 10, 20)");
-        // 如果 10-2 == 8 则返回 1 + 10 否则返回 1 + 20
-        System.out.println(instance.calculation("1 + ifEq(10-2, 8, 10, 20)"));
+    private static void extracted(BooleanCalculation2 booleanCalculation2, String s) throws WrongFormat {
+        // 检查表达式是否有错误
+        booleanCalculation2.check(s);
+        // 开始计算结果
+        CalculationBooleanResults calculation = booleanCalculation2.calculation(s);
+        // 打印结果数值
+        System.out.println(
+                "计算层数：" + calculation.getResultLayers() + "\t计算结果：" + calculation.getResult() +
+                        "\t计算来源：" + calculation.getCalculationSourceName()
+        );
     }
 }

@@ -1,6 +1,8 @@
 # 1.4.2 -> 1.4.3 版本更新日志
 
-### 更新时间：2024年06月06日【正在开发中...】
+### 更新时间：2024年06月07日
+
+> 首先要感谢 [17号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/17) [16号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/16) 的发起者提供的建议！！！
 
 ==Java==
 
@@ -41,12 +43,8 @@ public class MAIN {
 }
 ```
 
--
-
-日志配置文件移除，这是为了能够将配置文件完全交给开发者去设定，避免框架配置文件覆盖了项目，优化详情可见：[17号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/17)
-
-- 将`varFormatter`
-  库做为必须库，而非可选库，这有效的避免一些意外情况，详细信息请查询：[16号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/16)
+- 日志配置文件移除，这是为了能够将配置文件完全交给开发者去设定，避免框架配置文件覆盖了项目，优化详情可见：[17号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/17)
+- 将`varFormatter` 库做为必须库，而非可选库，这有效的避免一些意外情况，详细信息请查询：[16号留言](https://github.com/BeardedManZhao/mathematical-expression/issues/16)
 - 优化了函数计算组件的缓存共享池原理，将其中的格式化操作进行删减，提高了计算组件的效率。
 - 对于比较计算组件，提供了 `setCalculation` 函数，允许开发者自定义数值计算规则。
 - 优化了比较计算组件的逻辑，加快了计算速度，删减了不必要的逻辑。
