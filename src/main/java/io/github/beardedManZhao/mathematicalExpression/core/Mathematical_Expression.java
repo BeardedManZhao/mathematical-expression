@@ -68,6 +68,12 @@ public enum Mathematical_Expression {
         public Calculation getInstance(String calculationName) {
             return BooleanCalculation2.getInstance(calculationName);
         }
+    },
+    complexCalculation {
+        @Override
+        public Calculation getInstance(String calculationName) {
+            return ComplexCalculation.getInstance(calculationName);
+        }
     };
 
     /**

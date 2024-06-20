@@ -30,6 +30,9 @@ public final class CalculationManagement {
      */
     public static final String PREFIX_EXPRESSION_OPERATION_NAME = "PrefixExpressionOperation";
     public static final String BRACKETS_CALCULATION_2_NAME = "BracketsCalculation2";
+
+    public static final String FUNCTION_FORMULA_CALCULATION_2_NAME = "FunctionFormulaCalculation2";
+
     public static final Date START_DATE = new Date();
     private static final HashMap<String, Calculation> STRING_CALCULATION_HASH_MAP = new HashMap<>();
     private static final HashMap<String, Function> STRING_FUNCTION_HASH_MAP = new HashMap<>();

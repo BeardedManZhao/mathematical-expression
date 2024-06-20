@@ -25,7 +25,7 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>mathematical-expression</artifactId>
-    <version>1.4.4</version>
+    <version>1.4.5</version>
     <packaging>jar</packaging>
     <name>mathematical-expression</name>
     <description>mathematical-expression-java</description>
@@ -61,6 +61,12 @@
             <groupId>io.github.BeardedManZhao</groupId>
             <artifactId>varFormatter</artifactId>
             <version>1.0.4</version>
+        </dependency>
+        <!-- algorithmStar 科学计算组件 用于计算复数等复杂的操作数对象 -->
+        <dependency>
+            <groupId>io.github.BeardedManZhao</groupId>
+            <artifactId>algorithmStar</artifactId>
+            <version>1.40</version>
         </dependency>
     </dependencies>
 

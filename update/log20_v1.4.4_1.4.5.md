@@ -1,3 +1,13 @@
+# 1.4.2 -> 1.4.4 版本更新日志
+
+### 更新时间：2024年06月20日 【正在开发中】
+
+==Java==
+
+- 更新版本号为 1.4.5 （还未发maven）
+- 新增了函数表达式对象。
+
+```java
 import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
@@ -41,3 +51,4 @@ public class MAIN {
 
     }
 }
+```

@@ -11,13 +11,12 @@ import java.util.ArrayList;
  */
 public final class StrUtils {
 
-/*
     /**
      * 删除一个字符串中所有的空字符
      *
      * @param s 需要被删除的字符串
      * @return 删除后的字符串
-     * /
+     */
     public static String removeEmpty(String s) {
         StringBuilder stringBuilder = new StringBuilder(s.length());
         for (int i = 0; i < s.length(); i++) {
@@ -28,7 +27,6 @@ public final class StrUtils {
         }
         return stringBuilder.toString();
     }
-*/
 
     /**
      * 将一个字符串转换为浮点数值
