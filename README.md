@@ -1091,6 +1091,70 @@ public class MAIN {
 计算层数：3	计算结果：143.0	计算来源：fast
 ```
 
+### Complex calculation component
+
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation`
+- Starting from version 1.4.5, we have implemented a calculation component for complex calculation expressions. It can
+  calculate a mathematical expression such as' (3 * 2-1)+2 * 3+f (10,5) i 'and return its object. We can use the
+  returned object to perform a series of operations. Here is an example!
+
+```java
+import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationComplexResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression;
+import io.github.beardedManZhao.mathematicalExpression.core.container.FunctionExpression;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
+
+@Functions({
+        "f(x, y) = x - y"
+})
+public class MAIN {
+  public static void main(String[] args) throws WrongFormat {
+    Mathematical_Expression.register_function(MAIN.class);
+    // 将一个复数编译为计算表达式对象
+    final ComplexCalculation instance = (ComplexCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.complexCalculation);
+    final String s = "3 * 2 - 1 + 2*3 + f(10, 5)i";
+    instance.check(s);
+    final ComplexExpression compile = instance.compile(s, true);
+
+    // 我们还可以直接获取到复数的实部 和 虚部的表达式对象！
+    final FunctionExpression real = compile.getFunctionExpression1();
+    final FunctionExpression imaginary = compile.getFunctionExpression2();
+    System.out.println(real.getExpressionStr());
+    System.out.println(imaginary.getExpressionStr());
+
+    // 直接计算出复数的结果
+    final CalculationComplexResults calculation = compile.calculationCache(false);
+    // 查看结果
+    System.out.println(compile);
+    System.out.println(calculation);
+    // 获取到复数对象
+    final ComplexNumber complexNumber = calculation.toComplexNumber();
+    // 直接 使用科学计算库 参与共轭计算
+    final ComplexNumber conjugate = complexNumber.conjugate();
+    System.out.println(conjugate);
+    // 还可以参与加法等运算 在这里是 自己 + 自己
+    final ComplexNumber add = complexNumber.add(conjugate);
+    System.out.println(add);
+
+  }
+}
+```
+
+- Running results
+
+```
+3*2
+-1+2*3+f(10,5)
+io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression@2698dc7
+6.0 - 10.0i
+6.0 + 10.0i
+12.0 + 0.0i
+```
+
 ## Advanced Operations
 
 ### Registration and calculation of mathematical functions

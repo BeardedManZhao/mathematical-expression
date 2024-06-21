@@ -15,7 +15,7 @@ public class MAIN {
         Mathematical_Expression.register_function(MAIN.class);
         // 将一个复数编译为计算表达式对象
         final ComplexCalculation instance = (ComplexCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.complexCalculation);
-        final String s = "3 * 2 - 1 + 2*3 + f(10, 5)";
+        final String s = "3 * 2 - 1 + 2*3 + f(10, 5)i";
         instance.check(s);
         final ComplexExpression compile = instance.compile(s, true);
 

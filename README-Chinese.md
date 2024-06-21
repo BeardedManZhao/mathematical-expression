@@ -242,6 +242,7 @@ public class MAIN {
 | io.github.beardedManZhao.mathematicalExpression.core.calculation.BracketsCalculation2        | yes            | v1.3.5  | [click this](#嵌套括号表达式) |
 | io.github.beardedManZhao.mathematicalExpression.core.calculation.CumulativeCalculation       | yes            | v1.3.6  | [click this](#区间累加表达式) |
 | io.github.beardedManZhao.mathematicalExpression.core.calculation.FunctionFormulaCalculation2 | yes            | v1.3.6  | [click this](#函数运算表达式) |
+| io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation   | yes            | v1.4.5  |                        |
 
 #### 引入流程图代码生成库
 
@@ -1018,6 +1019,69 @@ public class MAIN {
 
 ```
 计算层数：3	计算结果：143.0	计算来源：fast
+```
+
+### 复数计算组件
+
+- 类组件：io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation
+- 从 1.4.5 版本开始，我们实现了一个有关复数计算表达式的计算组件，其可以计算一个例如 `(3 * 2 - 1) + 2*3 + f(10, 5) i `
+  的数学表达式，并将其对象返回出来，我们可以使用它返回出来的对象进行一系列操作，下面是一个示例！
+
+```java
+import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationComplexResults;
+import io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression;
+import io.github.beardedManZhao.mathematicalExpression.core.container.FunctionExpression;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
+
+@Functions({
+        "f(x, y) = x - y"
+})
+public class MAIN {
+  public static void main(String[] args) throws WrongFormat {
+    Mathematical_Expression.register_function(MAIN.class);
+    // 将一个复数编译为计算表达式对象
+    final ComplexCalculation instance = (ComplexCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.complexCalculation);
+    final String s = "3 * 2 - 1 + 2*3 + f(10, 5)i";
+    instance.check(s);
+    final ComplexExpression compile = instance.compile(s, true);
+
+    // 我们还可以直接获取到复数的实部 和 虚部的表达式对象！
+    final FunctionExpression real = compile.getFunctionExpression1();
+    final FunctionExpression imaginary = compile.getFunctionExpression2();
+    System.out.println(real.getExpressionStr());
+    System.out.println(imaginary.getExpressionStr());
+
+    // 直接计算出复数的结果
+    final CalculationComplexResults calculation = compile.calculationCache(false);
+    // 查看结果
+    System.out.println(compile);
+    System.out.println(calculation);
+    // 获取到复数对象
+    final ComplexNumber complexNumber = calculation.toComplexNumber();
+    // 直接 使用科学计算库 参与共轭计算
+    final ComplexNumber conjugate = complexNumber.conjugate();
+    System.out.println(conjugate);
+    // 还可以参与加法等运算 在这里是 自己 + 自己
+    final ComplexNumber add = complexNumber.add(conjugate);
+    System.out.println(add);
+
+  }
+}
+```
+
+- 下面就是计算结果
+
+```
+3*2
+-1+2*3+f(10,5)
+io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression@2698dc7
+6.0 - 10.0i
+6.0 + 10.0i
+12.0 + 0.0i
 ```
 
 ## 高阶操作

@@ -302,9 +302,10 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         names = new Stack<>();
         FunctionParameterExtraction(Formula, start, end, names);
         // 启用标记
-        final LogResults logResults = new LogResults("start");
+        final String s3 = "start" + System.currentTimeMillis();
+        final LogResults logResults = new LogResults(s3);
         logResults.setNameJoin(false);
-        logResults.setPrefix("start(\"" + Formula + "\")");
+        logResults.setPrefix(s3 + "(\"" + Formula + "\")");
         // 开始计算，首先迭代所有函数的公式与函数的名字，计算出来函数的结果
         while (!start.isEmpty()) {
             int pop1 = start.pop();

@@ -3,8 +3,10 @@ package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationComplexResults;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
 import io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression;
+import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
@@ -55,40 +57,25 @@ public class ComplexCalculation extends NumberCalculation implements CompileCalc
         }
     }
 
-    @Override
-    public void check(String expression) throws WrongFormat {
-        // 首先准备计数器，当前面的右括号与左括号一样的时候 此数值应为0
-        int count = 0;
-        final StringBuilder stringBuilder = new StringBuilder(expression.length());
-        final PrimitiveIterator.OfInt iterator = expression.chars().iterator();
-        while (iterator.hasNext()) {
-            final char c1 = (char) iterator.next().intValue();
-            switch (c1) {
-                case ConstantRegion.LEFT_BRACKET:
-                    ++count;
-                    break;
-                case ConstantRegion.RIGHT_BRACKET:
-                    --count;
-                    break;
-                case ConstantRegion.PLUS_SIGN:
-                case ConstantRegion.MINUS_SIGN:
-                    if (count == 0) {
-                        // 检查实部
-                        FUNCTION_FORMULA_CALCULATION_2.check(stringBuilder.toString());
-                        // 然后编译出剩下的部分 但是要在这里找一下 i 的位置
-                        final int i = expression.lastIndexOf('i');
-                        // 检查虚部
-                        if (i == -1 || expression.length() <= stringBuilder.length()) {
-                            throw new WrongFormat("The imaginary part of the complex number is not found. error => " + expression.substring(stringBuilder.length()) + " ﹏+/-﹏<imaginary>﹏i");
-                        }
-                        FUNCTION_FORMULA_CALCULATION_2.check(expression.substring(stringBuilder.length(), i));
-                        // 结束循环
-                        return;
-                    }
-            }
-            stringBuilder.append(c1);
-        }
-        throw new RuntimeException(expression + " is not a complex expression.");
+    /**
+     * 获取复数表达式的计算结果
+     *
+     * @param Formula  需要被计算的表达式
+     * @param explain  实部的计算结果
+     * @param explain1 虚部的计算结果
+     * @param name     计算结果的名称
+     * @return LogResults
+     */
+    private static LogResults getLogResults(String Formula, LogResults explain, LogResults explain1, String name) {
+        // 生成名字
+        final String s = "start" + System.currentTimeMillis();
+        final LogResults logResults = new LogResults(s, explain, explain1);
+        logResults.setNameJoin(false);
+        logResults.setPrefix(s + "(\"" + Formula + "\")");
+        logResults.setResult(
+                new CalculationComplexResults(-1, (double) explain.getResult(), (double) explain1.getResult(), name)
+        );
+        return logResults;
     }
 
     @Override
@@ -117,5 +104,79 @@ public class ComplexCalculation extends NumberCalculation implements CompileCalc
             Formula = formatStr(Formula);
         }
         return this.compile(Formula, formatRequired);
+    }
+
+    @Override
+    public void check(String expression) throws WrongFormat {
+        // 首先准备计数器，当前面的右括号与左括号一样的时候 此数值应为0
+        int count = 0;
+        final StringBuilder stringBuilder = new StringBuilder(expression.length());
+        final PrimitiveIterator.OfInt iterator = expression.chars().iterator();
+        while (iterator.hasNext()) {
+            final char c1 = (char) iterator.next().intValue();
+            switch (c1) {
+                case ConstantRegion.LEFT_BRACKET:
+                    ++count;
+                    break;
+                case ConstantRegion.RIGHT_BRACKET:
+                    --count;
+                    break;
+                case ConstantRegion.PLUS_SIGN:
+                case ConstantRegion.MINUS_SIGN:
+                    if (count == 0) {
+                        // 检查实部
+                        FUNCTION_FORMULA_CALCULATION_2.check(stringBuilder.toString());
+                        // 然后编译出剩下的部分 但是要在这里找一下 i 的位置
+                        final int i = expression.lastIndexOf('i');
+                        // 检查虚部
+                        if (i == -1 || expression.length() <= stringBuilder.length()) {
+                            // 找不到 i 或者 总体长度小于等于实部长度 这代表 这个表达式不是一个复数
+                            throw new WrongFormat("The imaginary part of the complex number is not found. error => " + expression.substring(stringBuilder.length()) + " ﹏+/-﹏<imaginary>﹏i");
+                        }
+                        FUNCTION_FORMULA_CALCULATION_2.check(expression.substring(stringBuilder.length(), i));
+                        // 结束循环
+                        return;
+                    }
+            }
+            stringBuilder.append(c1);
+        }
+        throw new RuntimeException(expression + " is not a complex expression.");
+    }
+
+    @Override
+    public LogResults explain(String Formula, boolean formatRequired) {
+        // 首先准备计数器，当前面的右括号与左括号一样的时候 此数值应为0
+        int count = 0;
+        final StringBuilder stringBuilder = new StringBuilder(Formula.length());
+        final PrimitiveIterator.OfInt iterator = Formula.chars().iterator();
+        while (iterator.hasNext()) {
+            final char c1 = (char) iterator.next().intValue();
+            switch (c1) {
+                case ConstantRegion.LEFT_BRACKET:
+                    ++count;
+                    break;
+                case ConstantRegion.RIGHT_BRACKET:
+                    --count;
+                    break;
+                case ConstantRegion.PLUS_SIGN:
+                case ConstantRegion.MINUS_SIGN:
+                    if (count == 0) {
+                        // 处理实部
+                        final LogResults explain = FUNCTION_FORMULA_CALCULATION_2.explain(stringBuilder.toString(), formatRequired);
+                        // 然后编译出剩下的部分 但是要在这里找一下 i 的位置
+                        final int i = Formula.lastIndexOf('i');
+                        // 检查虚部
+                        if (i == -1 || Formula.length() <= stringBuilder.length()) {
+                            // 找不到 i 或者 总体长度小于等于实部长度 这代表 这个表达式不是一个复数
+                            throw new UnsupportedOperationException("The imaginary part of the complex number is not found. error => " + Formula.substring(stringBuilder.length()) + " ﹏+/-﹏<imaginary>﹏i");
+                        }
+                        final LogResults explain1 = FUNCTION_FORMULA_CALCULATION_2.explain(Formula.substring(stringBuilder.length(), i), formatRequired);
+                        // 结束循环
+                        return getLogResults(Formula, explain, explain1, this.getName());
+                    }
+            }
+            stringBuilder.append(c1);
+        }
+        throw new RuntimeException(Formula + " is not a complex expression.");
     }
 }
