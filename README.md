@@ -42,7 +42,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.4.4</version>
+      <version>1.4.5</version>
     </dependency>
 </dependencies>
 ```
@@ -52,7 +52,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.4'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.5'
 }
 ```
 
@@ -1095,7 +1095,7 @@ public class MAIN {
 
 - Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation`
 - Starting from version 1.4.5, we have implemented a calculation component for complex calculation expressions. It can
-  calculate a mathematical expression such as' (3 * 2-1)+2 * 3+f (10,5) i 'and return its object. We can use the
+  calculate a mathematical expression such as `(3 * 2-1)+2 * 3+f (10,5) i` and return its object. We can use the
   returned object to perform a series of operations. Here is an example!
 
 ```java

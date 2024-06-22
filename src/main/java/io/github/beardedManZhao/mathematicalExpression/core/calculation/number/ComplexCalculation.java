@@ -75,6 +75,7 @@ public class ComplexCalculation extends NumberCalculation implements CompileCalc
         logResults.setResult(
                 new CalculationComplexResults(-1, (double) explain.getResult(), (double) explain1.getResult(), name)
         );
+        logResults.put("result", logResults.getResult().toString());
         return logResults;
     }
 
@@ -170,9 +171,8 @@ public class ComplexCalculation extends NumberCalculation implements CompileCalc
                             // 找不到 i 或者 总体长度小于等于实部长度 这代表 这个表达式不是一个复数
                             throw new UnsupportedOperationException("The imaginary part of the complex number is not found. error => " + Formula.substring(stringBuilder.length()) + " ﹏+/-﹏<imaginary>﹏i");
                         }
-                        final LogResults explain1 = FUNCTION_FORMULA_CALCULATION_2.explain(Formula.substring(stringBuilder.length(), i), formatRequired);
                         // 结束循环
-                        return getLogResults(Formula, explain, explain1, this.getName());
+                        return getLogResults(Formula, explain, FUNCTION_FORMULA_CALCULATION_2.explain(Formula.substring(stringBuilder.length(), i), formatRequired), this.getName());
                     }
             }
             stringBuilder.append(c1);
