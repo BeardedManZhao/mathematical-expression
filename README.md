@@ -1767,6 +1767,10 @@ public class MAIN {
 
 <hr>
 
+## Java API Structure Chart
+
+![mathematical-expression](https://github.com/user-attachments/assets/91054091-6e45-42ea-bfc3-3480fc0c7d37)
+
 ## More information
 
 - 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
