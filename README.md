@@ -567,7 +567,7 @@ public class MAIN {
 
 ### Calculation Manager
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.CalculationManagement`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement`
 - introduce：
 
   The manager is a component designed to use both singletons and dynamic objects. The existence of the manager enables
@@ -641,7 +641,7 @@ public class MAIN {
   operand and operator with the current operand to form a new value, and then put it on the stack.
 - API Usage Example
 
-  The operators supported by this component are： `a+b` `a-b` `a*b` `a/b` `a%b` `a!`
+  The operators supported by this component are： `a+b` `a-b` `a*b` `a/b` `a%b`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
