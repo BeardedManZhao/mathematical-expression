@@ -596,13 +596,13 @@ number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixEx
 
 ### 无括号表达式
 
-- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation
+- 类组件： `io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation`
 - 介绍
 
   针对一个没有括号，但是有加减乘除以及取余等运算操作的数学表达式而设计的组件，该组件可以实现带有优先级计算的功能，其中通过前缀表达式解析计算，将操作数与操作符一同存储到栈，在存储的同时配有计算优先级比较，如果当下的优先级较小，就先将上一个操作数与操作符与当前操作数进行运算，形成一个新的数值，然后再入栈。
 - API使用示例
 
-  该组件支持的运算符有： `a+b` `a-b` `a*b` `a/b` `a%b` `( )` `a!`
+  该组件支持的运算符有： `a+b` `a-b` `a*b` `a/b` `a%b` `a!`
 
 ```java
 
@@ -641,13 +641,13 @@ public class MAIN {
 
 ### 嵌套括号表达式
 
-- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.BracketsCalculation2
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2`
 - 介绍：
 
   嵌套括号表达式解析组件，能够针对带有多个括号的数学表达式进行解析与结果计算，针对嵌套括号进行优先级的解析与计算，该组件依赖于“number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation”，在该组件中采用递归进行括号的解析，然后将最内层面的表达式提供给“number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixExpressionOperation”进行计算。
 - API使用示例
 
-  该组件支持的运算符有： a+b a-b a*b a/b a%b ( )
+  该组件支持的运算符有：`a+b` `a-b` `a*b` `a/b` `a%b` `( )` `a!`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
@@ -685,7 +685,7 @@ public class MAIN {
 
 ### 数学比较表达式
 
-- 类组件：bool.calculation.io.github.beardedManZhao.mathematicalExpression.core.BooleanCalculation2
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.bool.BooleanCalculation2`
 - 介绍
 
   使用比较运算符两个括号表达式是否相互成立的一个组件，返回值是一个布尔类型的结果对象，该组件能够比较两个数值的大小等，也可以比较两个表达式之间的大小等关系，依赖于组件“bool.calculation.io.github.beardedManZhao.mathematicalExpression.core.BooleanCalculation2”
@@ -750,7 +750,7 @@ public class MAIN {
 
 ### 区间累加表达式
 
-- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.CumulativeCalculation
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.CumulativeCalculation`
 - 介绍
 
   在数学表达式中，往往有这样的一种公式，公式内容如下图所示，可以看到需要进行累加的数列操作，那么在这种公式的需求下，您可以通过上面的类组件去达到您所需要的目的。
@@ -792,7 +792,7 @@ public class MAIN {
 
 ### 函数运算表达式
 
-- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation`
 - 介绍
 
   针对一些函数的操作，在该框架中也有支持，可以使用上面的类进行这中需要函数的数学表达式的书写，需要注意的是，一切在表达式中使用到的函数都需要在“CalculationManagement”中进行逻辑注册，使得计算的时候可以访问到函数
@@ -849,7 +849,7 @@ public class MAIN {
 
 ### 多参函数运算表达式
 
-- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation2
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation2`
 - 介绍
 
   针对一些在表达式中使用了函数的表达式计算，可以使用上面的类进行操作，它是“number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FunctionFormulaCalculation”类的升级版，从1.1版本开始出现，同时也是它的一个子类拓展实现。
@@ -937,7 +937,7 @@ public class MAIN {
 
 ### 快速区间求和计算组件（基于括号表达式）
 
-- 类组件：mathematical_expression/core/calculation/number/fastSumOfIntervalsBrackets.py
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastSumOfIntervalsBrackets`
 - 介绍 1.15版本的新产物，区间快速求和组件，是针对一个等差为1的区间进行所有元素求和的快速组件，它将一个区间在逻辑上模拟成为一个数学数列，并通过求和公式进行快速的求和。
 
   该组件实现了共享池计算功能，将检查，计算，以及上一次结果记录实现，能够加快计算速度，具体API调用如下所示。
@@ -978,7 +978,7 @@ public class MAIN {
 
 ### 快速区间累乘计算组件（基于括号表达式）
 
-- 类组件：number.calculation.io.github.beardedManZhao.mathematicalExpression.core.FastMultiplyOfIntervalsBrackets
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastMultiplyOfIntervalsBrackets`
 - 介绍 1.2版本的新产物，区间快速累乘组件，是针对一个等差为n的区间进行所有元素累乘的快速组件，它将一个区间在逻辑上模拟成为一个数学数列，并通过求和公式进行快速的累乘。
 
   该组件实现了共享池计算功能，将检查，计算，以及上一次结果记录实现，能够加快计算速度，具体API调用如下所示。
@@ -1025,7 +1025,7 @@ public class MAIN {
 
 ### 复数计算组件
 
-- 类组件：io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.ComplexCalculation`
 - 从 1.4.5 版本开始，我们实现了一个有关复数计算表达式的计算组件，其可以计算一个例如 `(3 * 2 - 1) + 2*3 + f(10, 5) i `
   的数学表达式，并将其对象返回出来，我们可以使用它返回出来的对象进行一系列操作，下面是一个示例！
 

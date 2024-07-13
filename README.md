@@ -631,7 +631,7 @@ public class MAIN {
 
 ### NotBracketedExpression
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationPrefixExpressionOperation`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation`
 - introduce
 
   This component is designed for a mathematical expression without parentheses, but with operations such as addition,
@@ -641,7 +641,7 @@ public class MAIN {
   operand and operator with the current operand to form a new value, and then put it on the stack.
 - API Usage Example
 
-  The operators supported by this component are： a+b a-b a*b a/b a%b
+  The operators supported by this component are： `a+b` `a-b` `a*b` `a/b` `a%b` `a!`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
@@ -680,7 +680,7 @@ public class MAIN {
 
 ### NestedParenthesisExpression
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationBracketsCalculation2`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2`
 - introduce：
 
   Nested parenthesis expression parsing component, which can parse and calculate the results of mathematical expressions
@@ -690,7 +690,7 @@ public class MAIN {
 
 - API Usage Example
 
-  The operators supported by this component are： `a+b` `a-b` `a*b` `a/b` `a%b` `( )` `a!`
+  The operators supported by this component are：`a+b` `a-b` `a*b` `a/b` `a%b` `( )` `a!`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
@@ -730,7 +730,7 @@ public class MAIN {
 
 ### Mathematical comparison expression
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationBooleanCalculation2`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.bool.BooleanCalculation2`
 - introduce
 
   A component that uses the comparison operator to determine whether two parenthesis expressions are mutually valid. The
@@ -797,7 +797,7 @@ public class MAIN {
 
 ### IntervalAccumulationExpression
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationCumulativeCalculation`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.CumulativeCalculation`
 - introduce
 
   In mathematical expressions, there is often such a formula. The content of the formula is shown in the following
@@ -846,7 +846,7 @@ public class MAIN {
 
 ### FunctionOperationExpression
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationFunctionFormulaCalculation`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation`
 - introduce
 
   The framework also supports the operation of some functions. You can use the above classes to write mathematical
@@ -905,7 +905,7 @@ public class MAIN {
 
 ### Multi parameter function operation expression
 
-- Full class name: `io.github.beardedManZhao.mathematicalExpression.core.calculationFunctionFormulaCalculation2`
+- Full class name: `io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation2`
 - 介绍
 
   For some expression calculations that use functions in expressions, the above class can be used for operations. It is
@@ -994,7 +994,7 @@ public class MAIN {
 
 ### Fast interval sum calculation component (based on parenthesis expression)
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationFastSumOfIntervalsBrackets`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastSumOfIntervalsBrackets`
 - introduce
 
   The new product of version 1.15, the interval fast sum component, is a fast component that sums all elements of an
@@ -1044,7 +1044,7 @@ public class MAIN {
 
 ### Fast interval cumulative calculation component (based on parenthesis expression)
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculationFastMultiplyOfIntervalsBrackets`
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastMultiplyOfIntervalsBrackets`
 - Introduction
 
   A new product of version 1.1.5, the interval fast accumulation component, is a fast component that accumulates all
