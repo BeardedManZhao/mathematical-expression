@@ -1687,6 +1687,10 @@ public class MAIN {
 }
 ```
 
+## Java API 结构图表
+
+![mathematical-expression](https://github.com/user-attachments/assets/91054091-6e45-42ea-bfc3-3480fc0c7d37)
+
 ## 更多信息
 
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
