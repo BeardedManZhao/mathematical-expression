@@ -690,7 +690,7 @@ public class MAIN {
 
 - API Usage Example
 
-  The operators supported by this component are： a+b a-b a*b a/b a%b ( )
+  The operators supported by this component are： `a+b` `a-b` `a*b` `a/b` `a%b` `( )` `a!`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;

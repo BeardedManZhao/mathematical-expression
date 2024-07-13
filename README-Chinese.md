@@ -602,7 +602,7 @@ number.calculation.io.github.beardedManZhao.mathematicalExpression.core.PrefixEx
   针对一个没有括号，但是有加减乘除以及取余等运算操作的数学表达式而设计的组件，该组件可以实现带有优先级计算的功能，其中通过前缀表达式解析计算，将操作数与操作符一同存储到栈，在存储的同时配有计算优先级比较，如果当下的优先级较小，就先将上一个操作数与操作符与当前操作数进行运算，形成一个新的数值，然后再入栈。
 - API使用示例
 
-  该组件支持的运算符有： a+b a-b a*b a/b a%b
+  该组件支持的运算符有： `a+b` `a-b` `a*b` `a/b` `a%b` `( )` `a!`
 
 ```java
 
