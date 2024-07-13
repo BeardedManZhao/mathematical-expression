@@ -641,7 +641,7 @@ public class MAIN {
   operand and operator with the current operand to form a new value, and then put it on the stack.
 - API Usage Example
 
-  The operators supported by this component are： `a+b` `a-b` `a*b` `a/b` `a%b`
+  The operators supported by this component are： `a+b` `a-b` `a*b` `a/b` `a%b` `a^b`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.PrefixExpressionOperation;
@@ -690,7 +690,7 @@ public class MAIN {
 
 - API Usage Example
 
-  The operators supported by this component are：`a+b` `a-b` `a*b` `a/b` `a%b` `( )` `a!`
+  The operators supported by this component are：`a+b` `a-b` `a*b` `a/b` `a%b` `a^b` `( )` `a!`
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
