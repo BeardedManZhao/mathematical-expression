@@ -1689,7 +1689,7 @@ public class MAIN {
 
 ## Java API 结构图表
 
-![mathematical-expression](https://github.com/user-attachments/assets/91054091-6e45-42ea-bfc3-3480fc0c7d37)
+![mathematical-expression](https://github.com/user-attachments/assets/873185b3-603c-4f47-8f15-4d1d7466216a)
 
 ## 更多信息
 
