@@ -176,6 +176,10 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
 
     @Override
     public LogResults explain(String Formula, boolean formatRequired) {
+        return this.explain(Formula, formatRequired, true);
+    }
+
+    LogResults explain(String Formula, boolean formatRequired, boolean addResult) {
         final String newFormula;
         if (formatRequired) {
             newFormula = formatStr(Formula);
@@ -251,7 +255,6 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
         final DataObj dataObj2 = new DataObj(s1 + "_最终");
         dataObj.put(dataObj2);
         dataObj = dataObj2;
-        logResults.put(dataObj);
         final int sizeD2 = size >> 1;
         for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
             // 更新操作符
@@ -267,8 +270,11 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
             dataObj1.put(s3, res);
             dataObj = dataObj1;
         }
-        dataObj.put("result", res);
+        if (addResult) {
+            dataObj.put("result", res);
+        }
         logResults.setResult(res);
+        logResults.setNameJoin(false);
         // 返回结果
         return logResults;
     }

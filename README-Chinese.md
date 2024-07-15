@@ -34,7 +34,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.4.5</version>
+      <version>1.4.6</version>
     </dependency>
 </dependencies>
 ```
@@ -43,7 +43,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.5'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.6'
 }
 ```
 
@@ -294,15 +294,6 @@ public class MAIN {
 程序运行之后的结果如下所示
 
 ```
-E:\RunTime\jdk8\jdk-8u351\bin\java.exe "-javaagent:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\lib\idea_rt.jar=52509:D:\Liming\MyApplication\IntelliJ_IDEA\IntelliJ IDEA 2021.3.2\bin" -Dfile.encoding=UTF-8 -classpath E:\RunTime\jdk8\jdk-8u351\jre\lib\charsets.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\deploy.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\access-bridge-64.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\cldrdata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\dnsns.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jaccess.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\jfxrt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\localedata.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\nashorn.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunec.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunjce_provider.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunmscapi.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\sunpkcs11.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\ext\zipfs.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\javaws.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jce.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfr.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jfxswt.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\jsse.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\management-agent.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\plugin.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\resources.jar;E:\RunTime\jdk8\jdk-8u351\jre\lib\rt.jar;G:\MyGithub\mathematical-expression\target\test-classes;G:\MyGithub\mathematical-expression\target\classes;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-slf4j-impl\2.20.0\log4j-slf4j-impl-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-api\2.20.0\log4j-api-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\org\apache\logging\log4j\log4j-core\2.20.0\log4j-core-2.20.0.jar;G:\RunTime\MAVEN\MAVEN_BASE\io\github\BeardedManZhao\varFormatter\1.0.4\varFormatter-1.0.4.jar MAIN
-[INFO][Calculation Management][24-05-13:06]] : +============================== Welcome to [mathematical expression] ==============================+
-[INFO][Calculation Management][24-05-13:06]] : + 	Start time Mon May 13 18:20:27 CST 2024
-[INFO][Calculation Management][24-05-13:06]] : + 	version: 1.35
-[INFO][Calculation Management][24-05-13:06]] : + 	Calculation component manager initialized successfully
-[INFO][Calculation Management][24-05-13:06]] : + 	For more information, see: https://github.com/BeardedManZhao/mathematical-expression.git
-[INFO][Calculation Management][24-05-13:06]] : +--------------------------------------------------------------------------------------------------+
-[INFO][Calculation Management][24-05-13:06]] : A computing component is registered PrefixExpressionOperation
-[INFO][Calculation Management][24-05-13:06]] : A computing component is registered bracketsCalculation2
 计算结果：99.0
 graph LR
 f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
@@ -324,16 +315,6 @@ f_1507337_最终==Map>Map==>f_1481348562_计算
 f_1481348562("3.0 + 0.0")
 f_1481348562_计算==Map>String/Number==>f_1481348562
 f_1481348562--Map>value-->f_1481348562v{"3.0"}
-f_1481348562_计算==Map>String/Number==>result
-result--Map>value-->resultv{"3.0"}
-f_1507337==Map>Map==>f_1507337_最终
-
-f_1507337_最终==Map>Map==>f_1481348562_计算
-f_1481348562("3.0 + 0.0")
-f_1481348562_计算==Map>String/Number==>f_1481348562
-f_1481348562--Map>value-->f_1481348562v{"3.0"}
-f_1481348562_计算==Map>String/Number==>result
-result--Map>value-->resultv{"3.0"}
 f_1563255009==Map>Map==>f_47507548
 f_47507548("2+3.0+0")
 f_47507548==Map>Map==>f_47507548_优先
@@ -348,16 +329,6 @@ f_47507548_最终==Map>Map==>f_-2133560364_计算
 f_-2133560364("5.0 + 0.0")
 f_-2133560364_计算==Map>String/Number==>f_-2133560364
 f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
-f_-2133560364_计算==Map>String/Number==>result
-result--Map>value-->resultv{"5.0"}
-f_47507548==Map>Map==>f_47507548_最终
-
-f_47507548_最终==Map>Map==>f_-2133560364_计算
-f_-2133560364("5.0 + 0.0")
-f_-2133560364_计算==Map>String/Number==>f_-2133560364
-f_-2133560364--Map>value-->f_-2133560364v{"5.0"}
-f_-2133560364_计算==Map>String/Number==>result
-result--Map>value-->resultv{"5.0"}
 f_-1523352178==Map>Map==>f_-418786079
 f_-418786079("1+2^5.0*3+2+0")
 f_-418786079==Map>Map==>f_-418786079_优先
@@ -382,100 +353,70 @@ f_-929530109_计算==Map>String/Number==>f_-929530109
 f_-929530109--Map>value-->f_-929530109v{"99.0"}
 f_-929530109_计算==Map>String/Number==>result
 result--Map>value-->resultv{"99.0"}
-f_-418786079==Map>Map==>f_-418786079_最终
-
-f_-418786079_最终==Map>Map==>f_-929530109_计算
-f_-929530109("1.0 + 98.0")
-f_-929530109_计算==Map>String/Number==>f_-929530109
-f_-929530109--Map>value-->f_-929530109v{"99.0"}
-f_-929530109_计算==Map>String/Number==>result
-result--Map>value-->resultv{"99.0"}
 
 
 进程已结束，退出代码为 0
-
 ```
 
 程序运行之后的结果中有 `mermaid` 的图代码，我们在下面将其展示了出来 供大家观看！
 
+> 1.4.6 版本之后，`explain`
+> 的可视化效果进行了优化，这里展示的是新版可视化的效果，您可以在 [更新记录中查看到相关说明](https://github.com/BeardedManZhao/mathematical-expression/blob/main/update/log22_v1.4.5_1.4.6.md)
+
 ```mermaid
 graph LR
-    f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
-    f_-1523352178 == Map>Map ==> f_1563255009
-    f_1563255009("2 + (10 - 7)")
-    f_1563255009 == Map>Map ==> f_1448155011
-    f_1448155011("10 - 7")
-    f_1448155011 == Map>Map ==> f_1507337
-    f_1507337("10-7+0")
-    f_1507337 == Map>Map ==> f_1507337_优先
-    f_1507337_优先 == Map>Map ==> f_1571371271_计算
-    f_1571371271("10.0 - 7.0")
-    f_1571371271_计算 == Map>String/Number ==> f_1571371271
-    f_1571371271 -- Map>value --> f_1571371271v{"3.0"}
-    f_1571371271_计算 == Map>Map ==> f_1507337_最终
-    f_1507337_最终 == Map>Map ==> f_1481348562_计算
-    f_1481348562("3.0 + 0.0")
-    f_1481348562_计算 == Map>String/Number ==> f_1481348562
-    f_1481348562 -- Map>value --> f_1481348562v{"3.0"}
-    f_1481348562_计算 == Map>String/Number ==> result
-    result -- Map>value --> resultv{"3.0"}
-    f_1507337 == Map>Map ==> f_1507337_最终
-    f_1507337_最终 == Map>Map ==> f_1481348562_计算
-    f_1481348562("3.0 + 0.0")
-    f_1481348562_计算 == Map>String/Number ==> f_1481348562
-    f_1481348562 -- Map>value --> f_1481348562v{"3.0"}
-    f_1481348562_计算 == Map>String/Number ==> result
-    result -- Map>value --> resultv{"3.0"}
-    f_1563255009 == Map>Map ==> f_47507548
-    f_47507548("2+3.0+0")
-    f_47507548 == Map>Map ==> f_47507548_优先
-    f_47507548_优先 == Map>Map ==> f_-1006161388_计算
-    f_-1006161388("2.0 + 3.0")
-    f_-1006161388_计算 == Map>String/Number ==> f_-1006161388
-    f_-1006161388 -- Map>value --> f_-1006161388v{"5.0"}
-    f_-1006161388_计算 == Map>Map ==> f_47507548_最终
-    f_47507548_最终 == Map>Map ==> f_-2133560364_计算
-    f_-2133560364("5.0 + 0.0")
-    f_-2133560364_计算 == Map>String/Number ==> f_-2133560364
-    f_-2133560364 -- Map>value --> f_-2133560364v{"5.0"}
-    f_-2133560364_计算 == Map>String/Number ==> result
-    result -- Map>value --> resultv{"5.0"}
-    f_47507548 == Map>Map ==> f_47507548_最终
-    f_47507548_最终 == Map>Map ==> f_-2133560364_计算
-    f_-2133560364("5.0 + 0.0")
-    f_-2133560364_计算 == Map>String/Number ==> f_-2133560364
-    f_-2133560364 -- Map>value --> f_-2133560364v{"5.0"}
-    f_-2133560364_计算 == Map>String/Number ==> result
-    result -- Map>value --> resultv{"5.0"}
-    f_-1523352178 == Map>Map ==> f_-418786079
-    f_-418786079("1+2^5.0*3+2+0")
-    f_-418786079 == Map>Map ==> f_-418786079_优先
-    f_-418786079_优先 == Map>Map ==> f_-959059895_计算
-    f_-959059895("2.0 ^ 5.0")
-    f_-959059895_计算 == Map>String/Number ==> f_-959059895
-    f_-959059895 -- Map>value --> f_-959059895v{"32.0"}
-    f_-959059895_计算 == Map>Map ==> f_1855628224_计算
-    f_1855628224("32.0 * 3.0")
-    f_1855628224_计算 == Map>String/Number ==> f_1855628224
-    f_1855628224 -- Map>value --> f_1855628224v{"96.0"}
-    f_1855628224_计算 == Map>Map ==> f_2037586494_计算
-    f_2037586494("96.0 + 2.0")
-    f_2037586494_计算 == Map>String/Number ==> f_2037586494
-    f_2037586494 -- Map>value --> f_2037586494v{"98.0"}
-    f_2037586494_计算 == Map>Map ==> f_-418786079_最终
-    f_-418786079_最终 == Map>Map ==> f_-929530109_计算
-    f_-929530109("1.0 + 98.0")
-    f_-929530109_计算 == Map>String/Number ==> f_-929530109
-    f_-929530109 -- Map>value --> f_-929530109v{"99.0"}
-    f_-929530109_计算 == Map>String/Number ==> result
-    result -- Map>value --> resultv{"99.0"}
-    f_-418786079 == Map>Map ==> f_-418786079_最终
-    f_-418786079_最终 == Map>Map ==> f_-929530109_计算
-    f_-929530109("1.0 + 98.0")
-    f_-929530109_计算 == Map>String/Number ==> f_-929530109
-    f_-929530109 -- Map>value --> f_-929530109v{"99.0"}
-    f_-929530109_计算 == Map>String/Number ==> result
-    result -- Map>value --> resultv{"99.0"}
+  f_-1523352178("1 + 2 ^ (2 + (10 - 7)) * 3 + 2")
+  f_-1523352178 == Map>Map ==> f_1563255009
+  f_1563255009("2 + (10 - 7)")
+  f_1563255009 == Map>Map ==> f_1448155011
+  f_1448155011("10 - 7")
+  f_1448155011 == Map>Map ==> f_1507337
+  f_1507337("10-7+0")
+  f_1507337 == Map>Map ==> f_1507337_优先
+  f_1507337_优先 == Map>Map ==> f_1571371271_计算
+  f_1571371271("10.0 - 7.0")
+  f_1571371271_计算 == Map>String/Number ==> f_1571371271
+  f_1571371271 -- Map>value --> f_1571371271v{"3.0"}
+  f_1571371271_计算 == Map>Map ==> f_1507337_最终
+  f_1507337_最终 == Map>Map ==> f_1481348562_计算
+  f_1481348562("3.0 + 0.0")
+  f_1481348562_计算 == Map>String/Number ==> f_1481348562
+  f_1481348562 -- Map>value --> f_1481348562v{"3.0"}
+  f_1563255009 == Map>Map ==> f_47507548
+  f_47507548("2+3.0+0")
+  f_47507548 == Map>Map ==> f_47507548_优先
+  f_47507548_优先 == Map>Map ==> f_-1006161388_计算
+  f_-1006161388("2.0 + 3.0")
+  f_-1006161388_计算 == Map>String/Number ==> f_-1006161388
+  f_-1006161388 -- Map>value --> f_-1006161388v{"5.0"}
+  f_-1006161388_计算 == Map>Map ==> f_47507548_最终
+  f_47507548_最终 == Map>Map ==> f_-2133560364_计算
+  f_-2133560364("5.0 + 0.0")
+  f_-2133560364_计算 == Map>String/Number ==> f_-2133560364
+  f_-2133560364 -- Map>value --> f_-2133560364v{"5.0"}
+  f_-1523352178 == Map>Map ==> f_-418786079
+  f_-418786079("1+2^5.0*3+2+0")
+  f_-418786079 == Map>Map ==> f_-418786079_优先
+  f_-418786079_优先 == Map>Map ==> f_-959059895_计算
+  f_-959059895("2.0 ^ 5.0")
+  f_-959059895_计算 == Map>String/Number ==> f_-959059895
+  f_-959059895 -- Map>value --> f_-959059895v{"32.0"}
+  f_-959059895_计算 == Map>Map ==> f_1855628224_计算
+  f_1855628224("32.0 * 3.0")
+  f_1855628224_计算 == Map>String/Number ==> f_1855628224
+  f_1855628224 -- Map>value --> f_1855628224v{"96.0"}
+  f_1855628224_计算 == Map>Map ==> f_2037586494_计算
+  f_2037586494("96.0 + 2.0")
+  f_2037586494_计算 == Map>String/Number ==> f_2037586494
+  f_2037586494 -- Map>value --> f_2037586494v{"98.0"}
+  f_2037586494_计算 == Map>Map ==> f_-418786079_最终
+  f_-418786079_最终 == Map>Map ==> f_-929530109_计算
+  f_-929530109("1.0 + 98.0")
+  f_-929530109_计算 == Map>String/Number ==> f_-929530109
+  f_-929530109 -- Map>value --> f_-929530109v{"99.0"}
+  f_-929530109_计算 == Map>String/Number ==> result
+  result -- Map>value --> resultv{"99.0"}
+
 ```
 
 ## 框架架构

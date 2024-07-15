@@ -81,15 +81,19 @@ public class BracketsCalculation2 extends BracketsCalculation implements Compile
 
     @Override
     public LogResults explain(String Formula, boolean formatRequired) {
+        return this.explain(Formula, formatRequired, true);
+    }
+
+    LogResults explain(String Formula, boolean formatRequired, boolean isFirst) {
         // 设置当前公式的名字
         final String s = "f_" + Formula.hashCode();
         // 设置前置语句
         final LogResults logResults = new LogResults(s);
         logResults.setPrefix("f_" + Formula.hashCode() + "(\"" + Formula + "\")");
-        return this.explain(Formula, formatRequired, logResults);
+        return this.explain(Formula, formatRequired, logResults, isFirst);
     }
 
-    public LogResults explain(String Formula, boolean formatRequired, LogResults logResults) {
+    LogResults explain(String Formula, boolean formatRequired, LogResults logResults, boolean isFirst) {
         int length = Formula.length();
         // 公式存储区
         final StringBuilder stringBuilder = new StringBuilder(length + 16);
@@ -110,7 +114,7 @@ public class BracketsCalculation2 extends BracketsCalculation implements Compile
             } else if (aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
                 setOk = false;
                 // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
-                final LogResults explain = this.explain(Formula.substring(start, i), formatRequired);
+                final LogResults explain = this.explain(Formula.substring(start, i), formatRequired, false);
                 stringBuilder.append(explain.getResult());
                 logResults.put(explain);
             } else if (!setOk && aChar != ConstantRegion.EMPTY) {
@@ -119,7 +123,7 @@ public class BracketsCalculation2 extends BracketsCalculation implements Compile
             }
         }
         // 将此字符串的结果计算出来
-        final LogResults explain = PREFIX_EXPRESSION_OPERATION.explain(stringBuilder.toString(), formatRequired);
+        final LogResults explain = PREFIX_EXPRESSION_OPERATION.explain(stringBuilder.toString(), formatRequired, isFirst);
         logResults.put(explain);
         logResults.setResult(explain.getResult());
         return logResults;
