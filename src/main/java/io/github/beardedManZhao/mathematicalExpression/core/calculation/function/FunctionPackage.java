@@ -278,7 +278,7 @@ public enum FunctionPackage {
                         throw new UnsupportedOperationException("if函数的参数个数必须为4，示例 ifGe(比较值1, 比较值2, true的结果, false的结果)");
                     }
                     // 返回结果
-                    return NumberUtils.ComparisonOperation(GREATER_THAN_OR_EQUAL_TO_SIGN, numbers[0], numbers[1])? numbers[2] : numbers[3];
+                    return NumberUtils.ComparisonOperation(GREATER_THAN_OR_EQUAL_TO_SIGN, numbers[0], numbers[1]) ? numbers[2] : numbers[3];
                 }
             },
             // if_le 函数

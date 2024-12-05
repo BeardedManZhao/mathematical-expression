@@ -14,9 +14,8 @@ public class CalculationNumberResults implements CalculationResults, Comparator<
 
     private final static long serialVersionUID = "CalculationNumberResults".hashCode();
     private final double result;
-
-    private String source;
     private final int layers;
+    private String source;
 
     /**
      * @param layers 结果的计算层数

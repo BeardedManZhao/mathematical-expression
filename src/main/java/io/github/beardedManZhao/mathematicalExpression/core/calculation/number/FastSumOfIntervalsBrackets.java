@@ -152,7 +152,6 @@ public class FastSumOfIntervalsBrackets extends BracketsCalculation2 implements 
         final String end;
         final boolean equals = this.StartSharedPool && Formula.equals(this.CurrentOwner);
         if (equals) {
-            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.DECIMAL_POINT + CurrentOwner);
             // 如果共享池开启，同时共享池中数据所属没有错误，就使用共享池数据进行计算
             if (this.shareNumberCalculation != null) {
                 return this.shareNumberCalculation;

@@ -11,7 +11,8 @@
 fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/issues) in 1.2.x_**
 
 > ⚠️【important】 The content of
-> versions [1.3.7](https://github.com/BeardedManZhao/mathematical-expression/tree/b8a6dc7a05b8cf2c4b2de57389d520cd03e78ff0)
+>
+versions [1.3.7](https://github.com/BeardedManZhao/mathematical-expression/tree/b8a6dc7a05b8cf2c4b2de57389d520cd03e78ff0)
 > and [1.4.0](https://github.com/BeardedManZhao/mathematical-expression.git) is completely consistent, with the only
 > difference being the
 > change in the package module. ** Please note that we will refactor the package name
@@ -994,7 +995,8 @@ public class MAIN {
 
 ### Fast interval cumulative calculation component (based on parenthesis expression)
 
-- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastMultiplyOfIntervalsBrackets`
+- Full class
+  name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FastMultiplyOfIntervalsBrackets`
 - Introduction
 
   A new product of version 1.1.5, the interval fast accumulation component, is a fast component that accumulates all
@@ -1515,7 +1517,9 @@ gradually increase as the version increases!_
 
 #### Basic usage examples
 
-> The case demonstrated here is based on version 1.4.2, so you need to ensure that the version you are using is greater than or equal to 1.4.2 before you can use it! The usage in version 1.4.1 is similar, but some features are not supported!
+> The case demonstrated here is based on version 1.4.2, so you need to ensure that the version you are using is greater
+> than or equal to 1.4.2 before you can use it! The usage in version 1.4.1 is similar, but some features are not
+> supported!
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
@@ -1587,10 +1591,10 @@ public class MAIN {
 }
 ```
 
-
 #### Serializing an expression object
 
-The expression object inherits the 'Java. io. Serializable' interface, so you can use 'Java. io. Object OutputStream' and 'Java. io. Object Input Stream'`
+The expression object inherits the 'Java. io. Serializable' interface, so you can use 'Java. io. Object OutputStream'
+and 'Java. io. Object Input Stream'`
 Serialize an expression object!
 
 ```java
@@ -1639,11 +1643,15 @@ public class MAIN {
 
 ## Mathematical_Expression.Options
 
-We allow you to use `Mathematical_Expression.Options` is used to configure some patterns of the calculation components of mathematical expressions, and the configured options will change the behavior of the calculation components.
+We allow you to use `Mathematical_Expression.Options` is used to configure some patterns of the calculation components
+of mathematical expressions, and the configured options will change the behavior of the calculation components.
 
 ### Set cache calculation mode setUseCache
 
-The cache computation mode is a mode that sacrifices memory but improves computation speed. It is worth noting that cache operations will accompany all of your subexpressions, which means that even if your expression is modified, as long as it contains some computed expressions, it can still be used with cache. You can enable it by following the steps below.
+The cache computation mode is a mode that sacrifices memory but improves computation speed. It is worth noting that
+cache operations will accompany all of your subexpressions, which means that even if your expression is modified, as
+long as it contains some computed expressions, it can still be used with cache. You can enable it by following the steps
+below.
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;

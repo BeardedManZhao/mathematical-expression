@@ -281,9 +281,7 @@ public enum Mathematical_Expression {
             for (ManyToOneNumberFunction toOneNumberFunction : manyToOneNumberFunction) {
                 if (toOneNumberFunction.AllowSerialization()) {
                     objectOutputStream.writeObject(toOneNumberFunction);
-                    continue;
                 }
-                CalculationManagement.LOGGER.warn("The function " + toOneNumberFunction.getName() + " is not allowed to be serialized.");
             }
         }
     }

@@ -69,46 +69,6 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
     }
 
     /**
-     * @return 该组件是否有启动共享池，一个布尔值，如果返回true代表共享池已经启动
-     */
-    @Override
-    public boolean isStartSharedPool() {
-        return StartSharedPool;
-    }
-
-    /**
-     * 设置共享池开关，共享池是在JavaApi中，1.1版本衍生出来的一种新特性，由于计算量的需求，引入该功能
-     * <p>
-     * Set the shared pool switch. The shared pool is a new feature derived from version 1.1 in JavaApi. Due to the requirement of computing load, this function is introduced
-     *
-     * @param startSharedPool 共享池如果设置为true，代表被打开，将会共享检查与
-     */
-    @Override
-    public void setStartSharedPool(boolean startSharedPool) {
-        StartSharedPool = startSharedPool;
-    }
-
-    /**
-     * 是否已经缓存了指定字符串的数据
-     *
-     * @param name 要检查的字符串
-     * @return 如果已经缓存则返回true，否则返回false
-     */
-    @Override
-    public boolean isCache(String name) {
-        return this.ShareHashMap.containsKey(name);
-    }
-
-    /**
-     * 清理缓存数据
-     */
-    @Override
-    public void clearCache() {
-        this.ShareResultsHashMap.clear();
-        this.ShareHashMap.clear();
-    }
-
-    /**
      * 提取出来一个公式中所有函数的名称，以及其函数形参的起始与终止索引值
      *
      * @param string 需要被解析的数学运算公式
@@ -146,6 +106,46 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
                 stringBuilder.delete(0, stringBuilder.length());
             }
         }
+    }
+
+    /**
+     * @return 该组件是否有启动共享池，一个布尔值，如果返回true代表共享池已经启动
+     */
+    @Override
+    public boolean isStartSharedPool() {
+        return StartSharedPool;
+    }
+
+    /**
+     * 设置共享池开关，共享池是在JavaApi中，1.1版本衍生出来的一种新特性，由于计算量的需求，引入该功能
+     * <p>
+     * Set the shared pool switch. The shared pool is a new feature derived from version 1.1 in JavaApi. Due to the requirement of computing load, this function is introduced
+     *
+     * @param startSharedPool 共享池如果设置为true，代表被打开，将会共享检查与
+     */
+    @Override
+    public void setStartSharedPool(boolean startSharedPool) {
+        StartSharedPool = startSharedPool;
+    }
+
+    /**
+     * 是否已经缓存了指定字符串的数据
+     *
+     * @param name 要检查的字符串
+     * @return 如果已经缓存则返回true，否则返回false
+     */
+    @Override
+    public boolean isCache(String name) {
+        return this.ShareHashMap.containsKey(name);
+    }
+
+    /**
+     * 清理缓存数据
+     */
+    @Override
+    public void clearCache() {
+        this.ShareResultsHashMap.clear();
+        this.ShareHashMap.clear();
     }
 
     /**
@@ -266,7 +266,6 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         if (equals) {
             final CalculationNumberResults calculationNumberResults = this.ShareResultsHashMap.get(Formula);
             if (calculationNumberResults != null) {
-                LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
                 return calculationNumberResults;
             }
             objects = this.ShareHashMap.get(Formula);
@@ -277,10 +276,8 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         // 开始进行函数计算，首先判断是否启用了共享池 以及身份是否正确，确保两个公式是同一个
         if (equals) {
             functionExpression = objects;
-            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         } else {
             functionExpression = FunctionExpression.compile(Formula, this.Name);
-            LOGGER.info(ConstantRegion.LOG_INFO_SHARED_POOL_NO_USE + this.Name + ConstantRegion.LEFT_BRACKET + Formula + ConstantRegion.RIGHT_BRACKET);
         }
         // 开始计算
         final CalculationNumberResults calculation = Mathematical_Expression.Options.isUseBigDecimal() ? functionExpression.calculationBigDecimalsCache(false) : functionExpression.calculationCache(false);

@@ -25,7 +25,7 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>mathematical-expression</artifactId>
-    <version>1.4.6</version>
+    <version>1.4.7</version>
     <packaging>jar</packaging>
     <name>mathematical-expression</name>
     <description>mathematical-expression-java</description>
@@ -37,25 +37,6 @@
     </properties>
 
     <dependencies>
-        <!-- 使用 log4j2 的适配器进行绑定 -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.20.0</version>
-        </dependency>
-
-        <!-- log4j2 日志门面 -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.20.0</version>
-        </dependency>
-        <!-- log4j2 日志实面 -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.20.0</version>
-        </dependency>
         <!-- varFormatter 格式化组件 用于将数据类格式化 -->
         <dependency>
             <groupId>io.github.BeardedManZhao</groupId>
@@ -66,7 +47,7 @@
         <dependency>
             <groupId>io.github.BeardedManZhao</groupId>
             <artifactId>algorithmStar</artifactId>
-            <version>1.40</version>
+            <version>1.43</version>
         </dependency>
     </dependencies>
 

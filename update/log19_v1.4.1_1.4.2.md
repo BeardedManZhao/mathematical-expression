@@ -45,39 +45,40 @@ import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.F
 import io.github.beardedManZhao.mathematicalExpression.core.container.NameExpression;
 
 public class MAIN {
-  public static void main(String[] args) {
-    // 获取到快速区间累加表达式 以及 累乘表达式
-    FastSumOfIntervalsBrackets fastSumOfIntervalsBrackets = (FastSumOfIntervalsBrackets) Mathematical_Expression.getInstance(Mathematical_Expression.fastSumOfIntervalsBrackets);
-    FastMultiplyOfIntervalsBrackets fastMultiplyOfIntervalsBrackets = (FastMultiplyOfIntervalsBrackets) Mathematical_Expression.getInstance(Mathematical_Expression.fastMultiplyOfIntervalsBrackets);
+    public static void main(String[] args) {
+        // 获取到快速区间累加表达式 以及 累乘表达式
+        FastSumOfIntervalsBrackets fastSumOfIntervalsBrackets = (FastSumOfIntervalsBrackets) Mathematical_Expression.getInstance(Mathematical_Expression.fastSumOfIntervalsBrackets);
+        FastMultiplyOfIntervalsBrackets fastMultiplyOfIntervalsBrackets = (FastMultiplyOfIntervalsBrackets) Mathematical_Expression.getInstance(Mathematical_Expression.fastMultiplyOfIntervalsBrackets);
 
-    // 将 从 1 到 10 的和 编译为表达式对象
-    fastSumOfIntervalsBrackets.step = 1;
-    final NameExpression expression1 = fastSumOfIntervalsBrackets.compile("2-1, 10", true);
-    // 查看表达式的信息
-    run(expression1);
+        // 将 从 1 到 10 的和 编译为表达式对象
+        fastSumOfIntervalsBrackets.step = 1;
+        final NameExpression expression1 = fastSumOfIntervalsBrackets.compile("2-1, 10", true);
+        // 查看表达式的信息
+        run(expression1);
 
-    System.out.println("---------------");
+        System.out.println("---------------");
 
-    // 将 从 1 到 10 的乘积 编译为表达式对象
-    fastMultiplyOfIntervalsBrackets.step = 1;
-    final NameExpression expression2 = fastMultiplyOfIntervalsBrackets.compile("2-1, 10", true);
-    run(expression2);
-  }
+        // 将 从 1 到 10 的乘积 编译为表达式对象
+        fastMultiplyOfIntervalsBrackets.step = 1;
+        final NameExpression expression2 = fastMultiplyOfIntervalsBrackets.compile("2-1, 10", true);
+        run(expression2);
+    }
 
-  private static void run(NameExpression expression) {
-    // 查看表达式的信息
-    System.out.println("表达式来源：" + expression.getCalculationName());
-    System.out.println("表达式的格式：" + expression.getExpressionStr());
-    System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
-    System.out.println(">>> 开始为表达式对象添加多精度支持");
-    expression.convertToMultiPrecisionSupported();
-    System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
-    System.out.println("计算结果：" + expression.calculation(false));
-  }
+    private static void run(NameExpression expression) {
+        // 查看表达式的信息
+        System.out.println("表达式来源：" + expression.getCalculationName());
+        System.out.println("表达式的格式：" + expression.getExpressionStr());
+        System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
+        System.out.println(">>> 开始为表达式对象添加多精度支持");
+        expression.convertToMultiPrecisionSupported();
+        System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
+        System.out.println("计算结果：" + expression.calculation(false));
+    }
 }
 ```
 
 - 为 `cumulativeCalculation` 组件新增了表达式编译的支持！
+
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;

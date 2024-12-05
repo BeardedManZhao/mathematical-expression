@@ -27,9 +27,10 @@ public final class CalculationOptimized {
 
     /**
      * 计算
+     *
      * @param CalculationType 当前两个操作数之中的计算类型，通常情况下这里是操作符
-     * @param an 第一个操作数
-     * @param bn 第二个操作数
+     * @param an              第一个操作数
+     * @param bn              第二个操作数
      * @return 计算结果
      */
     public static BigDecimal calculation(char CalculationType, BigDecimal an, BigDecimal bn) {

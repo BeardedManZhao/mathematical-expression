@@ -5,8 +5,6 @@ import io.github.beardedManZhao.mathematicalExpression.core.container.Calculatio
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 import io.github.beardedManZhao.mathematicalExpression.utils.StrUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 计算结果为数值的数学表达式结果，其中提供了数学表达式的计算函数
@@ -17,11 +15,9 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class NumberCalculation implements Calculation {
     protected final String Name;
-    protected final Logger LOGGER;
 
     protected NumberCalculation(String name) {
         Name = name;
-        LOGGER = LoggerFactory.getLogger(name);
     }
 
     /**

@@ -21,12 +21,10 @@ import java.util.Stack;
 public class PrefixExpression extends NameExpression {
 
     private static final long serialVersionUID = "PrefixExpression_1".hashCode();
-
-    private Stack<Double> doubleStackR;
-    private Stack<BigDecimal> bigDecimalsR;
     // 创建操作数栈
     private final Stack<Character> characterStackR;
-
+    private Stack<Double> doubleStackR;
+    private Stack<BigDecimal> bigDecimalsR;
     /**
      * isBigDecimal 是否是一个 支持高精度模式的计算表达式
      * isUnBigDecimal 是否是一个 支持非高精度模式的计算表达式

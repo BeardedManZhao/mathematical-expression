@@ -8,8 +8,6 @@ import io.github.beardedManZhao.mathematicalExpression.core.container.Calculatio
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 计算一个比较表达式的计算组件的父类，计算结果一般都是包含布尔值结果的对象
@@ -20,16 +18,14 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BooleanCalculation implements Calculation {
 
+    protected final String Name;
     /**
      * 在进行该模块的计算时，需要使用到的第三方计算组件
      */
     protected NumberCalculation numberCalculation = BracketsCalculation2.getInstance(CalculationManagement.BRACKETS_CALCULATION_2_NAME);
-    protected final String Name;
-    protected final Logger LOGGER;
 
     protected BooleanCalculation(String name) {
         Name = name;
-        LOGGER = LoggerFactory.getLogger(name);
     }
 
     /**

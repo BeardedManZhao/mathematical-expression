@@ -14,10 +14,10 @@ public class CalculationBooleanResults implements CalculationResults, Comparator
     private static final long serialVersionUID = "CalculationBooleanResults".hashCode();
 
     private final boolean result;
-    private String source;
     private final int Layers;
     private final double left;
     private final double right;
+    private String source;
 
     /**
      * @param result 已经计算出结果数值的情况下，使用该形参进行赋值

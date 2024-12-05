@@ -4,10 +4,7 @@ import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculat
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Function;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.ExtractException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -20,9 +17,6 @@ import java.util.Set;
  */
 public final class CalculationManagement {
 
-
-    public static final Logger LOGGER;
-
     /**
      * 被其它组件所依赖的解析无括号数学表达式的组件名称，该组件由于被其它组件所依赖，加载的时候是一定会加载的，因此在进行获取组件的时候，可以直接引用该名称，也可以由您手动设置一个新的组件。
      * <p>
@@ -33,19 +27,8 @@ public final class CalculationManagement {
 
     public static final String FUNCTION_FORMULA_CALCULATION_2_NAME = "FunctionFormulaCalculation2";
 
-    public static final Date START_DATE = new Date();
     private static final HashMap<String, Calculation> STRING_CALCULATION_HASH_MAP = new HashMap<>();
     private static final HashMap<String, Function> STRING_FUNCTION_HASH_MAP = new HashMap<>();
-
-    static {
-        LOGGER = LoggerFactory.getLogger("Calculation Management");
-        LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
-        LOGGER.info("+ \tStart time " + START_DATE);
-        LOGGER.info("+ \tversion: " + ConstantRegion.VERSION);
-        LOGGER.info("+ \tCalculation component manager initialized successfully");
-        LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/mathematical-expression.git");
-        LOGGER.info("+--------------------------------------------------------------------------------------------------+");
-    }
 
     /**
      * 根据名字，在哈希集合中获取到一个以该名称命名的计算组件
@@ -54,7 +37,6 @@ public final class CalculationManagement {
      * @return 计算组件对象
      */
     public static Calculation getCalculationByName(String CalculationName) {
-        LOGGER.info(ConstantRegion.LOG_INFO_GET_COMPONENT + CalculationName);
         return STRING_CALCULATION_HASH_MAP.get(CalculationName);
     }
 
@@ -75,10 +57,8 @@ public final class CalculationManagement {
     public static boolean register(Calculation calculation, boolean judge) {
         final String calculationName = calculation.getName();
         if (judge && STRING_CALCULATION_HASH_MAP.containsValue(calculation)) {
-            LOGGER.warn("An error occurred while registering the component, because the [" + calculationName + "] component has already been registered");
             return false;
         } else {
-            LOGGER.info(ConstantRegion.LOG_INFO_REGISTER_COMPONENT + calculationName);
             STRING_CALCULATION_HASH_MAP.put(calculationName, calculation);
             return true;
         }
@@ -103,10 +83,8 @@ public final class CalculationManagement {
     public static boolean register(Function function) {
         final String name = function.getName();
         if (STRING_FUNCTION_HASH_MAP.containsKey(name)) {
-            LOGGER.warn("An error occurred when registering a function named [" + name + "], because the function name conflicts");
             return false;
         } else {
-            LOGGER.info(ConstantRegion.LOG_INFO_register_FUNCTION + name);
             STRING_FUNCTION_HASH_MAP.put(name, function);
             return true;
         }
@@ -147,7 +125,6 @@ public final class CalculationManagement {
             throw new ExtractException("您想要提取的函数似乎没有被注册到管理者中，请您先使用“register”进行函数的注册！\nIt seems that the function you want to extract has not been registered with the manager. Please use \"register\" to register the function first!\nERROR FUNCTION => " + FunctionName);
         } else {
             try {
-                LOGGER.info(ConstantRegion.LOG_INFO_GET_FUNCTION + FunctionName);
                 return (functionType) function;
             } catch (ClassCastException c) {
                 throw new ExtractException("您要提取的函数被找到了，但是它不适用您指定的类型，请在泛型中对该函数的类型进行调整。\nThe function you want to extract has been found, but it does not apply to the type you specified. Please adjust the type of the function in the generic type.\nERROR FUNCTION => " + function.getName());
@@ -217,7 +194,6 @@ public final class CalculationManagement {
      * Whether the logout is successful. If false is returned, the function to logout does not exist
      */
     public static boolean unregisterF(String FunctionName) {
-        LOGGER.info(ConstantRegion.LOG_INFO_UNREGISTER_FUNCTION + FunctionName);
         return STRING_FUNCTION_HASH_MAP.remove(FunctionName) != null;
     }
 
@@ -233,7 +209,6 @@ public final class CalculationManagement {
      * Returns true if the logout is successful
      */
     public static boolean unregister(String CalculationName) {
-        LOGGER.info(ConstantRegion.LOG_INFO_UNREGISTER_COMPONENT + CalculationName);
         return STRING_CALCULATION_HASH_MAP.remove(CalculationName) != null;
     }
 

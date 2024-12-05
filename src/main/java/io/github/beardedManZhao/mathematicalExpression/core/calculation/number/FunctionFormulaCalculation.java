@@ -173,7 +173,6 @@ public class FunctionFormulaCalculation extends NumberCalculation {
                     setOk = false;
                     // 通过函数名字获取到函数组件
                     ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(name.toString());
-                    LOGGER.info(ConstantRegion.LOG_INFO_FIND_FUNCTION + functionByName);
                     // 使用括号计算组件，计算出函数实参，然后通过函数将函数内的公式计算出来
                     double run = functionByName.run(BRACKETS_CALCULATION_2.calculation(Formula.substring(start + name.length() + 1, i), formatRequired).getResult());
                     name.delete(0, name.length());
