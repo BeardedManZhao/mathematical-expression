@@ -4,6 +4,10 @@
 
 - 切换至 [中文文档](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README-Chinese.md)
 
+# Community QQ group
+
+![无标题](https://github.com/user-attachments/assets/1425fb3d-be25-4bbf-a3ec-060f04155207)
+
 ## 🫠 Important Notice
 
 > ✅【commonly】 *
