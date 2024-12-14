@@ -4,6 +4,12 @@
 
 - Switch to [English Document](https://github.com/BeardedManZhao/mathematical-expression/blob/main/README.md)
 
+# 社区 qq 群
+
+> 大家可以直接从这里进入来咨询作者和交流哦！！
+
+![无标题](https://github.com/user-attachments/assets/1425fb3d-be25-4bbf-a3ec-060f04155207)
+
 ## 🫠 重要通知
 
 > ✅【一般】 **_PS 请尽量使用 1.3.1 版本以及以上的版本，这将有助于您使用更加稳定的版本，修复了 1.2.x
