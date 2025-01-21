@@ -7,8 +7,7 @@
 ==Java==
 
 - 更新版本号为 1.4.7.20
-- 
-- 为 `setUseBigDecimal(true)` 它会作用在每个计算组件中，有望提升部分组件的灵活性，感谢 https://github.com/BeardedManZhao/mathematical-expression/issues/20 提出者的贡献!
+- 为 `setUseBigDecimal(true)`进行分离，它会作用在每个计算组件中，有望提升部分组件的灵活性，感谢 https://github.com/BeardedManZhao/mathematical-expression/issues/20 提出者的贡献!
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
