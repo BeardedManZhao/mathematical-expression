@@ -136,4 +136,14 @@ public abstract class BooleanCalculation implements Calculation {
     public CalculationBooleanResults calculation(String Formula) {
         return calculation(Formula, true);
     }
+
+    @Override
+    public boolean isBigDecimal() {
+        return this.numberCalculation.isBigDecimal();
+    }
+
+    @Override
+    public void setBigDecimal(boolean bigDecimal) {
+        this.numberCalculation.setBigDecimal(bigDecimal);
+    }
 }

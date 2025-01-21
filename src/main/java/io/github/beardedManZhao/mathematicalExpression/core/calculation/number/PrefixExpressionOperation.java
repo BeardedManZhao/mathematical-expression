@@ -1,6 +1,5 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
-import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
@@ -149,7 +148,7 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        if (Mathematical_Expression.Options.isUseBigDecimal()) {
+        if (this.isBigDecimal()) {
             return this.calculationBigDecimal(Formula, formatRequired);
         }
         return this.compile(Formula, formatRequired).calculationCache(false);

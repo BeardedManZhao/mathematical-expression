@@ -1,5 +1,6 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
@@ -16,8 +17,20 @@ import io.github.beardedManZhao.mathematicalExpression.utils.StrUtils;
 public abstract class NumberCalculation implements Calculation {
     protected final String Name;
 
+    protected Boolean isBigDecimal;
+
     protected NumberCalculation(String name) {
         Name = name;
+    }
+
+    @Override
+    public boolean isBigDecimal() {
+        return this.isBigDecimal == null ? Mathematical_Expression.Options.isUseBigDecimal() : this.isBigDecimal;
+    }
+
+    @Override
+    public void setBigDecimal(boolean bigDecimal) {
+        this.isBigDecimal = bigDecimal;
     }
 
     /**

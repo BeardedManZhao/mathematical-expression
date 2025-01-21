@@ -1,3 +1,16 @@
+# 1.4.7 -> 1.4.7.20 版本更新日志
+
+### 更新时间：2025年01月21日
+
+> 这是一个试验版本
+
+==Java==
+
+- 更新版本号为 1.4.7.20
+- 
+- 为 `setUseBigDecimal(true)` 它会作用在每个计算组件中，有望提升部分组件的灵活性，感谢 https://github.com/BeardedManZhao/mathematical-expression/issues/20 提出者的贡献!
+
+```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationResults;
@@ -19,3 +32,4 @@ public class MAIN {
         System.out.println(calculation.getResult());
     }
 }
+```

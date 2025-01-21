@@ -29,6 +29,20 @@ public interface Calculation {
     String getName();
 
     /**
+     * 是否是多精度支持的计算组件
+     *
+     * @return true表示是多精度支持的计算组件，false表示不是多精度支持的计算组件
+     */
+    boolean isBigDecimal();
+
+    /**
+     * 设置是否是多精度支持的计算组件
+     *
+     * @param bigDecimal true表示是多精度支持的计算组件，false表示不是多精度支持的计算组件
+     */
+    void setBigDecimal(boolean bigDecimal);
+
+    /**
      * 获取计算过程的信息
      * <p>
      * Obtain information about the calculation process

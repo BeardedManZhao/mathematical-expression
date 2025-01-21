@@ -1,6 +1,5 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
-import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationComplexResults;
@@ -86,7 +85,7 @@ public class ComplexCalculation extends NumberCalculation implements CompileCalc
 
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        return Mathematical_Expression.Options.isUseBigDecimal() ?
+        return this.isBigDecimal() ?
                 this.compile(Formula, formatRequired).calculationBigDecimalsCache(false) :
                 this.compile(Formula, formatRequired).calculationCache(false);
     }

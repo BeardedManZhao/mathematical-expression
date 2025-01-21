@@ -22,10 +22,10 @@ public final class CalculationManagement {
      * <p>
      * The name of a component that is relied on by other components to resolve parenthesis free mathematical expressions. Because this component is relied on by other components, it is bound to be loaded when loading. Therefore, this name can be directly referenced when obtaining components, or you can manually set a new component.
      */
-    public static final String PREFIX_EXPRESSION_OPERATION_NAME = "PrefixExpressionOperation";
-    public static final String BRACKETS_CALCULATION_2_NAME = "BracketsCalculation2";
+    public static final String PREFIX_EXPRESSION_OPERATION_NAME = "PrefixExpressionOperation_inner";
+    public static final String BRACKETS_CALCULATION_2_NAME = "BracketsCalculation2_inner";
 
-    public static final String FUNCTION_FORMULA_CALCULATION_2_NAME = "FunctionFormulaCalculation2";
+    public static final String FUNCTION_FORMULA_CALCULATION_2_NAME = "FunctionFormulaCalculation2_inner";
 
     private static final HashMap<String, Calculation> STRING_CALCULATION_HASH_MAP = new HashMap<>();
     private static final HashMap<String, Function> STRING_FUNCTION_HASH_MAP = new HashMap<>();

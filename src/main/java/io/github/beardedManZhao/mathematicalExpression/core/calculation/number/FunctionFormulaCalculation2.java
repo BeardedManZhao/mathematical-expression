@@ -280,7 +280,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             functionExpression = FunctionExpression.compile(Formula, this.Name);
         }
         // 开始计算
-        final CalculationNumberResults calculation = Mathematical_Expression.Options.isUseBigDecimal() ? functionExpression.calculationBigDecimalsCache(false) : functionExpression.calculationCache(false);
+        final CalculationNumberResults calculation = this.isBigDecimal() ? functionExpression.calculationBigDecimalsCache(false) : functionExpression.calculationCache(false);
         if (this.StartSharedPool) {
             this.ShareResultsHashMap.put(Formula, calculation);
         }

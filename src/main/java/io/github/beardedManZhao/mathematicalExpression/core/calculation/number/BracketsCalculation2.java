@@ -1,6 +1,5 @@
 package io.github.beardedManZhao.mathematicalExpression.core.calculation.number;
 
-import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.CompileCalculation;
 import io.github.beardedManZhao.mathematicalExpression.core.container.BracketsExpression;
@@ -73,7 +72,7 @@ public class BracketsCalculation2 extends BracketsCalculation implements Compile
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        if (Mathematical_Expression.Options.isUseBigDecimal()) {
+        if (this.isBigDecimal()) {
             return (CalculationNumberResults) this.compile(Formula, formatRequired).calculationCache(false);
         }
         return (CalculationNumberResults) this.compileBigDecimal(Formula, formatRequired).calculationBigDecimalsCache(false);
