@@ -1,6 +1,6 @@
 ![logo](https://github.com/user-attachments/assets/cbf100a1-93c3-4842-80e6-776582d9a761)
 
-[<img src="https://api.gitsponsors.com/api/badge/img?id=563899132" height="20">](https://api.gitsponsors.com/api/badge/link?p=lPH/XCddTIVBAsUQLuWRO1M9hhPkGZE77NjheR57bt4BLr7C4AN4lWhmYdqa9G0JVtS4C9MADBO6u/kPnTeIOAVOSHzdiO06WkdwXdBgbNPnxvH72jPXAltQGDT/LLk4xh3drhpBOUJKGczbiri9NA==)
+[<img src="https://api.gitsponsors.com/api/badge/img?id=563899132" height="20">](https://api.gitsponsors.com/api/badge/link?p=lPH/XCddTIVBAsUQLuWRO1KWlPSvcADazC9zGThDxUP0oMotabCl8lA7iqM1tqn5AL06bEn2ccalvSFe02Q9Y3hv5LpmYq3YExi15F4kP9HaOidjbNzhL9cCg73j49P1yu4DVTNSV2+gKPI8ioxvJA==)
 
 # mathematical-expression （MAE）
 
