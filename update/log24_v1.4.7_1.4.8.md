@@ -1,3 +1,13 @@
+# 1.4.5 -> 1.4.6 版本更新日志
+
+### 更新时间：2025年02月11日
+
+==Java==
+
+- 更新版本号为 1.4.8
+- 为 函数计算组件 新增嵌套函数支持！
+
+```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation2;
@@ -21,3 +31,4 @@ public class MAIN {
         System.out.println("结果：" + calculation1.getResult());
     }
 }
+```

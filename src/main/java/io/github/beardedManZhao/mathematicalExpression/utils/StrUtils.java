@@ -206,6 +206,40 @@ public final class StrUtils {
         return arrayList;
     }
 
+    /**
+     * 将一个字符串按照某个字符进行拆分 括号内的会被忽略
+     *
+     * @param s 需要被拆分的字符串
+     * @param c 需要被作为分割符的字符
+     * @return 字符串被拆分之后的列表
+     */
+    public static ArrayList<String> splitByCharWhereNoB(String s, char c) {
+        int count = 0;
+        final int length = s.length();
+        final ArrayList<String> arrayList = new ArrayList<>();
+        final StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            char c1 = s.charAt(i);
+            switch (c1) {
+                case ConstantRegion.LEFT_BRACKET:
+                    ++count;
+                    break;
+                case ConstantRegion.RIGHT_BRACKET:
+                    --count;
+                    break;
+            }
+
+            if (count == 0 && c1 == c) {
+                arrayList.add(stringBuilder.toString().trim());
+                stringBuilder.delete(0, stringBuilder.length());
+            } else {
+                stringBuilder.append(c1);
+            }
+        }
+        arrayList.add(stringBuilder.toString().trim());
+        return arrayList;
+    }
+
 /*
     /**
      * 替换字符串a中所有出现在字符集b中的字符为字符c。

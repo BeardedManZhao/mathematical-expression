@@ -21,6 +21,8 @@ public class FunctionExpression extends SubCompileExpression {
     private final Stack<Integer> start, end;
     private final Stack<String> funNames;
 
+    private final static FunctionFormulaCalculation2 functionFormulaCalculation2 = FunctionFormulaCalculation2.getInstance(CalculationManagement.FUNCTION_FORMULA_CALCULATION_2_NAME);
+
     /**
      * 将一个函数表达式 转换为函数表达式的对象
      * <p>
@@ -81,26 +83,29 @@ public class FunctionExpression extends SubCompileExpression {
     public static StringBuilder subCompile(String expression, Stack<Integer> start, Stack<Integer> end, Stack<String> funNames) {
         // 准备进行表达式编译操作
         final StringBuilder stringBuilder = new StringBuilder(expression);
+        if (StrUtils.IsANumber(expression)) {
+            return stringBuilder;
+        }
+        if (funNames.isEmpty()) {
+            return stringBuilder;
+        }
         // 开始计算，首先迭代所有函数的公式与函数的名字，计算出来函数的结果
         while (!start.isEmpty()) {
             int pop1 = start.pop();
             int pop2 = end.pop();
             String pop = funNames.pop();
-            // 通过函数名字获取函数对象
             final ManyToOneNumberFunction functionByName = CalculationManagement.getFunctionByName(pop);
             // 通过函数索引获取实参
-
             // 提前计算substring，避免重复计算
             String subFormula = expression.substring(pop1, pop2);
 
             // 使用ArrayList收集结果，以便于添加和转换为数组
             ArrayList<Double> results = new ArrayList<>();
 
-            for (String s : StrUtils.splitByChar(subFormula, ConstantRegion.COMMA)) {
-                double result = FunctionFormulaCalculation2.BRACKETS_CALCULATION_2.calculation(s).getResult();
+            for (String s : StrUtils.splitByCharWhereNoB(subFormula, ConstantRegion.COMMA)) {
+                double result = functionFormulaCalculation2.calculation(s).getResult();
                 results.add(result);
             }
-
             // 将ArrayList转换为double[]数组，这一步在内部已经优化过
             double[] resultArray = results.stream().mapToDouble(Double::doubleValue).toArray();
 
@@ -149,16 +154,30 @@ public class FunctionExpression extends SubCompileExpression {
 
     @Override
     public NameExpression subCompile(boolean isCopy) {
-        return FunctionFormulaCalculation2.BRACKETS_CALCULATION_2.compile(
+        if (this.notNeedSubCompile()) {
+            throw new UnsupportedOperationException("此表达式不需要深度编译了！" + this.getExpressionStr());
+        }
+        return functionFormulaCalculation2.compile(
                 FunctionExpression.subCompile(this.getExpressionStr(), this.getStart(isCopy), this.getEnd(isCopy), this.getFunNames(isCopy)).toString(), true
         );
     }
 
     @Override
     public NameExpression subCompileBigDecimals(boolean isCopy) {
-        return FunctionFormulaCalculation2.BRACKETS_CALCULATION_2.compileBigDecimal(
+        if (this.notNeedSubCompile()) {
+            throw new UnsupportedOperationException("此表达式不需要深度编译了！" + this.getExpressionStr());
+        }
+        return functionFormulaCalculation2.compileBigDecimal(
                 FunctionExpression.subCompile(this.getExpressionStr(), this.getStart(isCopy), this.getEnd(isCopy), this.getFunNames(isCopy)).toString(), true
         );
+    }
+
+    /**
+     * @return 该表达式是否需要深度编译！
+     */
+    @Override
+    public boolean notNeedSubCompile() {
+        return this.funNames.isEmpty();
     }
 
     @SuppressWarnings("unchecked")

@@ -1,5 +1,8 @@
 package io.github.beardedManZhao.mathematicalExpression.core.container;
 
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
+
 /**
  * 带有深层编译的表达式对象，通常情况下，当我们的表达式对象需要1次以上的编译才可以运行的情况下，其就需要实现此类！
  * <p>
@@ -8,6 +11,8 @@ package io.github.beardedManZhao.mathematicalExpression.core.container;
  * @author zhao
  */
 public abstract class SubCompileExpression extends NameExpression {
+
+    public final static BracketsCalculation2 BRACKETS_CALCULATION_2 = BracketsCalculation2.getInstance(CalculationManagement.BRACKETS_CALCULATION_2_NAME);
 
     public SubCompileExpression(String expression, String calculationName) {
         super(expression, calculationName);
@@ -45,13 +50,24 @@ public abstract class SubCompileExpression extends NameExpression {
      */
     public abstract NameExpression subCompileBigDecimals(boolean isCopy);
 
+    /**
+     * @return 用户计算是否需要编译！
+     */
+    public abstract boolean notNeedSubCompile();
+
     @Override
     public CalculationResults calculation(boolean isCopy) {
+        if (notNeedSubCompile()) {
+            return BRACKETS_CALCULATION_2.calculation(this.getExpressionStr());
+        }
         return this.subCompile(isCopy).calculationCache(isCopy);
     }
 
     @Override
     public CalculationResults calculationBigDecimals(boolean isCopy) {
+        if (notNeedSubCompile()) {
+            return BRACKETS_CALCULATION_2.calculation(this.getExpressionStr());
+        }
         return this.subCompileBigDecimals(isCopy).calculationBigDecimalsCache(isCopy);
     }
 }

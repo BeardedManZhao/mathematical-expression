@@ -84,7 +84,7 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < string.length(); i++) {
             char aChar = string.charAt(i);
-            if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
+            if (count == 0 && ((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
                 if (!b) {
                     // 如果是刚刚进入函数，就将当前索引添加到栈
                     b = true;
@@ -156,9 +156,8 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      * @param end            公式中所有包含函数实参公式的的终止索引值
      * @param names          公式中所有包含函数的名字
      * @param formulaBuilder 公式缓冲区，这个用于存储转换之后的公式，当需要进行公式检查的时候才会使用到该参数
-     * @throws WrongFormat 如果公式格式不正确，就会抛出一个异常
      */
-    public void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names, StringBuilder formulaBuilder) throws WrongFormat {
+    public void FunctionParameterExtraction(String string, Stack<Integer> start, Stack<Integer> end, Stack<String> names, StringBuilder formulaBuilder) {
         // 创建一个标记，标记是否进入函数
         boolean b = false;
         int count = 0;
@@ -166,16 +165,13 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < string.length(); i++) {
             final char aChar = string.charAt(i);
-            if (((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
+            if (count == 0 && ((aChar >= ConstantRegion.BA_ASCII && aChar <= ConstantRegion.BZ_ASCII) || (aChar >= ConstantRegion.SA_ASCII && aChar <= ConstantRegion.SZ_ASCII))) {
                 if (!b) {
                     // 如果是刚刚进入函数，就将当前索引添加到栈
                     b = true;
                     start.push(i + 1);
                     // 然后为缓冲的公式进行 0 的追加
                     formulaBuilder.append('0');
-                } else if (count != 0) {
-                    // 如果 count 不为0 代表找到了函数参数，但是参数里面有字母 所以肯定有问题
-                    throw new WrongFormat("请勿在参数位使用函数嵌套，您可以在函数的表达式中使用嵌套，例如 f(x) = x + ff(x), 调用为f(1 + 2); \n但是不能在函数的形参中使用嵌套，例如 f(x, b) = x + b, 调用为f(1 + 2, ff(1 + 2)) 是不允许滴\n嵌套发生的位置 = " + string.substring(i) + " 来自于 " + string);
                 }
                 // 将当前函数名字字符添加到函数名称缓冲区
                 stringBuilder.append(aChar);
@@ -261,6 +257,9 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
+        if (StrUtils.IsANumber(Formula)) {
+            return new CalculationNumberResults(0, StrUtils.stringToDouble(Formula), Formula);
+        }
         boolean equals = this.StartSharedPool;
         FunctionExpression objects = null;
         if (equals) {
@@ -289,6 +288,18 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
 
     @Override
     public LogResults explain(String Formula, boolean formatRequired) {
+        return this.explain(Formula, formatRequired, true, "start" + System.currentTimeMillis());
+    }
+
+    /**
+     * 格式化一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
+     * @param Formula 被计算的表达式
+     * @param formatRequired 是否需要格式
+     * @param isFirstLayer 是否是第一曾
+     * @param s3 引导
+     * @return 可以被格式化的结果
+     */
+    public LogResults explain(String Formula, boolean formatRequired, boolean isFirstLayer, String s3) {
         Stack<Integer> start;
         Stack<Integer> end;
         Stack<String> names;
@@ -299,7 +310,6 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
         names = new Stack<>();
         FunctionParameterExtraction(Formula, start, end, names);
         // 启用标记
-        final String s3 = "start" + System.currentTimeMillis();
         final LogResults logResults = new LogResults(s3);
         logResults.setNameJoin(false);
         logResults.setPrefix(s3 + "(\"" + Formula + "\")");
@@ -314,20 +324,26 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             // 提前计算substring，避免重复计算
             String subFormula = Formula.substring(pop1, pop2);
             final String s1 = functionByName.getName() + ConstantRegion.LEFT_BRACKET;
-            DataObj dataObj = (DataObj) logResults.get(pop);
+            String newPop = s3 + pop.hashCode() + "(\"" + pop + "\")";
+            DataObj dataObj = (DataObj) logResults.get(newPop);
             if (dataObj == null) {
-                dataObj = new DataObj(pop);
-                logResults.put(pop, dataObj);
+                dataObj = new DataObj(newPop);
+                logResults.put(newPop, dataObj);
             }
             // 使用ArrayList收集结果，以便于添加和转换为数组
             ArrayList<Double> results = new ArrayList<>();
 
             StringBuilder stringBuilder1 = new StringBuilder();
 
-            for (String s : StrUtils.splitByChar(subFormula, ConstantRegion.COMMA)) {
-                double result = BRACKETS_CALCULATION_2.calculation(s).getResult();
-                results.add(result);
-                stringBuilder1.append(result).append(',');
+            final String s4 = subFormula.hashCode() + ":layer";
+            dataObj.setPrefix(s4 + "(\"" + subFormula + "\")");
+            for (String s : StrUtils.splitByCharWhereNoB(subFormula, ConstantRegion.COMMA)) {
+                LogResults explain = this.explain(s, false, false, s4);
+                if (!StrUtils.IsANumber(s)) {
+                    dataObj.put(s4, explain);
+                }
+                results.add((Double) explain.getResult());
+                stringBuilder1.append(results).append(',');
             }
 
             // 将ArrayList转换为double[]数组，这一步在内部已经优化过
@@ -336,14 +352,16 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
             // 最后替换字符串内容 functionByName
             final String s = String.valueOf(functionByName.run(resultArray));
             stringBuilder.replace(pop1 - pop.length() - 1, pop2 + 1, s);
-            final String s2 = pop + pop1 + '_' + pop2;
+            final String s2 = s3 + pop + pop1 + '_' + pop2;
             final DataObj dataObj1 = new DataObj(s2);
             dataObj1.setPrefix(s2 + "(\"" + s1 + subFormula + ConstantRegion.RIGHT_BRACKET + "\")\n" + s2 + "_r(\"" + s1 + stringBuilder1 + ConstantRegion.RIGHT_BRACKET + "\")");
             dataObj1.put(s2 + "_r", s);
             dataObj.put(dataObj1);
         }
-        final LogResults explain = BRACKETS_CALCULATION_2.explain(stringBuilder.toString(), false);
-        logResults.put(explain);
+        final LogResults explain = BRACKETS_CALCULATION_2.explain(stringBuilder.toString(), formatRequired);
+        if (isFirstLayer) {
+            logResults.put(explain);
+        }
         logResults.setResult(explain.getResult());
         return logResults;
     }
