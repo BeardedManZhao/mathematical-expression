@@ -1,3 +1,12 @@
+# 1.4.8 -> 1.4.9 版本更新日志
+
+### 更新时间：2025年02月28日
+
+==Java==
+
+- 更新版本号为 1.4.9
+- 修复括号表达式组件 以及 五括号表达式计算组件 对于高精度计算模式判断错误的问题
+```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation2;
@@ -17,3 +26,4 @@ public class MAIN {
         System.out.println(calculation.getResult());
     }
 }
+```

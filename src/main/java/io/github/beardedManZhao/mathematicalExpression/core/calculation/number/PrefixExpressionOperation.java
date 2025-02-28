@@ -149,7 +149,7 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        if (Mathematical_Expression.Options.isUseBigDecimal()) {
+        if (!Mathematical_Expression.Options.isUseBigDecimal()) {
             return this.calculationBigDecimal(Formula, formatRequired);
         }
         return this.compile(Formula, formatRequired).calculationCache(false);

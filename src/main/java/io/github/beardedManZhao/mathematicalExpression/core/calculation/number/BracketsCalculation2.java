@@ -73,7 +73,7 @@ public class BracketsCalculation2 extends BracketsCalculation implements Compile
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        if (Mathematical_Expression.Options.isUseBigDecimal()) {
+        if (!Mathematical_Expression.Options.isUseBigDecimal()) {
             return (CalculationNumberResults) this.compile(Formula, formatRequired).calculationCache(false);
         }
         return (CalculationNumberResults) this.compileBigDecimal(Formula, formatRequired).calculationBigDecimalsCache(false);

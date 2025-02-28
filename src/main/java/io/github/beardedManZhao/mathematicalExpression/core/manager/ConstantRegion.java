@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author zhao
  */
 public final class ConstantRegion {
-    public final static float VERSION = 1.47F;
+    public final static float VERSION = 1.49F;
     public final static String STRING_NULL = "null";
     public final static char LEFT_BRACKET = '(';
     public final static char RIGHT_BRACKET = ')';
@@ -46,16 +46,6 @@ public final class ConstantRegion {
     public final static Pattern REGULAR_COMPARISON_OPERATOR_PATTERN = Pattern.compile(REGULAR_COMPARISON_OPERATOR);
     public final static String REGULAR_PURE_LETTER = "[a-zA-Z]+";
     public final static String REGULAR_ADDITION_SUBTRACTION_AMBIGUITY = "\\" + PLUS_SIGN + MINUS_SIGN;
-    public final static String LOG_INFO_GET_FUNCTION = "Get a function component from the manager. => ";
-    public final static String LOG_INFO_GET_COMPONENT = "Get a computing component from the manager. => ";
-    public final static String LOG_INFO_FIND_FUNCTION = "Find and prepare the startup function: ";
-    public final static String LOG_INFO_REGISTER_COMPONENT = "A computing component is registered ";
-    public final static String LOG_INFO_register_FUNCTION = "A function is registered ";
-    public final static String LOG_INFO_UNREGISTER_COMPONENT = "Preparing to unregister the compute component. Component name:";
-    public final static String LOG_INFO_UNREGISTER_FUNCTION = "Prepare the logoff of a function. Function name:";
-    public final static String LOG_INFO_SHARED_POOL = "Use shared pool data. The identity of the data is: ";
-    public final static String LOG_INFO_SHARED_POOL_NO_USE = "No Use shared pool: ";
-
     /**
      * 符号 到 符号名称 的映射字典 用于进行替换操作 不需要替换的在这里将不会包含~
      */

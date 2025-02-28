@@ -39,7 +39,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.4.8</version>
+      <version>1.4.9</version>
     </dependency>
 </dependencies>
 ```
@@ -48,7 +48,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.8'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.9'
 }
 ```
 
