@@ -293,10 +293,11 @@ public class FunctionFormulaCalculation2 extends FunctionFormulaCalculation impl
 
     /**
      * 格式化一个数学表达式，并将计算细节与计算结果存储到数值结果集中。
-     * @param Formula 被计算的表达式
+     *
+     * @param Formula        被计算的表达式
      * @param formatRequired 是否需要格式
-     * @param isFirstLayer 是否是第一曾
-     * @param s3 引导
+     * @param isFirstLayer   是否是第一曾
+     * @param s3             引导
      * @return 可以被格式化的结果
      */
     public LogResults explain(String Formula, boolean formatRequired, boolean isFirstLayer, String s3) {

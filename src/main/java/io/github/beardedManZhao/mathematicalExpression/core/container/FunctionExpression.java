@@ -18,10 +18,9 @@ import java.util.Stack;
  */
 public class FunctionExpression extends SubCompileExpression {
 
+    private final static FunctionFormulaCalculation2 functionFormulaCalculation2 = FunctionFormulaCalculation2.getInstance(CalculationManagement.FUNCTION_FORMULA_CALCULATION_2_NAME);
     private final Stack<Integer> start, end;
     private final Stack<String> funNames;
-
-    private final static FunctionFormulaCalculation2 functionFormulaCalculation2 = FunctionFormulaCalculation2.getInstance(CalculationManagement.FUNCTION_FORMULA_CALCULATION_2_NAME);
 
     /**
      * 将一个函数表达式 转换为函数表达式的对象

@@ -1,7 +1,6 @@
 package io.github.beardedManZhao.mathematicalExpression.core.container;
 
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.CalculationBigDecimalResults;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.utils.CalculationOptimized;
 import io.github.beardedManZhao.mathematicalExpression.utils.NumberUtils;
@@ -308,18 +307,13 @@ public class PrefixExpression extends NameExpression {
         final Stack<Double> doubleStack = getDoubleStack(isCopy);
         final Stack<Character> characterStack = getCharacterStack(isCopy);
         double res = doubleStack.firstElement();
-        char back;
-        final int size = doubleStack.size();
         // 开始计算
-        final int sizeD2 = size >> 1;
-        for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
-            // 更新操作符
-            back = characterStack.get(offset);
-            // 获取操作数并计算结果
-            res = NumberUtils.calculation(back, res, doubleStack.get(i));
+        int index = 0;
+        for (Character c : characterStack) {
+            res = NumberUtils.calculation(c, res, doubleStack.get(++index));
         }
         // 返回结果
-        return new CalculationNumberResults(size - 1, res, this.getCalculationName());
+        return new CalculationNumberResults(characterStack.size(), res, this.getCalculationName());
     }
 
     @Override
@@ -330,18 +324,13 @@ public class PrefixExpression extends NameExpression {
         final Stack<BigDecimal> doubleStack = getBigDecimalsR(isCopy);
         final Stack<Character> characterStack = getCharacterStack(isCopy);
         BigDecimal res = doubleStack.firstElement();
-        char back;
-        final int size = doubleStack.size();
         // 开始计算
-        final int sizeD2 = size >> 1;
-        for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
-            // 更新操作符
-            back = characterStack.get(offset);
-            // 获取操作数并计算结果
-            res = CalculationOptimized.calculation(back, res, doubleStack.get(i));
+        int index = 0;
+        for (Character c : characterStack) {
+            res = CalculationOptimized.calculation(c, res, doubleStack.get(++index));
         }
         // 返回结果
-        return new CalculationBigDecimalResults(sizeD2, res, this.getCalculationName());
+        return new CalculationNumberResults(characterStack.size(), res.doubleValue(), this.getCalculationName());
     }
 
     @Override
@@ -352,5 +341,29 @@ public class PrefixExpression extends NameExpression {
     @Override
     public CalculationNumberResults calculationBigDecimalsCache(boolean isCopy) {
         return (CalculationNumberResults) super.calculationBigDecimalsCache(isCopy);
+    }
+
+    @Override
+    public String getExpressionStr() {
+        StringBuilder stringBuilder = new StringBuilder(super.getExpressionStr())
+                .append(" -> ");
+        int i1 = this.characterStackR.size();
+        if (this.isBigDecimal()) {
+            Stack<BigDecimal> doubleStack = this.bigDecimalsR;
+            System.out.println(characterStackR.size());
+            for (int i = 0; i < i1; i++) {
+                stringBuilder
+                        .append(doubleStack.get(i))
+                        .append(this.characterStackR.get(i));
+            }
+        } else {
+            Stack<Double> doubleStack = this.doubleStackR;
+            for (int i = 0; i < i1; i++) {
+                stringBuilder
+                        .append(doubleStack.get(i))
+                        .append(this.characterStackR.get(i));
+            }
+        }
+        return stringBuilder.append('0').toString();
     }
 }

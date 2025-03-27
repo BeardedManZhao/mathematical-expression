@@ -51,7 +51,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.4.9</version>
+      <version>1.5.0</version>
     </dependency>
 </dependencies>
 ```
@@ -61,7 +61,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.4.9'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.0'
 }
 ```
 
@@ -1072,35 +1072,35 @@ import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
         "f(x, y) = x - y"
 })
 public class MAIN {
-  public static void main(String[] args) throws WrongFormat {
-    Mathematical_Expression.register_function(MAIN.class);
-    // 将一个复数编译为计算表达式对象
-    final ComplexCalculation instance = (ComplexCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.complexCalculation);
-    final String s = "3 * 2 - 1 + 2*3 + f(10, 5)i";
-    instance.check(s);
-    final ComplexExpression compile = instance.compile(s, true);
+    public static void main(String[] args) throws WrongFormat {
+        Mathematical_Expression.register_function(MAIN.class);
+        // 将一个复数编译为计算表达式对象
+        final ComplexCalculation instance = (ComplexCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.complexCalculation);
+        final String s = "3 * 2 - 1 + 2*3 + f(10, 5)i";
+        instance.check(s);
+        final ComplexExpression compile = instance.compile(s, true);
 
-    // 我们还可以直接获取到复数的实部 和 虚部的表达式对象！
-    final FunctionExpression real = compile.getFunctionExpression1();
-    final FunctionExpression imaginary = compile.getFunctionExpression2();
-    System.out.println(real.getExpressionStr());
-    System.out.println(imaginary.getExpressionStr());
+        // 我们还可以直接获取到复数的实部 和 虚部的表达式对象！
+        final FunctionExpression real = compile.getFunctionExpression1();
+        final FunctionExpression imaginary = compile.getFunctionExpression2();
+        System.out.println(real.getExpressionStr());
+        System.out.println(imaginary.getExpressionStr());
 
-    // 直接计算出复数的结果
-    final CalculationComplexResults calculation = compile.calculationCache(false);
-    // 查看结果
-    System.out.println(compile);
-    System.out.println(calculation);
-    // 获取到复数对象
-    final ComplexNumber complexNumber = calculation.toComplexNumber();
-    // 直接 使用科学计算库 参与共轭计算
-    final ComplexNumber conjugate = complexNumber.conjugate();
-    System.out.println(conjugate);
-    // 还可以参与加法等运算 在这里是 自己 + 自己
-    final ComplexNumber add = complexNumber.add(conjugate);
-    System.out.println(add);
+        // 直接计算出复数的结果
+        final CalculationComplexResults calculation = compile.calculationCache(false);
+        // 查看结果
+        System.out.println(compile);
+        System.out.println(calculation);
+        // 获取到复数对象
+        final ComplexNumber complexNumber = calculation.toComplexNumber();
+        // 直接 使用科学计算库 参与共轭计算
+        final ComplexNumber conjugate = complexNumber.conjugate();
+        System.out.println(conjugate);
+        // 还可以参与加法等运算 在这里是 自己 + 自己
+        final ComplexNumber add = complexNumber.add(conjugate);
+        System.out.println(add);
 
-  }
+    }
 }
 ```
 
@@ -1534,24 +1534,24 @@ import io.github.beardedManZhao.mathematicalExpression.core.container.Expression
 
 public class MAIN {
 
-  public static void main(String[] args) {
-    // 获取到计算表达式组件
-    final PrefixExpressionOperation instance = (PrefixExpressionOperation) Mathematical_Expression.getInstance(Mathematical_Expression.prefixExpressionOperation);
-    // 将表达式 3*0.3 编译为一个表达式对象，我们在 1.4.1 版本中新增了compile & compileBigDecimal 方法，他们可以将表达式编译为对象，方便我们进行使用。
-    final Expression compile = instance.compile("3 * 0.3", true);
-    // 获取到计算结果 在这里有一个参数，设置为 false 性能会好些！设置为 true 功能会多些
-    System.out.println(compile.calculationCache(true));
-    // 我们可以使用这个表达式重复的计算，对于表达式对象来说 多次调用 calculationCache 的效率会很高
-    // 除了第一次 calculationCache，其余调用 calculationCache 的复杂度皆为 O(1)
-    System.out.println(compile.calculationCache(false));
-    // 值得注意的是，在编译对象中，我们还提供了一个 calculationBigDecimalsCache 函数
-    // 当我们在编译的时候 如果是使用 compile 编译出来的就需要使用 calculationCache 计算
-    // 如果是使用 compileBigDecimal 编译出来的就需要使用 calculationBigDecimalsCache 计算
-    if (compile.isBigDecimal()) {
-      // 我们可以使用 isBigDecimal 函数来判断它是什么类型的计算模式
-      System.out.println(compile.calculationBigDecimalsCache(false));
+    public static void main(String[] args) {
+        // 获取到计算表达式组件
+        final PrefixExpressionOperation instance = (PrefixExpressionOperation) Mathematical_Expression.getInstance(Mathematical_Expression.prefixExpressionOperation);
+        // 将表达式 3*0.3 编译为一个表达式对象，我们在 1.4.1 版本中新增了compile & compileBigDecimal 方法，他们可以将表达式编译为对象，方便我们进行使用。
+        final Expression compile = instance.compile("3 * 0.3", true);
+        // 获取到计算结果 在这里有一个参数，设置为 false 性能会好些！设置为 true 功能会多些
+        System.out.println(compile.calculationCache(true));
+        // 我们可以使用这个表达式重复的计算，对于表达式对象来说 多次调用 calculationCache 的效率会很高
+        // 除了第一次 calculationCache，其余调用 calculationCache 的复杂度皆为 O(1)
+        System.out.println(compile.calculationCache(false));
+        // 值得注意的是，在编译对象中，我们还提供了一个 calculationBigDecimalsCache 函数
+        // 当我们在编译的时候 如果是使用 compile 编译出来的就需要使用 calculationCache 计算
+        // 如果是使用 compileBigDecimal 编译出来的就需要使用 calculationBigDecimalsCache 计算
+        if (compile.isBigDecimal()) {
+            // 我们可以使用 isBigDecimal 函数来判断它是什么类型的计算模式
+            System.out.println(compile.calculationBigDecimalsCache(false));
+        }
     }
-  }
 }
 ```
 
@@ -1564,36 +1564,36 @@ import io.github.beardedManZhao.mathematicalExpression.core.container.Expression
 
 public class MAIN {
 
-  public static void run(Expression expression) {
-    if (expression.isBigDecimal()) {
-      // 代表支持高精度的计算 TODO 这里使用的是不带 cache 的计算 这是为了测试效果，事实上 在此案例之外，我们建议您使用 cache 的计算！
-      System.out.println("高精度计算结果：" + expression.calculationBigDecimals(true).getResult());
+    public static void run(Expression expression) {
+        if (expression.isBigDecimal()) {
+            // 代表支持高精度的计算 TODO 这里使用的是不带 cache 的计算 这是为了测试效果，事实上 在此案例之外，我们建议您使用 cache 的计算！
+            System.out.println("高精度计算结果：" + expression.calculationBigDecimals(true).getResult());
+        }
+        if (expression.isUnBigDecimal()) {
+            // 代表支持非高精度的计算
+            System.out.println("非精度计算结果：" + expression.calculation(true).getResult());
+        }
     }
-    if (expression.isUnBigDecimal()) {
-      // 代表支持非高精度的计算
-      System.out.println("非精度计算结果：" + expression.calculation(true).getResult());
-    }
-  }
 
-  public static void main(String[] args) {
-    // 获取到计算表达式组件
-    final CompileCalculation instance = (CompileCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
-    // 将表达式 3*0.3 编译为一个表达式对象，我们在 1.4.1 版本中新增了compile & compileBigDecimal 方法，他们可以将表达式编译为对象，方便我们进行使用。
-    final Expression compile = instance.compile("1 + (3 * 0.3)", true);
-    // 运行表达式 这里第一次计算的时候 它因为 compile 的编译，只支持使用 非精度计算模式
-    System.out.println("--------");
-    run(compile);
-    if (compile.isAvailable()) {
-      // TODO 此函数需要确保您在 calculationCache or calculationBigDecimalsCache 调用时没有设置为 false
-      //  我们可以通过 compile.isAvailable() 方法来判断是否支持多精度计算模块的启用 启用之后 您可以随意调用 calculationCache or calculationBigDecimalsCache
-      // 将表达式的多精度支持模式启用 请注意 此操作仅可以对表达式的最后一层计算起作用！
-      // 例如 1 + (3*0.3) 最后一层就是 1 + 0.899999（compile编译的） 或者 1 + 0.9（compileBigDecimal 编译的）
-      compile.convertToMultiPrecisionSupported();
-      // 运行表达式 TODO 这样操作之后 我们会发现它可以在两种模式中进行计算了
-      System.out.println("--------");
-      run(compile);
+    public static void main(String[] args) {
+        // 获取到计算表达式组件
+        final CompileCalculation instance = (CompileCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+        // 将表达式 3*0.3 编译为一个表达式对象，我们在 1.4.1 版本中新增了compile & compileBigDecimal 方法，他们可以将表达式编译为对象，方便我们进行使用。
+        final Expression compile = instance.compile("1 + (3 * 0.3)", true);
+        // 运行表达式 这里第一次计算的时候 它因为 compile 的编译，只支持使用 非精度计算模式
+        System.out.println("--------");
+        run(compile);
+        if (compile.isAvailable()) {
+            // TODO 此函数需要确保您在 calculationCache or calculationBigDecimalsCache 调用时没有设置为 false
+            //  我们可以通过 compile.isAvailable() 方法来判断是否支持多精度计算模块的启用 启用之后 您可以随意调用 calculationCache or calculationBigDecimalsCache
+            // 将表达式的多精度支持模式启用 请注意 此操作仅可以对表达式的最后一层计算起作用！
+            // 例如 1 + (3*0.3) 最后一层就是 1 + 0.899999（compile编译的） 或者 1 + 0.9（compileBigDecimal 编译的）
+            compile.convertToMultiPrecisionSupported();
+            // 运行表达式 TODO 这样操作之后 我们会发现它可以在两种模式中进行计算了
+            System.out.println("--------");
+            run(compile);
+        }
     }
-  }
 }
 ```
 
@@ -1616,34 +1616,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class MAIN {
-  public static void main(String[] args) throws IOException, ClassNotFoundException {
-    // 获取到计算组件
-    final CompileCalculation instance = (CompileCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
-    // 准备一个路径对象
-    final Path path = Paths.get("C:\\Users\\zhao\\Downloads\\表达式.me");
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        // 获取到计算组件
+        final CompileCalculation instance = (CompileCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+        // 准备一个路径对象
+        final Path path = Paths.get("C:\\Users\\zhao\\Downloads\\表达式.me");
 
-    // 将表达式对象保存到磁盘
-    try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(Files.newOutputStream(path))) {
-      // 编译一个表达式对象
-      final NameExpression compile = instance.compile(" 1 + (20 * 3 - 3 + (10 -4)) + (30 -2)  /2 + 10", true);
-      // 将表达式对象输出到磁盘
-      objectOutputStream.writeObject(compile);
-    }
+        // 将表达式对象保存到磁盘
+        try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(Files.newOutputStream(path))) {
+            // 编译一个表达式对象
+            final NameExpression compile = instance.compile(" 1 + (20 * 3 - 3 + (10 -4)) + (30 -2)  /2 + 10", true);
+            // 将表达式对象输出到磁盘
+            objectOutputStream.writeObject(compile);
+        }
 
-    // 再将表达式从磁盘读取进来
-    try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(path))) {
-      // 从磁盘中将表达式重新加载到内存
-      final NameExpression expression = (NameExpression) objectInputStream.readObject();
-      // 查看表达式的信息
-      System.out.println("表达式来源：" + expression.getCalculationName());
-      System.out.println("表达式的格式：" + expression.getExpressionStr());
-      System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
-      System.out.println(">>> 开始为表达式对象添加多精度支持");
-      expression.convertToMultiPrecisionSupported();
-      System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
-      System.out.println("计算结果：" + expression.calculation(false));
+        // 再将表达式从磁盘读取进来
+        try (final ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(path))) {
+            // 从磁盘中将表达式重新加载到内存
+            final NameExpression expression = (NameExpression) objectInputStream.readObject();
+            // 查看表达式的信息
+            System.out.println("表达式来源：" + expression.getCalculationName());
+            System.out.println("表达式的格式：" + expression.getExpressionStr());
+            System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
+            System.out.println(">>> 开始为表达式对象添加多精度支持");
+            expression.convertToMultiPrecisionSupported();
+            System.out.println("表达式支持的模式：" + (expression.isBigDecimal() ? "【高精度 √】 " : "【高精度 ×】 ") + (expression.isUnBigDecimal() ? "【非精度 √】 " : "【非精度 ×】 "));
+            System.out.println("计算结果：" + expression.calculation(false));
+        }
     }
-  }
 }
 ```
 
@@ -1667,65 +1667,65 @@ import io.github.beardedManZhao.mathematicalExpression.core.container.Expression
 
 public class MAIN {
 
-  // 准备一个用于进行基准测试的表达式
-  private static String s = "1 + 30 + (20 / 10)";
+    // 准备一个用于进行基准测试的表达式
+    private static String s = "1 + 30 + (20 / 10)";
 
-  static {
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += '+' + s;
-    s += "+ 100000";
-    System.out.println("您要计算的表达式：" + s);
-  }
+    static {
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += '+' + s;
+        s += "+ 100000";
+        System.out.println("您要计算的表达式：" + s);
+    }
 
-  public static void main(String[] args) {
-    // 获取到计算表达式组件
-    final BracketsCalculation2 instance = (BracketsCalculation2) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
-    // 预热
-    final Expression compile0 = instance.compileBigDecimal(s, true);
-    System.out.println(compile0.calculationBigDecimalsCache(false));
-    System.out.println("-------");
+    public static void main(String[] args) {
+        // 获取到计算表达式组件
+        final BracketsCalculation2 instance = (BracketsCalculation2) Mathematical_Expression.getInstance(Mathematical_Expression.bracketsCalculation2);
+        // 预热
+        final Expression compile0 = instance.compileBigDecimal(s, true);
+        System.out.println(compile0.calculationBigDecimalsCache(false));
+        System.out.println("-------");
 
-    // 开启缓存时非常快，能够有多快，取决于您的表达式中重复的子表达式的数量，数量越多 效果越明显
-    Mathematical_Expression.Options.setUseCache(true);
-    run(instance);
-    System.out.println("-------");
+        // 开启缓存时非常快，能够有多快，取决于您的表达式中重复的子表达式的数量，数量越多 效果越明显
+        Mathematical_Expression.Options.setUseCache(true);
+        run(instance);
+        System.out.println("-------");
 
-    // 不开启缓存的计算速度就慢了许多
-    Mathematical_Expression.Options.setUseCache(false);
-    run(instance);
-  }
+        // 不开启缓存的计算速度就慢了许多
+        Mathematical_Expression.Options.setUseCache(false);
+        run(instance);
+    }
 
-  /**
-   * 基准测试函数
-   *
-   * @param instance 需要使用的计算组件
-   */
-  public static void run(CompileCalculation instance) {
-    final long l = System.currentTimeMillis();
-    // 第一次进行编译
-    final Expression compile = instance.compileBigDecimal(s, true);
-    System.out.println(compile.calculationBigDecimalsCache(false));
+    /**
+     * 基准测试函数
+     *
+     * @param instance 需要使用的计算组件
+     */
+    public static void run(CompileCalculation instance) {
+        final long l = System.currentTimeMillis();
+        // 第一次进行编译
+        final Expression compile = instance.compileBigDecimal(s, true);
+        System.out.println(compile.calculationBigDecimalsCache(false));
 
-    final long l1 = System.currentTimeMillis();
-    System.out.println("第一次计算所用时间：" + (l1 - l));
+        final long l1 = System.currentTimeMillis();
+        System.out.println("第一次计算所用时间：" + (l1 - l));
 
-    // 再一次进行编译 为了结果严谨，这里再次计算 且第二次表达式有所改动 整体除2
-    final Expression compile1 = instance.compileBigDecimal('(' + s + ") / 2", true);
-    System.out.println(compile1.calculationBigDecimalsCache(false));
+        // 再一次进行编译 为了结果严谨，这里再次计算 且第二次表达式有所改动 整体除2
+        final Expression compile1 = instance.compileBigDecimal('(' + s + ") / 2", true);
+        System.out.println(compile1.calculationBigDecimalsCache(false));
 
-    System.out.println("第二次计算所用时间：" + (System.currentTimeMillis() - l1));
-  }
+        System.out.println("第二次计算所用时间：" + (System.currentTimeMillis() - l1));
+    }
 }
 ```
 

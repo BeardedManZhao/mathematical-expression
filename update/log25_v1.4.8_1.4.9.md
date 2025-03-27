@@ -5,7 +5,8 @@
 ==Java==
 
 - 更新版本号为 1.4.9
-- 修复括号表达式组件 以及 五括号表达式计算组件 对于高精度计算模式判断错误的问题
+- 修复括号表达式组件 以及 无括号表达式计算组件 对于高精度计算模式判断错误的问题
+
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;

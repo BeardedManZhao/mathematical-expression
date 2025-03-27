@@ -1,19 +1,20 @@
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.FunctionPackage;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.FunctionFormulaCalculation2;
-import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.BracketsCalculation2;
+import io.github.beardedManZhao.mathematicalExpression.core.container.LogResults;
+import top.lingyuzhao.varFormatter.core.VarFormatter;
 
 public class MAIN {
 
     public static void main(String[] args) {
-        FunctionFormulaCalculation2 instance = (FunctionFormulaCalculation2) Mathematical_Expression.getInstance(
-                Mathematical_Expression.functionFormulaCalculation2
+        // +0.0000*1
+        String formula = "0.0000*1+(0.0000*0.9714+-11.3308*1.229+0.0000*1.4286+0.0008*1.4714+0.0000*1.4714+1.0000*1.4571+0.0000*1.4286+12.7365*13.3+(0.0000-0.0000)*0.0341+1.0000*1.7143+0.0000*1)/10000-0.0000*1+(0.0000*0.9714+-11.3308*1.229+0.0000*1.4286+0.0008*1.4714+0.0000*1.4714+1.0000*1.4571+0.0000*1.4286+12.7365*13.3+(0.0000-0.0000)*0.0341+1.0000*1.7143+0.0000*1)/10000";
+        final BracketsCalculation2 instance = (BracketsCalculation2) Mathematical_Expression.getInstance(
+                // Select the different computing components you want to use here
+                Mathematical_Expression.bracketsCalculation2
         );
-        Mathematical_Expression.register_function(FunctionPackage.MATH);
-        // 这里的判断 对于括号表达式 和 无括号表达式 有些问题，对这两组件，他们的高精度和非高精度弄反了 我们在 1.4.9 修复了此问题
-        Mathematical_Expression.Options.setUseBigDecimal(false);
-        // TODO 由于模式弄反了 因此使用了高精度计算 这里会有无限小数位 导致报错
-        CalculationNumberResults calculation = instance.calculation("2.00 / 3.00");
-        System.out.println(calculation.getResult());
+        LogResults explain = instance.explain(formula, true);
+        explain.setNameJoin(false);
+        String format = VarFormatter.MERMAID.getFormatter(true).format(explain);
+        System.out.println(format);
     }
 }

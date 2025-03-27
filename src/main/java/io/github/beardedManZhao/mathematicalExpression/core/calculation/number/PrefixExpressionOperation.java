@@ -249,24 +249,21 @@ public final class PrefixExpressionOperation extends NumberCalculation implement
         }
         doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
         double res = doubleStack.firstElement();
-        char back;
-        final int size = doubleStack.size();
         // 开始计算
         final DataObj dataObj2 = new DataObj(s1 + "_最终");
         dataObj.put(dataObj2);
         dataObj = dataObj2;
-        final int sizeD2 = size >> 1;
-        for (int i = 1, offset = 0; i < size && offset < sizeD2; ++offset, ++i) {
-            // 更新操作符
-            back = characterStack.get(offset);
+        // 开始计算
+        int index = 0;
+        for (Character c : characterStack) {
             // 获取操作数并计算结果
-            final Double v = doubleStack.get(i);
-            final String s2 = res + " " + back + " " + v;
+            final Double v = doubleStack.get(++index);
+            final String s2 = res + " " + c + " " + v;
             final String s3 = "f_" + s2.hashCode();
             final DataObj dataObj1 = new DataObj(s3 + "_计算");
             dataObj1.setPrefix(s3 + "(\"" + s2 + "\")");
             dataObj.put(dataObj1);
-            res = NumberUtils.calculation(back, res, v);
+            res = NumberUtils.calculation(c, res, v);
             dataObj1.put(s3, res);
             dataObj = dataObj1;
         }
