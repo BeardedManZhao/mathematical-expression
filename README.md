@@ -51,7 +51,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.5.0</version>
+      <version>1.5.1</version>
     </dependency>
 </dependencies>
 ```
@@ -61,7 +61,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.0'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.1'
 }
 ```
 
@@ -466,6 +466,33 @@ graph LR
   f_-929530109_计算==Map>String/Number==>result
   result--Map>value-->resultv{"99.0"}
 
+```
+
+### Powerful Unknown Solver
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving;
+import io.github.beardedManZhao.mathematicalExpression.core.container.EquationSolver;
+
+public class MAIN {
+
+    public static void main(String[] args) {
+        SingletonEquationSolving instance = (SingletonEquationSolving) Mathematical_Expression.getInstance(Mathematical_Expression.singleEquationSolving);
+        EquationSolver compile = instance.compile("2 * x - x = 10", false);
+        // 设置允许的最大迭代次数
+        compile.setMaxIter(100);
+        try {
+            // 使用牛顿求解计算
+            System.out.println(compile.calculation(false));
+        } catch (ArithmeticException e) {
+            System.out.println("正在切换求解方案，因为牛顿法失败了：" + e.getMessage());
+            // 关闭牛顿求解 然后计算 这样使用的就是二分法求解
+            compile.setUseNewton(false);
+            System.out.println(compile.calculation(false));
+        }
+    }
+}
 ```
 
 ## Framework
@@ -1113,6 +1140,84 @@ io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression
 6.0 - 10.0i
 6.0 + 10.0i
 12.0 + 0.0i
+```
+
+### Jvm Calculation
+
+- Full class name：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.JvmCalculation`
+- Starting from version 1.5.1, this component has been developed and will allow us to directly call Jvm for solving. The performance of this computing component is very powerful, and the usage method is exactly the same as other components! Next is a usage example!
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.JvmCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.JvmExpression;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
+
+@Functions("sum(x,y) = x + y")
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 注册一个函数 TODO 注意 只有 注解 和 字符串 的函数注册才能对 JVM 生效哦！
+        Mathematical_Expression.register_function(MAIN.class);
+        // 获取到 jvm 计算器
+        JvmCalculation jvm = (JvmCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.jvmCalculation);
+        // 编译表达式
+        JvmExpression compile = jvm.compile("10 + 20 + sum(4, 5) + 40 * 3 - 1", true);
+        // 查询编译好的表达式
+        System.out.println("编译结果：" + compile.getExpressionStr());
+        // 调用编译好的表达式
+        // 注意不要使用缓存 因为这个表达式很特别 可以任意修改 为了演示修改参数 所以需要关闭缓存 避免2次计算出同样的结果
+        System.out.println("计算结果1：" + compile.calculation(false).getResult());
+        // 还可以修改参数 比如我们要修改第 2（索引为1） 个数值 为 30
+        compile.setParamNumber(1, 30);
+        // 再次调用编译好的表达式
+        System.out.println("计算结果2：" + compile.calculation(false).getResult());
+        // 获取参数 比如获取到第  2 个参数 也就是索引为 1 的参数
+        System.out.println("第2个参数值：" + compile.getParamNumber(1));
+
+        // 使用索引 迭代所有参数
+        int length = compile.getLength();
+        for (int i = 0; i < length; i++) {
+            System.out.println("第" + (i + 1) + "个参数值：" + compile.getParamNumber(i));
+        }
+        // 也可以使用迭代器
+        compile.iterator().forEach(System.out::println);
+    }
+}
+```
+
+### 方程求解
+
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving`
+- Starting from version 1.5.1, this component has been developed and will allow us to directly solve equations containing an unknown variable, using Jvm computing components as the underlying layer with high performance! Here are usage examples! (Note that solving the equation requires you to set the parameters!)
+- The supported convergence algorithms are as follows
+  - Newton's method
+  - Binary method
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving;
+import io.github.beardedManZhao.mathematicalExpression.core.container.EquationSolver;
+
+public class MAIN {
+
+    public static void main(String[] args) {
+        SingletonEquationSolving instance = (SingletonEquationSolving) Mathematical_Expression.getInstance(Mathematical_Expression.singleEquationSolving);
+        EquationSolver compile = instance.compile("2 * x - x = 10", false);
+        // 设置允许的最大迭代次数
+        compile.setMaxIter(100);
+        try {
+            // 使用牛顿求解计算
+            System.out.println(compile.calculation(false));
+        } catch (ArithmeticException e) {
+            System.out.println("正在切换求解方案，因为牛顿法失败了：" + e.getMessage());
+            // 关闭牛顿求解 然后计算 这样使用的就是二分法求解
+            compile.setUseNewton(false);
+            System.out.println(compile.calculation(false));
+        }
+    }
+}
 ```
 
 ## Advanced Operations

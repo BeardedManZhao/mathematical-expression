@@ -1,3 +1,29 @@
+# 1.5.0 -> 1.5.1 版本更新日志
+
+### 更新时间：2025年05月07日
+
+==Java==
+
+- 更新版本号为 1.5.1
+- 添加了 `JvmExpressionFunction` 类，用于直接操作 JVM 进行函数表达式计算，性能优越。
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.jvm.JvmExpressionFunction;
+
+public class MAIN {
+
+    public static void main(String[] args) {
+        JvmExpressionFunction.registerFunction("f1(x) = x + 1");
+        JvmExpressionFunction compile = JvmExpressionFunction.parse("f(x, y) = f1(x) + y");
+        long l = System.currentTimeMillis();
+        System.out.println(compile.run(1, 2));
+        System.out.println(System.currentTimeMillis() - l);
+    }
+}
+```
+
+- 实现了一元方程求解
+```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving;
 import io.github.beardedManZhao.mathematicalExpression.core.container.EquationSolver;
@@ -20,3 +46,4 @@ public class MAIN {
         }
     }
 }
+```

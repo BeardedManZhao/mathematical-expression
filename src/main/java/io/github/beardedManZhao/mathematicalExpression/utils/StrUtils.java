@@ -5,11 +5,15 @@ import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegi
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * 字符串工具类
  */
 public final class StrUtils {
+
+    private static final char[] dict = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    private static final Random random = new Random();
 
     /**
      * 删除一个字符串中所有的空字符
@@ -27,6 +31,23 @@ public final class StrUtils {
         }
         return stringBuilder.toString();
     }
+
+/*
+    /**
+     * 将一个数值字符传换成一个数值
+     *
+     * @param c 需要被转换的字符
+     * @return 转换之后的数值
+     * /
+    public static int charToInteger(char c) {
+        if (StrUtils.IsANumber(c)) {
+            return c - 0x30;
+        } else {
+            throw new RuntimeException("您在进行字符与数值之间的转换时，由于字符的不正确导致无法成功转换，错误字符：" + c +
+                    "\nWhen you are converting characters to numeric values, the conversion cannot be successful due to incorrect characters. Error characters:" + c);
+        }
+    }
+*/
 
     /**
      * 将一个字符串转换为浮点数值
@@ -104,23 +125,6 @@ public final class StrUtils {
         return res;
     }
 
-/*
-    /**
-     * 将一个数值字符传换成一个数值
-     *
-     * @param c 需要被转换的字符
-     * @return 转换之后的数值
-     * /
-    public static int charToInteger(char c) {
-        if (StrUtils.IsANumber(c)) {
-            return c - 0x30;
-        } else {
-            throw new RuntimeException("您在进行字符与数值之间的转换时，由于字符的不正确导致无法成功转换，错误字符：" + c +
-                    "\nWhen you are converting characters to numeric values, the conversion cannot be successful due to incorrect characters. Error characters:" + c);
-        }
-    }
-*/
-
     /**
      * 判断一个字符是不是一个操作符
      *
@@ -140,21 +144,6 @@ public final class StrUtils {
         return false;
     }
 
-    /**
-     * 判断一个字符串是不是一个数值
-     *
-     * @param c 需要被判断的自读
-     * @return 如果是一个数值，这里返回True
-     */
-    public static boolean IsANumber(CharSequence c) {
-        for (int i = 0; i < c.length(); i++) {
-            if (!IsANumber(c.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 /*
     /**
      * 判断一个字符串是不是一个数值 允许阶乘
@@ -171,6 +160,39 @@ public final class StrUtils {
         return IsANumber(c);
     }
 */
+
+    /**
+     * 判断一个字符是不是一个操作符
+     *
+     * @param c 需要被判断的字符
+     * @return 如果是一个操作符就返回True
+     */
+    public static boolean IsAnJvmOperator(char c) {
+        switch (c) {
+            case ConstantRegion.PLUS_SIGN:
+            case ConstantRegion.MINUS_SIGN:
+            case ConstantRegion.MULTIPLICATION_SIGN:
+            case ConstantRegion.DIVISION_SIGN:
+            case ConstantRegion.REMAINDER_SIGN:
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断一个字符串是不是一个数值
+     *
+     * @param c 需要被判断的自读
+     * @return 如果是一个数值，这里返回True
+     */
+    public static boolean IsANumber(CharSequence c) {
+        for (int i = 0; i < c.length(); i++) {
+            if (!IsANumber(c.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * 判断一个字符是不是一个数值
@@ -238,6 +260,14 @@ public final class StrUtils {
         }
         arrayList.add(stringBuilder.toString().trim());
         return arrayList;
+    }
+
+    public static String randomString(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(dict[random.nextInt(dict.length)]);
+        }
+        return sb.toString();
     }
 
 /*

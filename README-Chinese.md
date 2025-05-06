@@ -41,7 +41,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.5.0</version>
+      <version>1.5.1</version>
     </dependency>
 </dependencies>
 ```
@@ -50,7 +50,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.0'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.1'
 }
 ```
 
@@ -125,15 +125,15 @@ public class MAIN {
 
 计算符号的支持不够多？不用担心，此库支持的运算符种类繁多，您可以在这里看到所有计算符.
 
-| 符号名称   | 符号语法（n代表操作数） | 支持版本  | 符号意义         |
-|--------|--------------|-------|--------------|
-| 加法运算符  | `n + n`      | 1.0.0 | 将两个操作数进行相加运算 |
-| 减法法运算符 | `n - n`      | 1.0.0 | 将两个操作数进行相减运算 |
-| 乘法运算符  | `n * n`      | 1.0.0 | 将两个操作数进行相乘运算 |
-| 除法运算符  | `n / n`      | 1.0.0 | 将两个操作数进行相除运算 |
-| 取余运算符  | `n % n`      | 1.0.0 | 将两个操作数进行取余运算 |
-| 阶乘运算符  | `n!`         | 1.3.2 | 将操作数进行阶乘运算   |
-| 幂运算符   | `n ^ n`      | 1.3.5 | 将操作数进行幂运算    | 
+| 符号名称   | 符号语法（n代表操作数） | 支持版本  | 符号意义                   |
+|--------|--------------|-------|------------------------|
+| 加法运算符  | `n + n`      | 1.0.0 | 将两个操作数进行相加运算           |
+| 减法法运算符 | `n - n`      | 1.0.0 | 将两个操作数进行相减运算           |
+| 乘法运算符  | `n * n`      | 1.0.0 | 将两个操作数进行相乘运算           |
+| 除法运算符  | `n / n`      | 1.0.0 | 将两个操作数进行相除运算           |
+| 取余运算符  | `n % n`      | 1.0.0 | 将两个操作数进行取余运算           |
+| 阶乘运算符  | `n!`         | 1.3.2 | 将操作数进行阶乘运算（Jvm求解器暂不支持） |
+| 幂运算符   | `n ^ n`      | 1.3.5 | 将操作数进行幂运算（Jvm求解器暂不支持）  | 
 
 您还可以通过调整设置实现带有精度的计算操作以及缓存操作等！
 
@@ -425,6 +425,33 @@ graph LR
   f_-929530109_计算 == Map>String/Number ==> result
   result -- Map>value --> resultv{"99.0"}
 
+```
+
+### 强大的未知数求解器
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving;
+import io.github.beardedManZhao.mathematicalExpression.core.container.EquationSolver;
+
+public class MAIN {
+
+    public static void main(String[] args) {
+        SingletonEquationSolving instance = (SingletonEquationSolving) Mathematical_Expression.getInstance(Mathematical_Expression.singleEquationSolving);
+        EquationSolver compile = instance.compile("2 * x - x = 10", false);
+        // 设置允许的最大迭代次数
+        compile.setMaxIter(100);
+        try {
+            // 使用牛顿求解计算
+            System.out.println(compile.calculation(false));
+        } catch (ArithmeticException e) {
+            System.out.println("正在切换求解方案，因为牛顿法失败了：" + e.getMessage());
+            // 关闭牛顿求解 然后计算 这样使用的就是二分法求解
+            compile.setUseNewton(false);
+            System.out.println(compile.calculation(false));
+        }
+    }
+}
 ```
 
 ## 框架架构
@@ -1033,6 +1060,84 @@ io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression
 6.0 - 10.0i
 6.0 + 10.0i
 12.0 + 0.0i
+```
+
+### Jvm计算组件
+
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.JvmCalculation`
+- 从 1.5.1 版本开始，本组件开发完毕，它将允许我们直接调用 Jvm 进行求解，本计算组件性能非常强大，且使用方法与其它组件完全一样！接下来是使用示例！
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.JvmCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.JvmExpression;
+import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
+
+@Functions("sum(x,y) = x + y")
+public class MAIN {
+
+    public static void main(String[] args) throws WrongFormat {
+        // 注册一个函数 TODO 注意 只有 注解 和 字符串 的函数注册才能对 JVM 生效哦！
+        Mathematical_Expression.register_function(MAIN.class);
+        // 获取到 jvm 计算器
+        JvmCalculation jvm = (JvmCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.jvmCalculation);
+        // 编译表达式
+        JvmExpression compile = jvm.compile("10 + 20 + sum(4, 5) + 40 * 3 - 1", true);
+        // 查询编译好的表达式
+        System.out.println("编译结果：" + compile.getExpressionStr());
+        // 调用编译好的表达式
+        // 注意不要使用缓存 因为这个表达式很特别 可以任意修改 为了演示修改参数 所以需要关闭缓存 避免2次计算出同样的结果
+        System.out.println("计算结果1：" + compile.calculation(false).getResult());
+        // 还可以修改参数 比如我们要修改第 2（索引为1） 个数值 为 30
+        compile.setParamNumber(1, 30);
+        // 再次调用编译好的表达式
+        System.out.println("计算结果2：" + compile.calculation(false).getResult());
+        // 获取参数 比如获取到第  2 个参数 也就是索引为 1 的参数
+        System.out.println("第2个参数值：" + compile.getParamNumber(1));
+
+        // 使用索引 迭代所有参数
+        int length = compile.getLength();
+        for (int i = 0; i < length; i++) {
+            System.out.println("第" + (i + 1) + "个参数值：" + compile.getParamNumber(i));
+        }
+        // 也可以使用迭代器
+        compile.iterator().forEach(System.out::println);
+    }
+}
+```
+
+### 方程求解
+
+- 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving`
+- 1.5.1 版本开始，本组件开发完毕，它将允许我们直接求解含一个未知数的方程，利用 Jvm计算组件 作为底层，性能较高！下面是使用示例！（注意，求解方程需要您设置好参数！）
+- 支持的收敛算法如下
+  - 牛顿法
+  - 二分法
+
+```java
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving;
+import io.github.beardedManZhao.mathematicalExpression.core.container.EquationSolver;
+
+public class MAIN {
+
+    public static void main(String[] args) {
+        SingletonEquationSolving instance = (SingletonEquationSolving) Mathematical_Expression.getInstance(Mathematical_Expression.singleEquationSolving);
+        EquationSolver compile = instance.compile("2 * x - x = 10", false);
+        // 设置允许的最大迭代次数
+        compile.setMaxIter(100);
+        try {
+            // 使用牛顿求解计算
+            System.out.println(compile.calculation(false));
+        } catch (ArithmeticException e) {
+            System.out.println("正在切换求解方案，因为牛顿法失败了：" + e.getMessage());
+            // 关闭牛顿求解 然后计算 这样使用的就是二分法求解
+            compile.setUseNewton(false);
+            System.out.println(compile.calculation(false));
+        }
+    }
+}
 ```
 
 ## 高阶操作

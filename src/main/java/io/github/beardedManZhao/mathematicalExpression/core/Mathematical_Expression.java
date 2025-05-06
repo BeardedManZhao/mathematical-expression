@@ -3,6 +3,7 @@ package io.github.beardedManZhao.mathematicalExpression.core;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.bool.BooleanCalculation2;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.*;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.jvm.JvmExpressionFunction;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.*;
 import io.github.beardedManZhao.mathematicalExpression.core.container.PackExpression;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
@@ -27,52 +28,64 @@ public enum Mathematical_Expression {
 
     bracketsCalculation2 {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public BracketsCalculation2 getInstance(String calculationName) {
             return BracketsCalculation2.getInstance(calculationName);
         }
     }, cumulativeCalculation {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public CumulativeCalculation getInstance(String calculationName) {
             return CumulativeCalculation.getInstance(calculationName);
         }
     },
     fastMultiplyOfIntervalsBrackets {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public FastMultiplyOfIntervalsBrackets getInstance(String calculationName) {
             return FastMultiplyOfIntervalsBrackets.getInstance(calculationName);
         }
     }, fastSumOfIntervalsBrackets {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public FastSumOfIntervalsBrackets getInstance(String calculationName) {
             return FastSumOfIntervalsBrackets.getInstance(calculationName);
         }
     },
     functionFormulaCalculation {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public FunctionFormulaCalculation getInstance(String calculationName) {
             return FunctionFormulaCalculation.getInstance(calculationName);
         }
     }, functionFormulaCalculation2 {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public FunctionFormulaCalculation2 getInstance(String calculationName) {
             return FunctionFormulaCalculation2.getInstance(calculationName);
         }
     },
     prefixExpressionOperation {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public PrefixExpressionOperation getInstance(String calculationName) {
             return PrefixExpressionOperation.getInstance(calculationName);
         }
     }, booleanCalculation2 {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public BooleanCalculation2 getInstance(String calculationName) {
             return BooleanCalculation2.getInstance(calculationName);
         }
     },
     complexCalculation {
         @Override
-        public Calculation getInstance(String calculationName) {
+        public ComplexCalculation getInstance(String calculationName) {
             return ComplexCalculation.getInstance(calculationName);
+        }
+    },
+    jvmCalculation {
+        @Override
+        public JvmCalculation getInstance(String calculationName) {
+            return JvmCalculation.getInstance(calculationName);
+        }
+    },
+    singleEquationSolving {
+        @Override
+        public SingletonEquationSolving getInstance(String calculationName) {
+            return SingletonEquationSolving.getInstance(calculationName);
         }
     };
 
@@ -90,6 +103,44 @@ public enum Mathematical_Expression {
      */
     public static Calculation getInstance(Mathematical_Expression calculation) {
         return getInstance(calculation, calculation.toString());
+    }
+
+    /**
+     * 注册一个函数到函数库中，使得所有需要使用函数计算的组件都可以获取到函数对象的数据类型。
+     * <p>
+     * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
+     *
+     * @param function 函数的表达式，您可以使用数学中的格式来定义一个函数，例如 f(x) = 2 * x
+     *                 <p>
+     *                 The expression of a function, you can use mathematical formats to define a function, such as f (x)=2 * x
+     */
+    public static void register_jvm_function(String function) {
+        JvmExpressionFunction.registerFunction(function);
+    }
+
+    /**
+     * 注册一个函数到函数库中，使得所有需要使用函数计算的组件都可以获取到函数对象的数据类型。
+     * <p>
+     * Register a function into the function library, so that all components that need to use the function calculation can obtain the data type of the function object.
+     *
+     * @param function 函数的表达式，您可以使用数学中的格式来定义一个函数，例如 f(x) = 2 * x
+     *                 <p>
+     *                 The expression of a function, you can use mathematical formats to define a function, such as f (x)=2 * x
+     * @return 如果返回true 则代表函数注册操作成功!!!
+     * <p>
+     * If true is returned, the function registration operation is successful!!!
+     * @throws WrongFormat 函数的格式发生错误则会抛出此异常
+     */
+    public static boolean register_jvm_function(Class<?> function) throws WrongFormat {
+        final Functions annotation = function.getAnnotation(Functions.class);
+        if (annotation != null) {
+            for (String functionExpression : annotation.value()) {
+                Mathematical_Expression.register_jvm_function(functionExpression);
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
     /**
