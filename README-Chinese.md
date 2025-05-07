@@ -1066,6 +1066,8 @@ io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression
 
 - 类组件：`io.github.beardedManZhao.mathematicalExpression.core.calculation.number.JvmCalculation`
 - 从 1.5.1 版本开始，本组件开发完毕，它将允许我们直接调用 Jvm 进行求解，本计算组件性能非常强大，且使用方法与其它组件完全一样！接下来是使用示例！
+  - 请注意 本组件的编译操作对于性能的损耗非常高，但其计算速度非常快，与Java原生调用速度完全一致
+  - 因此：本组件非常适用于一次编译多次调用的场景，请尽量将其编译的对象复用！比如一个表达式但其中的操作数不一样的情况！
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;

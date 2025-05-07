@@ -1148,6 +1148,8 @@ io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression
 - Starting from version 1.5.1, this component has been developed and will allow us to directly call Jvm for solving. The
   performance of this computing component is very powerful, and the usage method is exactly the same as other
   components! Next is a usage example!
+  - Please note that the compilation operation of this component has a very high performance loss, but its computing speed is very fast, which is completely consistent with the native calling speed of Java
+  - Therefore, this component is very suitable for scenarios where it is compiled multiple times. Please try to reuse the compiled objects as much as possible! For example, when an expression has different operands!
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
