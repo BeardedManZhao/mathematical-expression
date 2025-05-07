@@ -1,23 +1,15 @@
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.jvm.JvmExpressionFunction;
+import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 
+@Functions("sum(x, y) = x + y")
 public class MAIN {
 
     public static void main(String[] args) throws WrongFormat {
-        ExpressionFunction expressionFunction0 = ExpressionFunction.parse("test(a,b,c)=a+b+c");
-        // 可以将一个 表达式函数 转换成一个 JVM 函数
-        // 而 jvm 函数也可以直接被当作 表达式函数 使用
-        JvmExpressionFunction expressionFunction1 = JvmExpressionFunction.parse(expressionFunction0);
-        // 处理 explain 其它的都可以使用
-        System.out.println(expressionFunction0.getParamSize());
-        System.out.println(expressionFunction1.getParamSize());
-        System.out.println(expressionFunction0.run(1, 2, 3));
-        System.out.println(expressionFunction1.run(1, 2, 3));
-        System.out.println(expressionFunction0);
-        System.out.println(expressionFunction1);
-        System.out.println(expressionFunction0.explain(1, 2, 3));
-        // TODO JVM 函数的 explain 暂时不支持 因为其完全使用的 class 字节码运行
-        // System.out.println(expressionFunction1.explain(1, 2, 3));
+        Mathematical_Expression.register_jvm_function(MAIN.class);
+        Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.jvmCalculation);
+        instance.check("11+sum(1, 23)*3");
+        System.out.println(instance.calculation("11+sum(1, 23)*3"));
     }
 }

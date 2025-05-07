@@ -51,7 +51,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.5.2</version>
+      <version>1.5.3</version>
     </dependency>
 </dependencies>
 ```
@@ -61,7 +61,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.2'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.3'
 }
 ```
 

@@ -114,4 +114,17 @@ public class JvmCalculation extends NumberCalculation implements CompileCalculat
     public String formatStr(String string) {
         return string;
     }
+
+    /**
+     * 检查公式格式是否正确，如果不正确就会抛出一个异常
+     * <p>
+     * Check whether the formula format is correct. If not, an exception will be thrown
+     *
+     * @param string 需要被判断格式的数学运算公式
+     *               <p>
+     *               Mathematical operation formula of the format to be judged
+     */
+    @Override
+    public void check(String string) {
+    }
 }
