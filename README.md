@@ -150,15 +150,15 @@ public class MAIN {
 Not enough support for calculating symbols? Don't worry, this library supports a wide variety of operators, and you can
 see all the operators here!
 
-| Symbol Name             | Symbolic syntax (n represents operands) | Supported versions | Symbolic significance                       |
-|-------------------------|-----------------------------------------|--------------------|---------------------------------------------|
-| Addition operator       | `n + n`                                 | 1.0.0              | Add two operands                            |
-| Subtraction operator    | `n - n`                                 | 1.0.0              | Subtracting two operands                    |
-| Multiplication operator | `n * n`                                 | 1.0.0              | Multiplying two operands                    |
-| Division operator       | `n / n`                                 | 1.0.0              | Dividing two operands                       |
-| Remainder operator      | `n % n`                                 | 1.0.0              | Perform remainder operation on two operands |
-| Factorial operator      | `n!`                                    | 1.3.2              | Performing factorial operations on operands |
-| Power operator          | `n ^ n`                                 | 1.3.5              | Exponentiation operands                     | 
+| Symbol Name             | Symbolic syntax (n represents operands) | Supported versions | Symbolic significance                                                                 |
+|-------------------------|-----------------------------------------|--------------------|---------------------------------------------------------------------------------------|
+| Addition operator       | `n + n`                                 | 1.0.0              | Add two operands                                                                      |
+| Subtraction operator    | `n - n`                                 | 1.0.0              | Subtracting two operands                                                              |
+| Multiplication operator | `n * n`                                 | 1.0.0              | Multiplying two operands                                                              |
+| Division operator       | `n / n`                                 | 1.0.0              | Dividing two operands                                                                 |
+| Remainder operator      | `n % n`                                 | 1.0.0              | Perform remainder operation on two operands                                           |
+| Factorial operator      | `n!`                                    | 1.3.2              | Performing factorial operations on operands(Jvm component is currently not supported) |
+| Power operator          | `n ^ n`                                 | 1.3.5              | Exponentiation operands (Jvm component is currently not supported)                    | 
 
 You can also achieve calculation operations with precision and caching operations by adjusting settings!
 
