@@ -1,3 +1,13 @@
+# 1.5.1 -> 1.5.2 版本更新日志
+
+### 更新时间：2025年05月07日
+
+==Java==
+
+- 更新版本号为 1.5.2
+- 修复了 Jvm 计算组件的 空指针错误
+- 实现了 JvmExpressionFunction 和 ExpressionFunction 的互相转换！
+```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.jvm.JvmExpressionFunction;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
@@ -21,3 +31,4 @@ public class MAIN {
         // System.out.println(expressionFunction1.explain(1, 2, 3));
     }
 }
+```

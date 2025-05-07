@@ -2,6 +2,7 @@ package io.github.beardedManZhao.mathematicalExpression.core.calculation.functio
 
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.jvm.ParsedSignature;
 import io.github.beardedManZhao.mathematicalExpression.core.container.CalculationNumberResults;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.CalculationManagement;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
@@ -13,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,10 +34,25 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
     final static Pattern pattern = Pattern.compile(ConstantRegion.REGULAR_PURE_LETTER + "(?!\\()");
     private final static long serialVersionUID = "ExpressionFunction".hashCode();
     private final Calculation functionFormulaCalculation;
-    private final ArrayList<String> expression;
-    private final ArrayList<Integer> indexList;
+    private final List<String> expression;
+    private final List<Integer> indexList;
     private final int paramSize;
     private final String f;
+
+    /**
+     * 使用已解析好的函数元数据构建一个函数对象
+     *
+     * @param functionFormulaCalculation 计算时需要使用的函数计算组件
+     * @param parsedSignature            解析好的函数信息对象
+     */
+    protected ExpressionFunction(Calculation functionFormulaCalculation, ParsedSignature parsedSignature) {
+        super(parsedSignature.getName());
+        this.f = parsedSignature.toString();
+        this.functionFormulaCalculation = functionFormulaCalculation;
+        this.expression = Arrays.asList(parsedSignature.getParamNames());
+        this.paramSize = this.expression.size();
+        this.indexList = Collections.emptyList();
+    }
 
     /**
      * 构建一个函数对象
@@ -47,7 +65,7 @@ public class ExpressionFunction extends ManyToOneNumberFunction {
      * @param f                          函数的字符串对象
      * @throws WrongFormat 如果函数表达式的格式有错误，则抛出此异常;If the format of the function expression is incorrect, throw this exception
      */
-    protected ExpressionFunction(Calculation functionFormulaCalculation, String name, ArrayList<String> expression, int paramSize, ArrayList<Integer> indexList, String f) throws WrongFormat {
+    protected ExpressionFunction(Calculation functionFormulaCalculation, String name, List<String> expression, int paramSize, List<Integer> indexList, String f) throws WrongFormat {
         super(name);
         this.f = f;
         this.functionFormulaCalculation = functionFormulaCalculation;

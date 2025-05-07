@@ -59,7 +59,7 @@ public class JvmCalculation extends NumberCalculation implements CompileCalculat
      */
     @Override
     public CalculationNumberResults calculation(String Formula, boolean formatRequired) {
-        return null;
+        return (CalculationNumberResults) this.compile(Formula, formatRequired).calculationCache(false);
     }
 
     /**

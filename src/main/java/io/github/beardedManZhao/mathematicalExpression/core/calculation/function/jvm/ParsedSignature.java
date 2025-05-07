@@ -15,4 +15,21 @@ public class ParsedSignature {
         this.paramNames = paramNames;
         this.expression = expression;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String[] getParamNames() {
+        return paramNames;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
+    @Override
+    public String toString() {
+        return name + "(" + String.join(",", paramNames) + ")=" + expression;
+    }
 }

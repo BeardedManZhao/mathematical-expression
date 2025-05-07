@@ -37,7 +37,7 @@ public class EquationSolver extends NameExpression {
      *
      * @param exprString 方程左侧表达式字符串（关于 x）
      * @param exprResult 方程右侧常数字符串
-     * @param name        计算器名称，用于动态编译函数命名
+     * @param name       计算器名称，用于动态编译函数命名
      * @throws IllegalArgumentException 如果右侧值无法解析为数字
      */
     private EquationSolver(String exprString, String exprResult, String name) {

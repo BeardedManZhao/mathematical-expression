@@ -23,6 +23,7 @@ public class MAIN {
 ```
 
 - 实现了一元方程求解
+
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.SingletonEquationSolving;
