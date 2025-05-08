@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * 基于 JVM 动态编译的多参数数值函数。
@@ -16,8 +17,8 @@ import java.util.Map;
  */
 public class JvmExpressionFunction extends ExpressionFunction {
     private static final Map<String, String> registeredMethods = new LinkedHashMap<>();
+    private static final Pattern n = Pattern.compile("\\s*,\\s*");
     private final ManyToOneNumberFunction delegate;
-
     private final ParsedSignature parsed;
 
     private JvmExpressionFunction(ParsedSignature parsed, ManyToOneNumberFunction delegate) {
@@ -55,8 +56,8 @@ public class JvmExpressionFunction extends ExpressionFunction {
      * @return 转换之后的静态方法源码
      */
     public static String convertToStaticMethodSource(String expression) {
-        ParsedSignature parsed = parseFunctionSignature(expression);
-        StringBuilder sb = new StringBuilder();
+        final ParsedSignature parsed = parseFunctionSignature(expression);
+        final StringBuilder sb = new StringBuilder();
         sb.append("public static double ").append(parsed.name).append("(");
         for (int i = 0; i < parsed.paramNames.length; i++) {
             if (i > 0) sb.append(", ");
@@ -116,10 +117,13 @@ public class JvmExpressionFunction extends ExpressionFunction {
             throw new IllegalArgumentException("函数定义需要包含参数列表");
         }
 
-        String funcName = funcDef.substring(0, openParen);
-        String paramsStr = funcDef.substring(openParen + 1, closeParen).trim();
+        final String funcName = funcDef.substring(0, openParen);
+        if (StrUtils.containsNumber(funcName)) {
+            throw new IllegalArgumentException("函数名称不能包含数字!!! => " + funcName);
+        }
+        final String paramsStr = funcDef.substring(openParen + 1, closeParen).trim();
 
-        String[] paramNames = paramsStr.isEmpty() ? new String[0] : paramsStr.split("\\s*,\\s*");
+        final String[] paramNames = paramsStr.isEmpty() ? new String[0] : n.split(paramsStr);
 
         return new ParsedSignature(funcName, paramNames, body);
     }

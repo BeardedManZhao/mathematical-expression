@@ -51,7 +51,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.5.3</version>
+      <version>1.5.4</version>
     </dependency>
 </dependencies>
 ```
@@ -61,7 +61,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.3'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.4'
 }
 ```
 
@@ -1148,8 +1148,10 @@ io.github.beardedManZhao.mathematicalExpression.core.container.ComplexExpression
 - Starting from version 1.5.1, this component has been developed and will allow us to directly call Jvm for solving. The
   performance of this computing component is very powerful, and the usage method is exactly the same as other
   components! Next is a usage example!
-  - Please note that the compilation operation of this component has a very high performance loss, but its computing speed is very fast, which is completely consistent with the native calling speed of Java
-  - Therefore, this component is very suitable for scenarios where it is compiled multiple times. Please try to reuse the compiled objects as much as possible! For example, when an expression has different operands!
+    - Please note that the compilation operation of this component has a very high performance loss, but its computing
+      speed is very fast, which is completely consistent with the native calling speed of Java
+    - Therefore, this component is very suitable for scenarios where it is compiled multiple times. Please try to reuse
+      the compiled objects as much as possible! For example, when an expression has different operands!
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
@@ -1161,7 +1163,7 @@ import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
 @Functions("sum(x,y) = x + y")
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
+    public static void main(String[] args) {
         // 注册一个函数 TODO 注意 只有 注解 和 字符串 的函数注册才能对 JVM 生效哦！
         Mathematical_Expression.register_jvm_function(MAIN.class);
         // 获取到 jvm 计算器

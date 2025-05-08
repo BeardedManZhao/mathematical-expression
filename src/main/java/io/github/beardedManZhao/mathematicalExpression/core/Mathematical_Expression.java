@@ -87,6 +87,12 @@ public enum Mathematical_Expression {
         public SingletonEquationSolving getInstance(String calculationName) {
             return SingletonEquationSolving.getInstance(calculationName);
         }
+    },
+    singleEquationSolving2 {
+        @Override
+        public SingletonEquationSolvingTwo getInstance(String calculationName) {
+            return SingletonEquationSolvingTwo.getInstance(calculationName);
+        }
     };
 
     /**
@@ -129,9 +135,8 @@ public enum Mathematical_Expression {
      * @return 如果返回true 则代表函数注册操作成功!!!
      * <p>
      * If true is returned, the function registration operation is successful!!!
-     * @throws WrongFormat 函数的格式发生错误则会抛出此异常
      */
-    public static boolean register_jvm_function(Class<?> function) throws WrongFormat {
+    public static boolean register_jvm_function(Class<?> function) {
         final Functions annotation = function.getAnnotation(Functions.class);
         if (annotation != null) {
             for (String functionExpression : annotation.value()) {

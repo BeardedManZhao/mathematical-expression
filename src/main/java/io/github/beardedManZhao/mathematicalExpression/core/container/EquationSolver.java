@@ -23,14 +23,15 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class EquationSolver extends NameExpression {
     private static final double DERIVE_STEP = 1e-6;
-    private final double result;
-    private final ManyToOneNumberFunction function;
-    private double newtonInitialX = 2;
-    private double bisectionLeft = 1;
-    private double bisectionRight = 3;
-    private double tol = 1e-12;
-    private int maxIter = 100;
-    private boolean useNewton = true;
+    protected final ManyToOneNumberFunction function;
+    protected final double result;
+    protected final String[] unkName;
+    protected double newtonInitialX = 2;
+    protected double bisectionLeft = 1;
+    protected double bisectionRight = 3;
+    protected double tol = 1e-12;
+    protected int maxIter = 100;
+    protected boolean useNewton = true;
 
     /**
      * 私有构造函数，通过表达式字符串与结果值初始化求解器。
@@ -38,17 +39,33 @@ public class EquationSolver extends NameExpression {
      * @param exprString 方程左侧表达式字符串（关于 x）
      * @param exprResult 方程右侧常数字符串
      * @param name       计算器名称，用于动态编译函数命名
+     * @param unkName    方程未知数参数名称
      * @throws IllegalArgumentException 如果右侧值无法解析为数字
      */
-    private EquationSolver(String exprString, String exprResult, String name) {
+    private EquationSolver(String exprString, String exprResult, String name, String[] unkName) {
+        this(exprString, Double.parseDouble(exprResult), name, unkName, DynamicFunctionCompiler.compile("EquationSolver", exprString, unkName));
+        autoDetectInterval();
+    }
+
+    /**
+     * 私有构造函数，通过表达式字符串与结果值初始化求解器。
+     *
+     * @param exprString 方程左侧表达式字符串（关于 x）
+     * @param exprResult 方程右侧常数字符串
+     * @param name       计算器名称，用于动态编译函数命名
+     * @param unkName    方程未知数参数名称
+     * @param function   已编译的函数 这个就是方程左边表达式的编译
+     * @throws IllegalArgumentException 如果右侧值无法解析为数字
+     */
+    protected EquationSolver(String exprString, double exprResult, String name, String[] unkName, ManyToOneNumberFunction function) {
         super(exprString, name);
-        this.function = DynamicFunctionCompiler.compile(name, exprString, new String[]{"x"});
+        this.function = function;
         try {
-            this.result = Double.parseDouble(exprResult);
+            this.result = exprResult;
+            this.unkName = unkName;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("方程右侧值必须为数字：" + exprResult, e);
         }
-        autoDetectInterval();
     }
 
     /**
@@ -64,7 +81,12 @@ public class EquationSolver extends NameExpression {
         if (parts.size() != 2) {
             throw new IllegalArgumentException("方程表达式格式应为 '表达式=值'，实际：" + expression);
         }
-        return new EquationSolver(parts.get(0), parts.get(1), calculationName);
+        final String s = parts.get(0);
+        final Character c = StrUtils.containsEnChar(s);
+        if (c == null) {
+            throw new IllegalArgumentException("方程左侧表达式必须包含字母，否则您的表达式【" + expression + "】不能称之为求解！如果您只是想看是否成立，请调用布尔比较计算组件，而非数值计算组件!");
+        }
+        return new EquationSolver(s, parts.get(1), calculationName, new String[]{c.toString()});
     }
 
     /**
@@ -73,7 +95,7 @@ public class EquationSolver extends NameExpression {
      * @param x 自变量值
      * @return 表达式在 x 处的计算结果
      */
-    private double eval(double x) {
+    protected double eval(double x) {
         return function.run(x);
     }
 
@@ -325,7 +347,7 @@ public class EquationSolver extends NameExpression {
      *
      * @throws NoRootFoundException 若在 [-1000.0, 1000.0] 区间未检测到根
      */
-    private void autoDetectInterval() {
+    protected void autoDetectInterval() {
         final double MAX_RANGE = 1000.0;
         final double BASE_STEP = 1.0;
         double prevX = 0.0, prevY = eval(prevX) - result;

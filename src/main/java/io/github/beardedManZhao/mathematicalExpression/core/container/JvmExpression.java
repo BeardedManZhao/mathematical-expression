@@ -14,13 +14,13 @@ import java.util.stream.DoubleStream;
  *
  * @author 赵凌宇
  */
-public class JvmExpression extends NameExpression {
+public class JvmExpression extends NameExpression implements CloneExpression {
 
     private final static Pattern numberPattern = Pattern.compile("\\d+");
     /**
      * 存储是每个操作数的值
      */
-    private final double[] allNumber;
+    final double[] allNumber;
 
     private final JvmExpressionFunction jvmExpressionFunction;
 
@@ -38,55 +38,23 @@ public class JvmExpression extends NameExpression {
         ArrayList<Double> allNumber = new ArrayList<>();
         final StringBuilder numberBuilder = new StringBuilder();
         // 表达式的签名 fun_XXX(x1,x2...)
-        final StringBuilder params = new StringBuilder("fun" + StrUtils.randomString(8)).append('(');
+        final StringBuilder params = new StringBuilder("funLingYuZhao" + StrUtils.randomString(8)).append('(');
         // 表达式体 x1 + x2 ...
         final StringBuilder stringBuilder = new StringBuilder(") = ");
         int count = -1;
-        for (int i = 0; i < expression.length(); i++) {
-            char c = expression.charAt(i);
-            if (c == ' ') {
-                continue;
-            }
-            if (StrUtils.IsAnJvmOperator(c)) {
-                // 如果当前是操作符，就将当前数值添加到字符串数组中，并重置数值字符串的构建器
-                String string = numberBuilder.toString();
-                numberBuilder.delete(0, numberBuilder.length());
-                if (!StrUtils.IsANumber(string)) {
-                    // 代表不是操作符 不是数字，直接当函数体
-                    // 将其中的数字替换为参数
-                    final Matcher matcher = numberPattern.matcher(string);
-                    while (matcher.find()) {
-                        // 提取数字
-                        final String group = matcher.group();
-                        // 然后构建表达式 paramX+
-                        final String paramX = "param" + (++count);
-                        params.append(paramX).append(',');
-                        string = string.replace(group, paramX);
-                        // 然后追加数字
-                        allNumber.add(Double.parseDouble(group));
-                    }
-                    stringBuilder.append(string).append(c);
-                } else if (!string.isEmpty()) {
-                    allNumber.add(Double.parseDouble(string));
-                    // 然后构建表达式 paramX+
-                    final String paramX = "param" + (++count);
-                    params.append(paramX).append(',');
-                    stringBuilder.append(paramX).append(c);
-                }
-            } else {
-                // 然后追加数字
-                numberBuilder.append(c);
-            }
-        }
-        if (numberBuilder.length() != 0) {
-            allNumber.add(Double.parseDouble(numberBuilder.toString()));
-            // 给最后一个操作符加参数
-            final String paramX = "param" + (++count);
-            params.append(paramX).append(',');
-            stringBuilder.append(paramX);
+        int lastIndex = 0;
+        final Matcher matcher = numberPattern.matcher(expression);
+        while (matcher.find()) {
+            final String group = matcher.group();
+            allNumber.add(Double.parseDouble(group));
+            final String p = "param" + ++count;
+            params.append(p).append(',');
+            // 构建表达式体
+            stringBuilder.append(expression, lastIndex, matcher.start()).append(p);
+            lastIndex = matcher.end();
         }
         params.deleteCharAt(params.length() - 1);
-        String string = params.append(stringBuilder).toString();
+        final String string = params.append(stringBuilder).append(expression, lastIndex, expression.length()).toString();
         // 开始编译
         return new JvmExpression(
                 calculationName,
@@ -110,6 +78,10 @@ public class JvmExpression extends NameExpression {
 
     public int getLength() {
         return this.allNumber.length;
+    }
+
+    public JvmExpressionFunction getJvmExpressionFunction() {
+        return jvmExpressionFunction;
     }
 
     /**
@@ -185,7 +157,13 @@ public class JvmExpression extends NameExpression {
         throw new UnsupportedOperationException("JvmExpression does not support BigDecimal mode.");
     }
 
-    public interface HandlerFunction {
-        boolean isNumber(String s);
+    @Override
+    public JvmExpression cloneExpression() {
+        return new JvmExpression(
+                this.getCalculationName() + "_clone",
+                this.allNumber.clone(),
+                this.jvmExpressionFunction,
+                this.getExpressionStr()
+        );
     }
 }

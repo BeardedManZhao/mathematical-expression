@@ -1,15 +1,15 @@
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
-import io.github.beardedManZhao.mathematicalExpression.core.calculation.Calculation;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.Functions;
-import io.github.beardedManZhao.mathematicalExpression.exceptional.WrongFormat;
+import io.github.beardedManZhao.mathematicalExpression.core.calculation.number.JvmCalculation;
+import io.github.beardedManZhao.mathematicalExpression.core.container.JvmExpression;
 
-@Functions("sum(x, y) = x + y")
+@Functions("sum(x, y, z) = x + y + z")
 public class MAIN {
 
-    public static void main(String[] args) throws WrongFormat {
+    public static void main(String[] args) {
         Mathematical_Expression.register_jvm_function(MAIN.class);
-        Calculation instance = Mathematical_Expression.getInstance(Mathematical_Expression.jvmCalculation);
-        instance.check("11+sum(1, 23)*3");
-        System.out.println(instance.calculation("11+sum(1, 23)*3"));
+        JvmCalculation instance = (JvmCalculation) Mathematical_Expression.getInstance(Mathematical_Expression.jvmCalculation);
+        JvmExpression compile = instance.compile("1+1 + sum(1,2,3) - 2 * 3", false);
+        System.out.println(compile.calculation(false));
     }
 }

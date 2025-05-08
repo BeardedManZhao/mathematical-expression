@@ -162,24 +162,6 @@ public final class StrUtils {
 */
 
     /**
-     * 判断一个字符是不是一个操作符
-     *
-     * @param c 需要被判断的字符
-     * @return 如果是一个操作符就返回True
-     */
-    public static boolean IsAnJvmOperator(char c) {
-        switch (c) {
-            case ConstantRegion.PLUS_SIGN:
-            case ConstantRegion.MINUS_SIGN:
-            case ConstantRegion.MULTIPLICATION_SIGN:
-            case ConstantRegion.DIVISION_SIGN:
-            case ConstantRegion.REMAINDER_SIGN:
-                return true;
-        }
-        return false;
-    }
-
-    /**
      * 判断一个字符串是不是一个数值
      *
      * @param c 需要被判断的自读
@@ -268,6 +250,31 @@ public final class StrUtils {
             sb.append(dict[random.nextInt(dict.length)]);
         }
         return sb.toString();
+    }
+
+    public static boolean containsNumber(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (IsANumber(s.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否包含英文
+     *
+     * @param s 需要被判断的字符串
+     * @return 如果包含英文字符则返回 英文
+     */
+    public static Character containsEnChar(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c >= 65 && c <= 90 || c >= 97 && c <= 122) {
+                return c;
+            }
+        }
+        return null;
     }
 
 /*

@@ -8,6 +8,7 @@
 - Jvm 计算组件的检查 check 方法 进行了修改，其将不会参与到 jvm 编译器的字节码检查中，为了更好的特性！
 - 修复了 Jvm 计算组件的 空指针错误
 - 实现了 JvmExpressionFunction 和 ExpressionFunction 的互相转换！
+
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ExpressionFunction;
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.jvm.JvmExpressionFunction;
