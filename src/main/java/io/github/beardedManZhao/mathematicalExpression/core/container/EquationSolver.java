@@ -22,10 +22,12 @@ import java.util.ArrayList;
  */
 @SuppressWarnings("unused")
 public class EquationSolver extends NameExpression {
+
+    private static final String[] X = {"x"};
+
     private static final double DERIVE_STEP = 1e-6;
     protected final ManyToOneNumberFunction function;
     protected final double result;
-    protected final String[] unkName;
     protected double newtonInitialX = 2;
     protected double bisectionLeft = 1;
     protected double bisectionRight = 3;
@@ -39,11 +41,10 @@ public class EquationSolver extends NameExpression {
      * @param exprString 方程左侧表达式字符串（关于 x）
      * @param exprResult 方程右侧常数字符串
      * @param name       计算器名称，用于动态编译函数命名
-     * @param unkName    方程未知数参数名称
      * @throws IllegalArgumentException 如果右侧值无法解析为数字
      */
-    private EquationSolver(String exprString, String exprResult, String name, String[] unkName) {
-        this(exprString, Double.parseDouble(exprResult), name, unkName, DynamicFunctionCompiler.compile("EquationSolver", exprString, unkName));
+    private EquationSolver(String exprString, String exprResult, String name) {
+        this(exprString, Double.parseDouble(exprResult), name, DynamicFunctionCompiler.compile("EquationSolver", exprString, X));
         autoDetectInterval();
     }
 
@@ -53,16 +54,14 @@ public class EquationSolver extends NameExpression {
      * @param exprString 方程左侧表达式字符串（关于 x）
      * @param exprResult 方程右侧常数字符串
      * @param name       计算器名称，用于动态编译函数命名
-     * @param unkName    方程未知数参数名称
      * @param function   已编译的函数 这个就是方程左边表达式的编译
      * @throws IllegalArgumentException 如果右侧值无法解析为数字
      */
-    protected EquationSolver(String exprString, double exprResult, String name, String[] unkName, ManyToOneNumberFunction function) {
+    protected EquationSolver(String exprString, double exprResult, String name, ManyToOneNumberFunction function) {
         super(exprString, name);
         this.function = function;
         try {
             this.result = exprResult;
-            this.unkName = unkName;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("方程右侧值必须为数字：" + exprResult, e);
         }
@@ -82,11 +81,7 @@ public class EquationSolver extends NameExpression {
             throw new IllegalArgumentException("方程表达式格式应为 '表达式=值'，实际：" + expression);
         }
         final String s = parts.get(0);
-        final Character c = StrUtils.containsEnChar(s);
-        if (c == null) {
-            throw new IllegalArgumentException("方程左侧表达式必须包含字母，否则您的表达式【" + expression + "】不能称之为求解！如果您只是想看是否成立，请调用布尔比较计算组件，而非数值计算组件!");
-        }
-        return new EquationSolver(s, parts.get(1), calculationName, new String[]{c.toString()});
+        return new EquationSolver(s, parts.get(1), calculationName);
     }
 
     /**

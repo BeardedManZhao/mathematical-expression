@@ -103,8 +103,12 @@ public class JvmExpressionFunction extends ExpressionFunction {
 
     private static ParsedSignature parseFunctionSignature(String signature) {
         ArrayList<String> parts = StrUtils.splitByChar(signature, '=');
-        if (parts.size() != 2) {
+        if (parts.size() < 2) {
             throw new IllegalArgumentException("签名必须包含 '='; error: " + signature);
+        }
+
+        if (parts.size() > 2) {
+            throw new IllegalArgumentException("签名不能包含多个 '='; error: " + signature);
         }
 
         String funcDef = parts.get(0).trim();

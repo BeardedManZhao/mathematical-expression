@@ -36,7 +36,6 @@ public class JvmExpression extends NameExpression implements CloneExpression {
 
     public static JvmExpression compile(String expression, String calculationName) {
         ArrayList<Double> allNumber = new ArrayList<>();
-        final StringBuilder numberBuilder = new StringBuilder();
         // 表达式的签名 fun_XXX(x1,x2...)
         final StringBuilder params = new StringBuilder("funLingYuZhao" + StrUtils.randomString(8)).append('(');
         // 表达式体 x1 + x2 ...
