@@ -95,11 +95,42 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
         return jvmExpression;
     }
 
-    public void setKnownNumber(int index, double value) {
-        if (unkNameIndex.contains(index)) {
+    /**
+     * 将表达式中一些已知数值进行修改，但是不能修改未知数索引对应的数值
+     *
+     * @param index 需要被修改的索引 注意这个索引处指向的应是已知数值索引
+     * @param value 修改后的数值
+     */
+    public void setKnownNumber(final int index, final double value) {
+        if (indexIsUnKnownNumber(index)) {
             throw new IllegalArgumentException("未知数索引不能被修改！");
         }
         jvmExpression.setParamNumber(index, value);
+    }
+
+    /**
+     * 将表达式中一些未知数值进行修改，请注意 当您修改了未知数的索引之后，其将无法参与求解！！！
+     *
+     * @param index 需要被修改的索引 注意这个索引处指向的应是已知数值索引
+     * @param value 修改后的数值
+     */
+    public void setUnKnownNumber(final int index, final double value) {
+        if (this.unkNameIndex.remove(index)) {
+            jvmExpression.setParamNumber(index, value);
+            return;
+        }
+        final String p = index + ", " + value;
+        throw new IllegalArgumentException("您调用的方法是 setUnKnownNumber(" + p + ")，这是用于将一个" + index + "索引的未知数设置为已知的数值，让其不再参与求解，但是它事实上是一个已经知道的数值！如果您期望将已知数值修改，请调用 setKnownNumber(" + p + ")");
+    }
+
+    /**
+     * 判断当前索引是否是未知数索引
+     *
+     * @param index 需要被判断的索引
+     * @return true 表示是未知数索引，false 表示不是未知数索引
+     */
+    public boolean indexIsUnKnownNumber(final int index) {
+        return unkNameIndex.contains(index);
     }
 
     /**
@@ -110,7 +141,9 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
      */
     @Override
     protected double eval(double x) {
-        this.jvmExpression.allNumber[0] = x;
+        for (Integer nameIndex : unkNameIndex) {
+            this.jvmExpression.allNumber[nameIndex] = x;
+        }
         return super.function.run(this.jvmExpression.allNumber);
     }
 

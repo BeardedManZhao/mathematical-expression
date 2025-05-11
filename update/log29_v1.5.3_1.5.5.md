@@ -31,7 +31,8 @@ public class MAIN {
 }
 ```
 
-- 新增 `SingletonEquationSolvingTwo` 求解器，其相较于 `SingletonEquationSolving` 具有更高的灵活性，支持修改表达式中的已知参数，但是它不安全，只能在单线程中使用哦！多线程状态建议 clone 一下！
+- 新增 `SingletonEquationSolvingTwo` 求解器，其相较于 `SingletonEquationSolving`
+  具有更高的灵活性，支持修改表达式中的已知参数，但是它不安全，只能在单线程中使用哦！多线程状态建议 clone 一下！
 
 ```java
 import io.github.beardedManZhao.mathematicalExpression.core.Mathematical_Expression;
