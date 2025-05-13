@@ -17,8 +17,7 @@
 fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/issues) in 1.2.x_**
 
 > ⚠️【important】 The content of
->
-versions [1.3.7](https://github.com/BeardedManZhao/mathematical-expression/tree/b8a6dc7a05b8cf2c4b2de57389d520cd03e78ff0)
+> versions [1.3.7](https://github.com/BeardedManZhao/mathematical-expression/tree/b8a6dc7a05b8cf2c4b2de57389d520cd03e78ff0)
 > and [1.4.0](https://github.com/BeardedManZhao/mathematical-expression.git) is completely consistent, with the only
 > difference being the
 > change in the package module. ** Please note that we will refactor the package name
@@ -27,9 +26,7 @@ versions [1.3.7](https://github.com/BeardedManZhao/mathematical-expression/tree/
 > package names in Java's various dependencies~**
 >
 > To avoid any compatibility issues caused by package updates, we have provided version 1.3.7. You can continue to use
-> the old package name, but we strongly recommend using the new version, as the new package name has been updated to '
-> io.
-> github. beardedManZhao. mathematicalExpression'. If you have any questions or suggestions about changing the package
+> the old package name, but we strongly recommend using the new version, as the new package name has been updated to 'io.github. beardedManZhao. mathematicalExpression'. If you have any questions or suggestions about changing the package
 > name or updating, please contact us in a timely manner!!
 
 ## introduce
@@ -51,7 +48,7 @@ result object.
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.5.6</version>
+      <version>1.5.7</version>
     </dependency>
 </dependencies>
 ```
@@ -61,7 +58,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.6'
+    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.7'
 }
 ```
 

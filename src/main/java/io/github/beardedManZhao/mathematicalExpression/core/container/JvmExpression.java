@@ -165,4 +165,11 @@ public class JvmExpression extends NameExpression implements CloneExpression {
                 this.getExpressionStr()
         );
     }
+
+    /**
+     * @return 带有参数的具体的参数表达式
+     */
+    public String getExpressionStrAndNumber() {
+        return this.jvmExpressionFunction.explain(this.allNumber);
+    }
 }

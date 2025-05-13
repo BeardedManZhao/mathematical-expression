@@ -4,11 +4,10 @@ import io.github.beardedManZhao.mathematicalExpression.core.calculation.function
 import io.github.beardedManZhao.mathematicalExpression.core.calculation.function.ManyToOneNumberFunction;
 import io.github.beardedManZhao.mathematicalExpression.utils.StrUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 基于 JVM 动态编译的多参数数值函数。
@@ -21,10 +20,23 @@ public class JvmExpressionFunction extends ExpressionFunction {
     private final ManyToOneNumberFunction delegate;
     private final ParsedSignature parsed;
 
+    /**
+     * 参数位置
+     */
+    private final Matcher matcher;
+
     private JvmExpressionFunction(ParsedSignature parsed, ManyToOneNumberFunction delegate) {
         super(null, parsed);
         this.delegate = delegate;
         this.parsed = parsed;
+        // 生成正则表达式模式
+        final String regexPattern = Arrays.stream(parsed.paramNames)
+                .map(param -> String.format("\\Q%s\\E", param))
+                .collect(Collectors.joining("|"));
+
+        // 预编译正则表达式
+        Pattern pattern = Pattern.compile(regexPattern);
+        matcher = pattern.matcher(parsed.getExpression());
     }
 
     /**
@@ -154,7 +166,65 @@ public class JvmExpressionFunction extends ExpressionFunction {
      */
     @Override
     public String explain(double... numbers) {
-        throw new UnsupportedOperationException("JvmExpressionFunction 不支持解释表达式!!");
+        if (numbers.length != this.parsed.paramNames.length) {
+            throw new IllegalArgumentException("参数数量不匹配 需要 " + this.parsed.paramNames.length + " 个, 实际为 " + numbers.length);
+        }
+
+        // 构建参数名到值的映射表
+        final Map<String, String> paramMap = new HashMap<>();
+        for (int i = 0; i < parsed.paramNames.length; i++) {
+            paramMap.put(parsed.paramNames[i], String.valueOf(numbers[i]));
+        }
+
+        // 执行替换
+        final StringBuffer result = new StringBuffer();
+        while (matcher.find()) {
+            final String paramName = matcher.group();
+            final String replacement = paramMap.get(paramName);
+            if (replacement != null) {
+                matcher.appendReplacement(result, replacement);
+            }
+        }
+        matcher.appendTail(result);
+        matcher.reset();
+        return result.toString();
+    }
+
+    /**
+     * 解释计算表达式，我们可以在这里传递一些参数，这些参数将做为函数的输入参数，在这里返回的就是函数带有数值的内部表达式
+     * <p>
+     * Explain the calculation expression. We can pass some parameters here, which will be used as input parameters for the function. Here, we return the internal expression of the function with numerical values
+     *
+     * @param numbers 这里是函数的数据输入对象，由框架向这里传递数据输入参数
+     *                <p>
+     *                This is the data input object for the function, and the framework passes the data input parameters here
+     * @return 这里是数据经过函数转换之后的带有参数的表达式数据，用于构建数学表达式的！
+     * <p>
+     * This is the expression data with parameters after function conversion, used to construct mathematical expressions!
+     */
+    public String explain(Object... numbers) {
+        if (numbers.length != this.parsed.paramNames.length) {
+            throw new IllegalArgumentException("参数数量不匹配 需要 " + this.parsed.paramNames.length + " 个, 实际为 " + numbers.length);
+        }
+
+        // 构建参数名到值的映射表
+        final Map<String, String> paramMap = new HashMap<>();
+        for (int i = 0; i < parsed.paramNames.length; i++) {
+            paramMap.put(parsed.paramNames[i], String.valueOf(numbers[i]));
+        }
+
+        // 执行替换
+        final StringBuffer result = new StringBuffer();
+        while (matcher.find()) {
+            final String paramName = matcher.group();
+            final String replacement = paramMap.get(paramName);
+            if (replacement != null) {
+                matcher.appendReplacement(result, replacement);
+            }
+        }
+        matcher.appendTail(result);
+        matcher.reset();
+        return result.toString();
     }
 
     @Override

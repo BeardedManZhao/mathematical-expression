@@ -20,6 +20,14 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
     private final JvmExpression jvmExpression;
 
     /**
+     * 这是一个参数列表，按照顺序记录着方程中所有的实参和未知数！这个是专门给 explain 使用的
+     * <p>
+     * 这是父类中 allNumber 的副本，只不过是 Object[] 类型的 为了可以存放 x，因为 x 不是 double，因此数值数组无法使用
+     */
+    private final Object[] numbers;
+
+
+    /**
      * 私有构造函数，通过表达式字符串与结果值初始化求解器。
      *
      * @param exprString   方程左侧表达式字符串（关于 x）
@@ -27,12 +35,14 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
      * @param name         计算器名称，用于动态编译函数命名
      * @param function     已编译的函数 这个就是方程左边表达式的编译
      * @param unkNameIndex 方程未知数参数索引，这个索引中标记的参数是未知数，设置数值准备复用的时候可以使用这个校验当前设置的是否是一个未知数，我们不能设置一个未知数！
+     * @param numbers       数组，存放方程中参数的数值，这个数组的索引与方程中参数 allNumber 的索引一致，只是类型不一样 用于给  explain 使用!
      * @throws IllegalArgumentException 如果右侧值无法解析为数字
      */
-    protected EquationSolverExpression(String exprString, double exprResult, String name, HashSet<Integer> unkNameIndex, JvmExpression function) {
+    protected EquationSolverExpression(String exprString, double exprResult, String name, HashSet<Integer> unkNameIndex, JvmExpression function, Object[] numbers) {
         super(exprString, exprResult, name, function.getJvmExpressionFunction());
         this.unkNameIndex = unkNameIndex;
         this.jvmExpression = function;
+        this.numbers = numbers;
         autoDetectInterval();
     }
 
@@ -77,6 +87,15 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
         params.deleteCharAt(params.length() - 1);
         final String string = params.append(stringBuilder).append(s, lastIndex, s.length()).toString();
         JvmExpressionFunction parse = JvmExpressionFunction.parse(string);
+        double[] array = new double[allNumber.size()];
+        Object[] numbers = new Object[allNumber.size()];
+        for (int i = 0; i < allNumber.size(); i++) {
+            array[i] = allNumber.get(i);
+            numbers[i] = allNumber.get(i);
+        }
+        for (Integer nameIndex : unkNameIndex) {
+            numbers[nameIndex] = X[0];
+        }
         // 开始编译
         return new EquationSolverExpression(
                 s, Double.parseDouble(parts.get(1)),
@@ -84,10 +103,10 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
                 unkNameIndex,
                 new JvmExpression(
                         calculationName,
-                        allNumber.stream().mapToDouble(Double::doubleValue).toArray(),
+                        array,
                         parse,
                         string
-                )
+                ), numbers
         );
     }
 
@@ -98,7 +117,7 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
     /**
      * 将表达式中一些已知数值进行修改，但是不能修改未知数索引对应的数值
      *
-     * @param index 需要被修改的索引 注意这个索引处指向的应是已知数值索引
+     * @param index 需要被修改的索引 注意这个索引处指向的应是已知数值索引fx
      * @param value 修改后的数值
      */
     public void setKnownNumber(final int index, final double value) {
@@ -106,6 +125,7 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
             throw new IllegalArgumentException("未知数索引不能被修改！");
         }
         jvmExpression.setParamNumber(index, value);
+        numbers[index] = value;
     }
 
     /**
@@ -117,6 +137,7 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
     public void setUnKnownNumber(final int index, final double value) {
         if (this.unkNameIndex.remove(index)) {
             jvmExpression.setParamNumber(index, value);
+            numbers[index] = value;
             return;
         }
         final String p = index + ", " + value;
@@ -154,7 +175,15 @@ public class EquationSolverExpression extends EquationSolver implements CloneExp
                 this.result,
                 this.getCalculationName() + "_clone",
                 this.unkNameIndex,
-                this.jvmExpression.cloneExpression()
+                this.jvmExpression.cloneExpression(),
+                this.numbers.clone()
         );
+    }
+
+    /**
+     * @return 当前的方程表达式
+     */
+    public String explain() {
+        return this.jvmExpression.getJvmExpressionFunction().explain(numbers) + " = " + this.result;
     }
 }

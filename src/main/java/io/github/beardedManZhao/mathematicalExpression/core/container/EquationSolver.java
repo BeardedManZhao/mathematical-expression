@@ -23,7 +23,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class EquationSolver extends NameExpression {
 
-    private static final String[] X = {"x"};
+    protected static final String[] X = {"x"};
 
     private static final double DERIVE_STEP = 1e-6;
     protected final ManyToOneNumberFunction function;
@@ -329,6 +329,15 @@ public class EquationSolver extends NameExpression {
      */
     public void setBisectionRight(double bisectionRight) {
         this.bisectionRight = bisectionRight;
+    }
+
+    /**
+     * 获取方程结果。
+     *
+     * @return 方程的右表达式
+     */
+    public double getResult() {
+        return result;
     }
 
     /**
