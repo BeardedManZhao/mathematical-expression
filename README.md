@@ -1,6 +1,6 @@
 ![logo](https://github.com/user-attachments/assets/cbf100a1-93c3-4842-80e6-776582d9a761)
 
-![码本统计](https://shop.lingyuzhao.top/api/statistics.svg?sk=-8013042206952371923&id=101&srcText=mathematical-expression_from_github)
+[<img src='https://shop.lingyuzhao.top/api/statistics.svg?sk=-8013042206952371923&id=101&srcText=mathematical-expression_from_github'/>](https://codebook.ltd/a/8478456578378070)
 
 # mathematical-expression （MAE）
 
