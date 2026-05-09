@@ -23,9 +23,9 @@
         </repository>
     </repositories>
 
-    <groupId>io.github.BeardedManZhao</groupId>
+    <groupId>io.github.beardedmanzhao</groupId>
     <artifactId>mathematical-expression</artifactId>
-    <version>1.5.7</version>
+    <version>1.5.8</version>
     <packaging>jar</packaging>
     <name>mathematical-expression</name>
     <description>mathematical-expression-java</description>
@@ -39,13 +39,13 @@
     <dependencies>
         <!-- varFormatter 格式化组件 用于将数据类格式化 -->
         <dependency>
-            <groupId>io.github.BeardedManZhao</groupId>
+            <groupId>io.github.beardedmanzhao</groupId>
             <artifactId>varFormatter</artifactId>
             <version>1.0.4</version>
         </dependency>
         <!-- algorithmStar 科学计算组件 用于计算复数等复杂的操作数对象 -->
         <dependency>
-            <groupId>io.github.BeardedManZhao</groupId>
+            <groupId>io.github.beardedmanzhao</groupId>
             <artifactId>algorithmStar</artifactId>
             <version>1.43</version>
         </dependency>
@@ -89,17 +89,18 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <build>
+
                 <!--发布到中央仓库插件-->
                 <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.7</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
                         </configuration>
                     </plugin>
 
@@ -122,10 +123,15 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
+                        <version>3.6.3</version>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <charset>UTF-8</charset>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
+                                <phase>verify</phase>  <!-- ✅ 同步对齐 -->
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
@@ -137,7 +143,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.1.0</version> <!-- 更新为最新版本 -->
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -148,7 +154,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                 </plugins>
             </build>
 

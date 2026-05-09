@@ -29,6 +29,8 @@ fix [all known bugs](https://github.com/BeardedManZhao/mathematical-expression/i
 > the old package name, but we strongly recommend using the new version, as the new package name has been updated to 'io.github. beardedManZhao. mathematicalExpression'. If you have any questions or suggestions about changing the package
 > name or updating, please contact us in a timely manner!!
 
+> Starting from version 1.5.8, the Maven groupId has been changed to all lowercase to comply with naming conventions.
+
 ## introduce
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/BeardedManZhao/mathematical-expression)
@@ -46,9 +48,9 @@ result object.
 
 <dependencies>
     <dependency>
-        <groupId>io.github.BeardedManZhao</groupId>
+        <groupId>io.github.beardedmanzhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.5.7</version>
+      <version>1.5.8</version>
     </dependency>
 </dependencies>
 ```
@@ -58,7 +60,7 @@ dependencies.
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.7'
+    implementation 'io.github.beardedmanzhao:mathematical-expression:1.5.8'
 }
 ```
 

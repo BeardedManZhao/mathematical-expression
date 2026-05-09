@@ -3,6 +3,9 @@ package io.github.beardedManZhao.mathematicalExpression.utils;
 import io.github.beardedManZhao.mathematicalExpression.core.manager.ConstantRegion;
 import io.github.beardedManZhao.mathematicalExpression.exceptional.AbnormalOperation;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * 数值工具类
  */
@@ -52,6 +55,35 @@ public final class NumberUtils {
                 return an % bn;
             case ConstantRegion.POW_SIGN:
                 return Math.pow(an, bn);
+            default:
+                throw new AbnormalOperation("操作数计算异常，您的计算模式不存在，错误的计算模式 = [" + CalculationType + "]\n" +
+                        "Operand calculation exception. Your calculation mode does not exist. Wrong calculation mode = [" + CalculationType + "]");
+        }
+    }
+
+    /**
+     * 计算一个数值的结果
+     *
+     * @param CalculationType 计算类型
+     * @param an              运算数值1
+     * @param bn              运算数值2
+     * @return 运算结果
+     */
+    public static BigDecimal calculation(char CalculationType, BigDecimal an, BigDecimal bn) {
+        switch (CalculationType) {
+            case ConstantRegion.PLUS_SIGN:
+                return an.add(bn); // 加法
+            case ConstantRegion.MINUS_SIGN:
+                return an.subtract(bn); // 减法
+            case ConstantRegion.MULTIPLICATION_SIGN:
+                return an.multiply(bn); // 乘法
+            case ConstantRegion.DIVISION_SIGN:
+                // 除法必须指定保留的小数位数和舍入模式，否则除不尽时会抛出异常
+                return an.divide(bn, 30, RoundingMode.HALF_UP);
+            case ConstantRegion.REMAINDER_SIGN:
+                return an.remainder(bn); // 取余
+            case ConstantRegion.POW_SIGN:
+                return an.pow(bn.intValue());
             default:
                 throw new AbnormalOperation("操作数计算异常，您的计算模式不存在，错误的计算模式 = [" + CalculationType + "]\n" +
                         "Operand calculation exception. Your calculation mode does not exist. Wrong calculation mode = [" + CalculationType + "]");

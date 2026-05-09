@@ -93,41 +93,62 @@ public class BracketsExpression extends PackExpression {
     /**
      * 解析出来表达式不带有括号的数学表达式，此操作会将括号内部的表达式直接进行计算！
      *
-     * @param Formula              需要被编译的数学表达式
+     * @param formula              需要被编译的数学表达式
      * @param formatRequired       是否需要格式化
      * @param bracketsCalculation2 当编译操作进行时，如果遇到了括号，那么将会使用此参数进行计算。
      * @return 将括号内公式计算出来的数学表达式的结果！
      */
-    private static StringBuilder parseStringBuilder(String Formula, boolean formatRequired, BracketsCalculation2 bracketsCalculation2) {
-        int length = Formula.length();
-        // 公式存储区
-        final StringBuilder stringBuilder = new StringBuilder(length + 16);
-        // 括号内数据的起始索引
-        int start = 0;
-        boolean setOk = false;
-        // 括号内的括号均衡数量，为了确定是一对括号
-        int count = 0;
-        // 计算结果临时存储
+    private static StringBuilder parseStringBuilder(
+            String formula,
+            boolean formatRequired,
+            BracketsCalculation2 bracketsCalculation2
+    ) {
+
+        final int length = formula.length();
+
+        final StringBuilder result = new StringBuilder(length);
+
+        int level = 0;
+        int start = -1;
+
         for (int i = 0; i < length; i++) {
-            char aChar = Formula.charAt(i);
-            if (aChar == ConstantRegion.LEFT_BRACKET) {
-                // 如果当前字符是一个左括号，那么说明括号开始了，这个时候需要将起始点记录
-                if (!setOk) {
-                    setOk = true;
+
+            char c = formula.charAt(i);
+
+            if (c == ConstantRegion.LEFT_BRACKET) {
+
+                if (level == 0) {
                     start = i + 1;
                 }
-                ++count;
-            } else if (aChar == ConstantRegion.RIGHT_BRACKET && --count == 0) {
-                setOk = false;
-                // 如果当前字符是一个右括号，那么就将括号中的字符进行递归计算，计算之后将该参数作为公式的一部分
-                CalculationNumberResults calculation = bracketsCalculation2.calculation(Formula.substring(start, i), formatRequired);
-                stringBuilder.append(calculation.getResult());
-            } else if (!setOk && aChar != ConstantRegion.EMPTY) {
-                // 如果不是一个括号就将字符提供给字符串缓冲区
-                stringBuilder.append(aChar);
+
+                level++;
+                continue;
+            }
+
+            if (c == ConstantRegion.RIGHT_BRACKET) {
+
+                level--;
+
+                if (level == 0) {
+
+                    CalculationNumberResults calculation =
+                            bracketsCalculation2.calculation(
+                                    formula.substring(start, i),
+                                    formatRequired
+                            );
+
+                    result.append(calculation.getResult());
+                }
+
+                continue;
+            }
+
+            if (level == 0 && c != ConstantRegion.EMPTY) {
+                result.append(c);
             }
         }
-        return stringBuilder;
+
+        return result;
     }
 
 }

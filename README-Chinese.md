@@ -24,6 +24,8 @@
 > 您可以继续使用旧包名，但是我们强烈建议您使用新版本，因为新版本的包名已经更新为 `io.github.beardedManZhao.mathematicalExpression`
 > 若您对于修改包名称和更新有什么问题或建议，请及时联系我们！！
 
+> 自 1.5.8 版本起，为了符合规范，Maven 仓库的 groupId 已统一更改为全小写。
+
 ## 介绍
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/BeardedManZhao/mathematical-expression)
@@ -38,9 +40,9 @@
 
 <dependencies>
     <dependency>
-        <groupId>io.github.BeardedManZhao</groupId>
+        <groupId>io.github.beardedmanzhao</groupId>
         <artifactId>mathematical-expression</artifactId>
-      <version>1.5.7</version>
+      <version>1.5.8</version>
     </dependency>
 </dependencies>
 ```
@@ -49,7 +51,7 @@
 
 ```
 dependencies {
-    implementation 'io.github.BeardedManZhao:mathematical-expression:1.5.7'
+    implementation 'io.github.beardedmanzhao:mathematical-expression:1.5.8'
 }
 ```
 
@@ -1192,7 +1194,6 @@ public class MAIN {
   }
 }
 ```
-
 
 ## 高阶操作
 

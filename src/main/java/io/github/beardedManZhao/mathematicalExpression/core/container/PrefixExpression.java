@@ -49,11 +49,16 @@ public class PrefixExpression extends NameExpression {
         if (StrUtils.IsANumber(c)) {
             // 如果是数值的某一位，就将数值存储到变量中
             stringBuilder.append(c);
+            // 数字字符不会命中下方 switch，直接返回避免多余判断
+            return;
         }
         switch (c) {
             case ConstantRegion.FACTORIAL_SIGN:
             case ConstantRegion.DECIMAL_POINT:
             case ConstantRegion.MINUS_SIGN:
+                // 科学计数法指数符号 E/e，例如 1.5E-4 中的 E
+            case 'E':
+            case 'e':
                 // 如果是数值的某一位，就将数值存储到变量中
                 stringBuilder.append(c);
         }
@@ -83,48 +88,86 @@ public class PrefixExpression extends NameExpression {
                 return (PrefixExpression) cacheCalculation.dismantling();
             }
         }
-        // 到这里就代表没有启动缓存 或者 缓存不到 开始解析 首先 创建操作符栈
-        final Stack<Double> doubleStack = new Stack<>();
-        // 创建操作数栈
-        final Stack<Character> characterStack = new Stack<>();
-        // 开始格式化，将符号与操作数进行分类
-        int length = newFormula.length();
-        final StringBuilder stringBuilder = new StringBuilder(length);
+
+        final int length = newFormula.length();
+        // 预分配原始类型数组，避免循环内的自动装箱与 Stack（Vector）同步开销
+        // 最多 (length+2)/2 个操作数，(length+1)/2 个运算符
+        final int maxSize = (length >> 1) + 2;
+        final double[] numBuf = new double[maxSize];
+        final char[] opBuf = new char[maxSize];
+        int numTop = 0, opTop = 0;
+
+        // toCharArray() 将边界检查前置，循环内直接读数组元素，更快
+        final char[] chars = newFormula.toCharArray();
+        final StringBuilder sb = new StringBuilder(Math.min(length, 32));
+
         // 创建标记点 标记上一个是否是操作符
         boolean backIsOpt = true;
+        // 科学计数法标志：上一个字符是否是 E/e（如 1.5E-4 中的 E）
+        boolean lastWasExp = false;
+
         for (int i = 0; i < length; i++) {
-            char c = newFormula.charAt(i);
-            if (!backIsOpt && StrUtils.IsAnOperator(c)) {
+            final char c = chars[i];
+
+            // 遇到操作符时，先检查是否是科学计数法中的 E 后跟的符号
+            // lastWasExp==true 时，紧随其后的 +/- 是指数符号而非算术运算符
+            if (!backIsOpt && !lastWasExp && StrUtils.IsAnOperator(c)) {
                 backIsOpt = true;
                 // 如果上一个不是操作符，且当前是操作符，就先将上一个数值计算出来
-                double number = StrUtils.stringToDouble(stringBuilder.toString());
-                if (characterStack.isEmpty()) {
+                final double number = StrUtils.stringToDouble(sb.toString());
+                // setLength(0) 比 delete(0, len) 快：只更新 count，不清空底层数组
+                sb.setLength(0);
+                if (opTop == 0) {
                     // 如果栈为空 直接将运算符添加到栈顶
-                    characterStack.push(c);
+                    opBuf[opTop++] = c;
                     // 将数值添加到数值栈顶
-                    doubleStack.push(number);
+                    numBuf[numTop++] = number;
                 } else {
                     // 如果不为空就检查栈顶的与当前运算符的优先级
-                    if (!NumberUtils.PriorityComparison(characterStack.peek(), c)) {
-                        // 如果上一个优先级较大 就将上一个操作符取出
-                        char top = characterStack.pop();
-                        // 将上一个优先级高的值 与当下优先级较低的值进行运算，然后将当下的新数值和当下的操作符推到栈顶
-                        doubleStack.push(NumberUtils.calculation(top, doubleStack.pop(), number));
-                        characterStack.push(c);
+                    if (!NumberUtils.PriorityComparison(opBuf[opTop - 1], c)) {
+                        // 如果上一个优先级较大 就将上一个操作符取出，原地计算替换（避免 pop+push 开销）
+                        numBuf[numTop - 1] = NumberUtils.calculation(opBuf[--opTop], numBuf[numTop - 1], number);
+                        opBuf[opTop++] = c;
                     } else {
                         // 反之就将当前运算符提供到栈顶
-                        characterStack.push(c);
-                        doubleStack.push(number);
+                        opBuf[opTop++] = c;
+                        numBuf[numTop++] = number;
                     }
                 }
-                // 清理所有的字符缓冲
-                stringBuilder.delete(0, stringBuilder.length());
                 continue;
             }
-            PrefixExpression.isBackIsOpt(stringBuilder, c);
+
+            // 处理科学计数法指数符号 E/e，例如 -7.0E-4 中的 E
+            if (c == 'E' || c == 'e') {
+                sb.append(c);
+                lastWasExp = true;
+                backIsOpt = false;
+                continue;
+            }
+
+            // 处理科学计数法中 E 后跟的正号，例如 1.5E+4 中的 +
+            // 该 '+' 是冗余的（Double.parseDouble 支持 "1.5E4" 与 "1.5E+4"），直接跳过即可
+            if (lastWasExp && c == ConstantRegion.PLUS_SIGN) {
+                lastWasExp = false;
+                continue;
+            }
+
+            lastWasExp = false;
+            PrefixExpression.isBackIsOpt(sb, c);
             backIsOpt = false;
         }
-        doubleStack.push(StrUtils.stringToDouble(stringBuilder.toString()));
+
+        // 将最后一段数值入栈
+        numBuf[numTop++] = StrUtils.stringToDouble(sb.toString());
+
+        // 将原始数组转换为 Stack（装箱仅在此处集中发生一次，而非分散于整个循环中）
+        final Stack<Double> doubleStack = new Stack<>();
+        final Stack<Character> characterStack = new Stack<>();
+        doubleStack.ensureCapacity(numTop);
+        characterStack.ensureCapacity(opTop);
+        for (int i = 0; i < numTop; i++) doubleStack.push(numBuf[i]);
+        for (int i = 0; i < opTop; i++) characterStack.push(opBuf[i]);
+
         final PrefixExpression prefixExpression = new PrefixExpression(null, doubleStack, characterStack, newFormula, calculationName);
         // 如果启用了缓存就缓存
         if (useCache) {
@@ -157,52 +200,90 @@ public class PrefixExpression extends NameExpression {
                 return (PrefixExpression) cacheCalculation.dismantling();
             }
         }
-        // 到这里就代表没有启动缓存 或者 缓存不到 开始解析 首先 创建操作符栈
-        final Stack<BigDecimal> doubleStack = new Stack<>();
-        // 创建操作数栈
-        final Stack<Character> characterStack = new Stack<>();
-        // 开始格式化，将符号与操作数进行分类
-        int length = newFormula.length();
-        final StringBuilder stringBuilder = new StringBuilder(length);
+
+        final int length = newFormula.length();
+        // 预分配原始类型数组，避免循环内的自动装箱与 Stack（Vector）同步开销
+        // 最多 (length+2)/2 个操作数，(length+1)/2 个运算符
+        final int maxSize = (length >> 1) + 2;
+        final BigDecimal[] numBuf = new BigDecimal[maxSize];
+        final char[] opBuf = new char[maxSize];
+        int numTop = 0, opTop = 0;
+
+        // toCharArray() 将边界检查前置，循环内直接读数组元素，更快
+        final char[] chars = newFormula.toCharArray();
+        final StringBuilder sb = new StringBuilder(Math.min(length, 32));
+
         // 创建标记点 标记上一个是否是操作符
         boolean backIsOpt = true;
+        // 科学计数法标志：上一个字符是否是 E/e（如 1.5E-4 中的 E）
+        boolean lastWasExp = false;
+
         for (int i = 0; i < length; i++) {
-            char c = newFormula.charAt(i);
-            if (!backIsOpt && StrUtils.IsAnOperator(c)) {
+            final char c = chars[i];
+
+            // 遇到操作符时，先检查是否是科学计数法中的 E 后跟的符号
+            // lastWasExp==true 时，紧随其后的 +/- 是指数符号而非算术运算符
+            if (!backIsOpt && !lastWasExp && StrUtils.IsAnOperator(c)) {
                 backIsOpt = true;
                 // 如果上一个不是操作符，且当前是操作符，就先将上一个数值计算出来
-                BigDecimal number = StrUtils.stringToBigDecimal(stringBuilder.toString());
-                if (characterStack.isEmpty()) {
+                final BigDecimal number = BigDecimal.valueOf(StrUtils.stringToDouble(sb.toString()));
+                // setLength(0) 比 delete(0, len) 快：只更新 count，不清空底层数组
+                sb.setLength(0);
+                if (opTop == 0) {
                     // 如果栈为空 直接将运算符添加到栈顶
-                    characterStack.push(c);
+                    opBuf[opTop++] = c;
                     // 将数值添加到数值栈顶
-                    doubleStack.push(number);
+                    numBuf[numTop++] = number;
                 } else {
                     // 如果不为空就检查栈顶的与当前运算符的优先级
-                    if (!NumberUtils.PriorityComparison(characterStack.peek(), c)) {
-                        // 如果上一个优先级较大 就将上一个操作符取出
-                        char top = characterStack.pop();
-                        // 将上一个优先级高的值 与当下优先级较低的值进行运算，然后将当下的新数值和当下的操作符推到栈顶
-                        doubleStack.push(CalculationOptimized.calculation(top, doubleStack.pop(), number));
-                        characterStack.push(c);
+                    if (!NumberUtils.PriorityComparison(opBuf[opTop - 1], c)) {
+                        // 如果上一个优先级较大 就将上一个操作符取出，原地计算替换（避免 pop+push 开销）
+                        numBuf[numTop - 1] = NumberUtils.calculation(opBuf[--opTop], numBuf[numTop - 1], number);
+                        opBuf[opTop++] = c;
                     } else {
                         // 反之就将当前运算符提供到栈顶
-                        characterStack.push(c);
-                        doubleStack.push(number);
+                        opBuf[opTop++] = c;
+                        numBuf[numTop++] = number;
                     }
                 }
-                // 清理所有的字符缓冲
-                stringBuilder.delete(0, stringBuilder.length());
                 continue;
             }
-            PrefixExpression.isBackIsOpt(stringBuilder, c);
+
+            // 处理科学计数法指数符号 E/e，例如 -7.0E-4 中的 E
+            if (c == 'E' || c == 'e') {
+                sb.append(c);
+                lastWasExp = true;
+                backIsOpt = false;
+                continue;
+            }
+
+            // 处理科学计数法中 E 后跟的正号，例如 1.5E+4 中的 +
+            // 该 '+' 是冗余的（Double.parseDouble 支持 "1.5E4" 与 "1.5E+4"），直接跳过即可
+            if (lastWasExp && c == ConstantRegion.PLUS_SIGN) {
+                lastWasExp = false;
+                continue;
+            }
+
+            lastWasExp = false;
+            PrefixExpression.isBackIsOpt(sb, c);
             backIsOpt = false;
         }
-        doubleStack.push(StrUtils.stringToBigDecimal(stringBuilder.toString()));
-        final PrefixExpression prefixExpression = new PrefixExpression(doubleStack, null, characterStack, newFormula, calculationName);
+
+        // 将最后一段数值入栈
+        numBuf[numTop++] = BigDecimal.valueOf(StrUtils.stringToDouble(sb.toString()));
+
+        // 将原始数组转换为 Stack（装箱仅在此处集中发生一次，而非分散于整个循环中）
+        final Stack<BigDecimal> bigDecimalStack = new Stack<>();
+        final Stack<Character> characterStack = new Stack<>();
+        bigDecimalStack.ensureCapacity(numTop);
+        characterStack.ensureCapacity(opTop);
+        for (int i = 0; i < numTop; i++) bigDecimalStack.push(numBuf[i]);
+        for (int i = 0; i < opTop; i++) characterStack.push(opBuf[i]);
+
+        final PrefixExpression prefixExpression = new PrefixExpression(bigDecimalStack, null, characterStack, newFormula, calculationName);
         // 如果启用了缓存就缓存
         if (useCache) {
-            Mathematical_Expression.Options.cacheCalculation(newFormula + "uB", new PackExpression(null, prefixExpression, calculationName));
+            Mathematical_Expression.Options.cacheCalculation(newFormula, new PackExpression(null, prefixExpression, calculationName));
         }
         return prefixExpression;
     }
@@ -350,7 +431,6 @@ public class PrefixExpression extends NameExpression {
         int i1 = this.characterStackR.size();
         if (this.isBigDecimal()) {
             Stack<BigDecimal> doubleStack = this.bigDecimalsR;
-            System.out.println(characterStackR.size());
             for (int i = 0; i < i1; i++) {
                 stringBuilder
                         .append(doubleStack.get(i))

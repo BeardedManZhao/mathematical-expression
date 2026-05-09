@@ -213,6 +213,7 @@ public class FunctionExpression extends SubCompileExpression {
     @Override
     public CalculationNumberResults calculationBigDecimalsCache(boolean isCopy) {
         final CalculationNumberResults calculationNumberResults = (CalculationNumberResults) super.calculationBigDecimalsCache(isCopy);
+
         calculationNumberResults.setSource(this.getCalculationName());
         return calculationNumberResults;
     }
